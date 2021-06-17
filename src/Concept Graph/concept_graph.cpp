@@ -1,3 +1,4 @@
+//Demonstrate how to take students through the concepts modelled as Hyper-graph
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -6,6 +7,7 @@ vector<string> concepts_name;
 vector<vector<int>> inc_mat;
 vector<int> concept_state;
 
+//finds whether a certain concept can be attempted by student depending on status of pre-requisites
 int findAvailableConcepts(int c,set<int> &concept_list)
 {
 	int AND=1;
