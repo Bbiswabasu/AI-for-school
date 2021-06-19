@@ -89,6 +89,4 @@ int main()
 		cout<<"CORRECT\n";
 	else
 		cout<<"WRONG\n";
-
-	// dfs(0,adj);
 }
