@@ -7,7 +7,7 @@ using namespace std;
 
 vector<int> values;
 int answer;
-void display_tree(vector<vector<int>> &adj,vector<string> &content)
+void display_tree()
 {
 	for(int i=0;i<adj.size();i++)
 	{
@@ -21,7 +21,7 @@ void display_tree(vector<vector<int>> &adj,vector<string> &content)
 	}
 }
 
-void display_expression(int node,vector<vector<int>> &adj,vector<string> &content)
+void display_expression(int node)
 {
 	if(adj[node].size()==0)
 	{
@@ -29,21 +29,21 @@ void display_expression(int node,vector<vector<int>> &adj,vector<string> &conten
 		return;
 	}
 	cout<<"( ";
-	display_expression(adj[node][0],adj,content);
+	display_expression(adj[node][0]);
 	cout<<content[node]<<" ";
-	display_expression(adj[node][1],adj,content);
+	display_expression(adj[node][1]);
 	cout<<") ";
 }
 
-int evaluate(int node,vector<vector<int>> &adj,vector<string> &content)
+int evaluate(int node)
 {
 	if(adj[node].size()==0)
 	{
 		cout<<node<<" -> "<<values[node]<<"\n";
 		return values[node];
 	}
-	int left=evaluate(adj[node][0],adj,content);
-	int right=evaluate(adj[node][1],adj,content);
+	int left=evaluate(adj[node][0]);
+	int right=evaluate(adj[node][1]);
 	int ans;
 	if(content[node]=="&")
 		ans=left&right;
@@ -63,11 +63,9 @@ int main()
 	int num_var=5;
 	init(num_var);
 	generate_tree();
-	vector<vector<int>> adj=getAdjList();
 	assign_content();
-	vector<string> content=getNodeContent();
-	display_tree(adj,content);
-	display_expression(0,adj,content);
+	display_tree();
+	display_expression(0);
 	cout<<"\n";
 
 	int num_node=adj.size();
@@ -84,7 +82,7 @@ int main()
 	
 	int user_value;
 	cin>>user_value;
-	answer=evaluate(0,adj,content);
+	answer=evaluate(0);
 	if(user_value==answer)
 		cout<<"CORRECT\n";
 	else

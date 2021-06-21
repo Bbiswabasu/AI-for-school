@@ -60,13 +60,3 @@ void assign_content()
 	content.resize(adj.size());
 	assign_content(0);
 }
-
-vector<vector<int>> getAdjList()
-{
-	return adj;
-}
-
-vector<string> getNodeContent()
-{
-	return content;
-}

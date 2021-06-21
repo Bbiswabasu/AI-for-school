@@ -7,7 +7,7 @@ using namespace std;
 
 vector<pair<string,int>> expressions;
 
-void display_tree(vector<vector<int>> &adj,vector<string> &content)
+void display_tree()
 {
 	for(int i=0;i<adj.size();i++)
 	{
@@ -21,7 +21,7 @@ void display_tree(vector<vector<int>> &adj,vector<string> &content)
 	}
 }
 
-string compute_expressions(int node,vector<vector<int>> &adj,vector<string> &content)
+string compute_expressions(int node)
 {
 	if(adj[node].size()==0)
 	{
@@ -29,9 +29,9 @@ string compute_expressions(int node,vector<vector<int>> &adj,vector<string> &con
 		return content[node];
 	}
 	string ans="( ";
-	ans+=compute_expressions(adj[node][0],adj,content)+" ";
+	ans+=compute_expressions(adj[node][0])+" ";
 	ans+=content[node]+" ";
-	ans+=compute_expressions(adj[node][1],adj,content)+" ";
+	ans+=compute_expressions(adj[node][1])+" ";
 	ans+=") ";
 	expressions[node]={ans,node};
 	return ans;
@@ -42,14 +42,12 @@ int main()
 	int num_var=5;
 	init(num_var);
 	generate_tree();
-	vector<vector<int>> adj=getAdjList();
 	assign_content();
-	vector<string> content=getNodeContent();
-	display_tree(adj,content);
+	display_tree();
 
 	int num_node=adj.size();
 	expressions.resize(num_node);
-	compute_expressions(0,adj,content);
+	compute_expressions(0);
 	random_shuffle(expressions.begin(),expressions.end());
 	
 	for(int i=0;i<num_node;i++)
@@ -73,6 +71,12 @@ int main()
 	}
 	if(correct)
 		cout<<"CORRECT\n";
-	else
-		cout<<"WRONG\n";
+	else{
+		cout<<"WRONG\nCorrect order: \n";
+		for(int i=0;i<num_node;i++)
+		{
+			if(adj[expressions[i].second].size()!=0)
+				cout<<expressions[i].second<<"\n";
+		}
+	}
 }
