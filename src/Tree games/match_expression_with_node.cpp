@@ -7,20 +7,6 @@ using namespace std;
 
 vector<pair<string,int>> expressions;
 
-void display_tree()
-{
-	for(int i=0;i<adj.size();i++)
-	{
-		cout<<i<<" "<<content[i]<<" ";
-		for(auto it:adj[i])
-		{
-			cout<<it<<" ";
-		}
-		cout<<"\n";
-
-	}
-}
-
 string compute_expressions(int node)
 {
 	if(adj[node].size()==0)
@@ -39,12 +25,6 @@ string compute_expressions(int node)
 
 int main()
 {
-	int num_var=5;
-	init(num_var);
-	generate_tree();
-	assign_content();
-	display_tree();
-
 	int num_node=adj.size();
 	expressions.resize(num_node);
 	compute_expressions(0);
