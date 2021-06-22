@@ -2,12 +2,13 @@
 
 #include <bits/stdc++.h>
 #include "tree_generator.h"
+#include "match_expression_with_node.h"
 
 using namespace std;
 
 vector<pair<string,int>> expressions;
 
-string compute_expressions(int node)
+string MatchExpression::compute_expressions(int node)
 {
 	if(adj[node].size()==0)
 	{
@@ -23,7 +24,7 @@ string compute_expressions(int node)
 	return ans;
 }
 
-int main()
+void MatchExpression::startGame()
 {
 	int num_node=adj.size();
 	expressions.resize(num_node);

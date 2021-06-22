@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 #include "tree_generator.h"
 #include "expression_evaluation.h"
+#include "match_expression_with_node.h"
 
 using namespace std;
 
@@ -31,6 +32,7 @@ int main()
 	}
 	else
 	{
-
+		MatchExpression obj;
+		obj.startGame();
 	}
 }
