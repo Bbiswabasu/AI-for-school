@@ -15,24 +15,22 @@ int main()
 	generate_tree();
 	assign_content();
 	display_tree(); 
-	cout<<"Evaluating games? ";
+	assign_values();
+	cout<<"1. Expression Evaluation\n";
+	cout<<"2. Match Expression With Node\n";
+	cout<<"Which game? ";
 	int tmp;
 	cin>>tmp;
-	if(tmp)
+	switch(tmp)
 	{
-		assign_values();
-		cout<<"How many variables & operators remain empty? ";
-		int var,op;
-		cin>>var>>op;
-		if(var==0 && op==0)
-		{
-			ExpressionEvaluation obj;
-			obj.startGame();
-		}
-	}
-	else
-	{
-		MatchExpression obj;
-		obj.startGame();
+		case 1:
+		ExpressionEvaluation exp;
+		exp.startGame();
+		break;
+
+		case 2:
+		MatchExpression mat;
+		mat.startGame();
+		break;
 	}
 }

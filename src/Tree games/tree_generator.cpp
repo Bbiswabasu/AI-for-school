@@ -28,6 +28,11 @@ void generate_tree(int node,int nv)
 	adj.push_back(vector<int>());
 	if(nv==1)
 	{
+		if(rand()%2==1)
+		{
+			adj[node].push_back(++id);
+			adj.push_back(vector<int>());
+		}
 		return;
 	}
 	int nv_left=rand()%(nv-1)+1;
@@ -49,6 +54,8 @@ void assign_content()
 	{
 		if(adj[i].size()==0)
 			content[i]=var_name++;
+		else if(adj[i].size()==1)
+			content[i]="~";
 		else
 			content[i]=operators[rand()%4];
 	}
@@ -83,6 +90,11 @@ void display_expression(int node)
 	if(adj[node].size()==0)
 	{
 		cout<<content[node]<<" ";
+		return;
+	}
+	if(adj[node].size()==1)
+	{
+		cout<<content[node]<<content[adj[node][0]]<<" ";
 		return;
 	}
 	cout<<"( ";

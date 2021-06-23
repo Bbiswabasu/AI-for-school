@@ -15,9 +15,15 @@ int ExpressionEvaluation::evaluate(int node)
 		cout<<node<<" -> "<<values[node]<<"\n";
 		return values[node];
 	}
+	int ans;
+	if(adj[node].size()==1)
+	{
+		ans=!(evaluate(adj[node][0]));
+		cout<<node<<" -> "<<ans<<"\n";
+		return ans;
+	}
 	int left=evaluate(adj[node][0]);
 	int right=evaluate(adj[node][1]);
-	int ans;
 	if(content[node]=="&")
 		ans=left&right;
 	else if(content[node]=="|")
