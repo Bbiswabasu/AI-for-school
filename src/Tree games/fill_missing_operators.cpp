@@ -9,7 +9,7 @@ void MissingOperators::startGame()
 {
 	ExpressionEvaluation exp;
 	exp.evaluate(0);
-	vector<int> values_mem=values;
+	vector<int> values_mem=values; //Store for checking correctness of student's solution
 	int num_operator=adj.size()-num_vars;
 	vector<int> index;
 	for(int i=0;i<adj.size();i++)
@@ -24,5 +24,24 @@ void MissingOperators::startGame()
 	}
 	display_tree();
 	cout<<"Fill missing operators such that the given values are satisfied : \n";
-	
+	for(int i=0;i<num_operator/2;i++)
+	{
+		int node; string op;
+		cin>>node>>op;
+		content[node]=op;
+	}
+	exp.evaluate(0);
+	bool wrong=0;
+	for(int i=0;i<adj.size();i++)
+	{
+		if(values_mem[i]!=values[i])
+		{
+			wrong=1;
+			break;
+		}
+	}
+	if(wrong)
+		cout<<"WRONG\n";
+	else
+		cout<<"CORRECT\n";
 }
