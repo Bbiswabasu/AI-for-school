@@ -4,6 +4,7 @@
 #include "tree_generator.h"
 #include "expression_evaluation.h"
 #include "match_expression_with_node.h"
+#include "fill_missing_operators.h"
 
 using namespace std;
 
@@ -18,6 +19,7 @@ int main()
 	assign_values();
 	cout<<"1. Expression Evaluation\n";
 	cout<<"2. Match Expression With Node\n";
+	cout<<"3. Fill missing operators\n";
 	cout<<"Which game? ";
 	int tmp;
 	cin>>tmp;
@@ -32,5 +34,10 @@ int main()
 		MatchExpression mat;
 		mat.startGame();
 		break;
+
+		case 3:
+		MissingOperators mop;
+		mop.startGame();
+		break; 
 	}
 }
