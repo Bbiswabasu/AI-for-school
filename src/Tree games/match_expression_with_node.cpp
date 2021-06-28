@@ -13,18 +13,18 @@ string MatchExpression::compute_expressions(int node)
 	if(adj[node].size()==0)
 	{
 		expressions[node]={content[node],node};
-		return content[node];
+		return expressions[node].first;
 	}
 	if(adj[node].size()==1)
 	{
-		expressions[node]={"~"+compute_expressions(adj[node][0]),node};
+		expressions[node]={"( ~ "+compute_expressions(adj[node][0])+" )",node};
 		return expressions[node].first;
 	}
 	string ans="( ";
 	ans+=compute_expressions(adj[node][0])+" ";
 	ans+=content[node]+" ";
 	ans+=compute_expressions(adj[node][1])+" ";
-	ans+=") ";
+	ans+=")";
 	expressions[node]={ans,node};
 	return ans;
 }
@@ -38,7 +38,7 @@ void MatchExpression::startGame()
 	
 	for(int i=0;i<num_node;i++)
 	{
-		if(adj[expressions[i].second].size()==2)
+		if(adj[expressions[i].second].size()!=0)
 			cout<<expressions[i].first<<"\n";
 	}
 
@@ -46,7 +46,7 @@ void MatchExpression::startGame()
 	bool correct=1;
 	for(int i=0;i<num_node;i++)
 	{
-		if(adj[expressions[i].second].size()<=1)
+		if(adj[expressions[i].second].size()==0)
 			continue;
 		int n;
 		cin>>n;
@@ -61,7 +61,7 @@ void MatchExpression::startGame()
 		cout<<"WRONG\nCorrect order: \n";
 		for(int i=0;i<num_node;i++)
 		{
-			if(adj[expressions[i].second].size()==2)
+			if(adj[expressions[i].second].size()!=0)
 				cout<<expressions[i].second<<"\n";
 		}
 	}

@@ -26,13 +26,14 @@ void init()
 void generate_tree(int node,int nv)
 {
 	adj.push_back(vector<int>());
+	if(rand()%6==0)
+	{
+		adj[node].push_back(++id);
+		generate_tree(id,nv);
+		return;
+	}
 	if(nv==1)
 	{
-		if(rand()%2==1)
-		{
-			adj[node].push_back(++id);
-			adj.push_back(vector<int>());
-		}
 		return;
 	}
 	int nv_left=rand()%(nv-1)+1;
@@ -94,7 +95,10 @@ void display_expression(int node)
 	}
 	if(adj[node].size()==1)
 	{
-		cout<<content[node]<<content[adj[node][0]]<<" ";
+		cout<<"( ";
+		cout<<content[node]<<" ";
+		display_expression(adj[node][0]);
+		cout<<") ";
 		return;
 	}
 	cout<<"( ";
