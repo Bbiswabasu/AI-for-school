@@ -30,6 +30,7 @@ void MissingOperators::startGame()
 		cin>>node>>op;
 		content[node]=op;
 	}
+	new(&exp) ExpressionEvaluation();
 	exp.evaluate(0);
 	bool wrong=0;
 	for(int i=0;i<adj.size();i++)

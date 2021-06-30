@@ -8,6 +8,7 @@ extern vector<vector<int>> adj;
 extern vector<string> content; 
 extern vector<int> values;
 extern vector<string> operators;
+extern vector<string> expressions;
 
 void init();
 void generate_dag();

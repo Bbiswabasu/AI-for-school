@@ -12,6 +12,7 @@ vector<string> content; //stores content of each node
 vector<int> values; //stores values at each node
 vector<string> operators; //stores list of operators
 vector<int> indeg; //stores indegree of each node
+vector<string> expressions;
 
 void init()
 {
@@ -96,6 +97,7 @@ void generate_dag()
 void assign_content()
 {
 	content.resize(adj.size());
+	expressions.resize(adj.size());
 	for(int i=0;i<adj.size();i++)
 	{
 		if(adj[i].size()==0)

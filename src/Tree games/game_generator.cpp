@@ -35,8 +35,10 @@ int main()
 		break;
 
 		case 2:
-		MatchExpression mat;
-		mat.startGame();
+		{
+			MatchExpression mat;
+			mat.startGame();
+		}
 		break;
 
 		case 3:

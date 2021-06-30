@@ -7,7 +7,6 @@
 using namespace std;
 
 int answer;
-vector<bool> done; //stores if a subproblem is already solved
 
 ExpressionEvaluation::ExpressionEvaluation()
 {
