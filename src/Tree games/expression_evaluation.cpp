@@ -7,12 +7,21 @@
 using namespace std;
 
 int answer;
+vector<bool> done; //stores if a subproblem is already solved
+
+ExpressionEvaluation::ExpressionEvaluation()
+{
+	done.resize(adj.size(),0);
+}
 
 int ExpressionEvaluation::evaluate(int node)
 {
+	if(done[node])
+		return values[node];
 	if(adj[node].size()==0)
 	{
 		cout<<node<<" -> "<<values[node]<<"\n";
+		done[node]=1;
 		return values[node];
 	}
 	int ans;
@@ -20,6 +29,7 @@ int ExpressionEvaluation::evaluate(int node)
 	{
 		ans=!(evaluate(adj[node][0]));
 		cout<<node<<" -> "<<ans<<"\n";
+		done[node]=1;
 		return ans;
 	}
 	int left=evaluate(adj[node][0]);
@@ -34,6 +44,7 @@ int ExpressionEvaluation::evaluate(int node)
 		ans=((!left)&(!right))|(left&right);
 	cout<<node<<" -> "<<ans<<"\n";
 	values[node]=ans;
+	done[node]=1;
 	return ans;
 }
 

@@ -28,8 +28,10 @@ int main()
 	switch(tmp)
 	{
 		case 1:
-		ExpressionEvaluation exp;
-		exp.startGame();
+		{
+			ExpressionEvaluation exp;
+			exp.startGame();
+		}
 		break;
 
 		case 2:
