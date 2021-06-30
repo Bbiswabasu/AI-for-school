@@ -1,7 +1,7 @@
 //Implementation of the evaluating expression game
 
 #include <bits/stdc++.h>
-#include "tree_generator.h"
+#include "dag_generator.h"
 #include "expression_evaluation.h"
 
 using namespace std;

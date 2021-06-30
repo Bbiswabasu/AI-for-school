@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include "dag_generator.h"
 using namespace std;
 
 int num_vars; //number of variables
@@ -153,13 +154,7 @@ void display_expression(int node)
 	cout<<") ";
 }
 
-int main()
+void display_expression()
 {
-	num_vars=5; num_nodes=9;
-	init();
-	generate_dag();
-	assign_content();
-	display_dag();
 	display_expression(0);
-
 }

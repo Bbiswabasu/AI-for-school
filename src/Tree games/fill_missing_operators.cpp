@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include "fill_missing_operators.h"
 #include "expression_evaluation.h"
-#include "tree_generator.h"
+#include "dag_generator.h"
 
 using namespace std;
 
@@ -22,7 +22,7 @@ void MissingOperators::startGame()
 			ctr++;
 		}
 	}
-	display_tree();
+	display_dag();
 	cout<<"Fill missing operators such that the given values are satisfied : \n";
 	for(int i=0;i<num_operator/2;i++)
 	{

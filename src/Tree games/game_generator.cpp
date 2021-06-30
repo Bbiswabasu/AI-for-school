@@ -1,7 +1,7 @@
 //generates games based on parameters
 
 #include <bits/stdc++.h>
-#include "tree_generator.h"
+#include "dag_generator.h"
 #include "expression_evaluation.h"
 #include "match_expression_with_node.h"
 #include "fill_missing_operators.h"
@@ -12,10 +12,12 @@ int main()
 {
 	cout<<"No of variables : ";
 	cin>>num_vars;
+	cout<<"No of nodes : ";
+	cin>>num_nodes;
 	init();
-	generate_tree();
+	generate_dag();
 	assign_content();
-	display_tree(); 
+	display_dag(); 
 	assign_values();
 	cout<<"1. Expression Evaluation\n";
 	cout<<"2. Match Expression With Node\n";

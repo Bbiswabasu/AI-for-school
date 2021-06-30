@@ -1,7 +1,7 @@
 //Implementation of the match expression with node game
 
 #include <bits/stdc++.h>
-#include "tree_generator.h"
+#include "dag_generator.h"
 #include "match_expression_with_node.h"
 
 using namespace std;
