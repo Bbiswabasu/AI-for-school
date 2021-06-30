@@ -35,7 +35,11 @@ void generate_dag()
 	//Randomly connect nodes following topological order
 	for(int i=0;i<num_nodes-num_vars;i++)
 	{
-		int succ1=random(i+1,num_nodes-1);
+		int succ1;
+		if(indeg[i+1]==0) // to ensure non-sink nodes have indegree>=1
+			succ1=i+1;
+		else
+			succ1=random(i+1,num_nodes-1);
 		int succ2;
 		if(succ1!=i+1)
 			succ2=random(i+1,succ1-1);
@@ -46,8 +50,8 @@ void generate_dag()
 		indeg[succ1]++; indeg[succ2]++;
 	}
 
-	//All except source must have indegree>=1 
-	int i=0,j=1;
+	//Ensure sink nodes have indegree>=1 
+	int i=0,j=num_nodes-num_vars;
 	while(j<num_nodes)
 	{
 		if(indeg[j]>=1)
@@ -87,6 +91,7 @@ void generate_dag()
 		adj[index].push_back(i);
 	}
 }
+
 void assign_content()
 {
 	content.resize(adj.size());
@@ -101,8 +106,19 @@ void assign_content()
 	}
 }
 
+void assign_values()
+{
+	values.resize(adj.size());
+	for(int i=0;i<adj.size();i++){
+		if(!isalpha(content[i][0]))
+			continue;
+		values[i]=rand()%2;
+	}
+}
+
 void display_dag()
 {
+	cout<<"Adjacency list and content of each node :\n";
 	for(int i=0;i<adj.size();i++)
 	{
 		cout<<i<<" "<<content[i]<<" ";
