@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 #include "dag_generator.h"
 #include "expression_evaluation.h"
+#include "match_expression_with_node.h"
 
 using namespace std;
 
@@ -49,8 +50,9 @@ int ExpressionEvaluation::evaluate(int node)
 
 void ExpressionEvaluation::startGame()
 {
-	display_expression();
-	cout<<"\n";
+	MatchExpression mat;
+	mat.compute_expressions(0);
+	cout<<expressions[0]<<"\n";
 
 	int num_node=adj.size();
 	cout<<"Enter the value of given expression when :\n";
