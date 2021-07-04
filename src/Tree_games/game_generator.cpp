@@ -5,6 +5,7 @@
 #include "expression_evaluation.h"
 #include "match_expression_with_node.h"
 #include "fill_missing_operators.h"
+#include "write_expression.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ int main()
 	cout<<"1. Expression Evaluation\n";
 	cout<<"2. Match Expression With Node\n";
 	cout<<"3. Fill missing operators\n";
+	cout<<"4. Write Expression\n";
 	cout<<"Which game? ";
 	int tmp;
 	cin>>tmp;
@@ -45,5 +47,10 @@ int main()
 		MissingOperators mop;
 		mop.startGame();
 		break; 
+
+		case 4:
+		WriteExpression write;
+		write.startGame();
+		break;
 	}
 }
