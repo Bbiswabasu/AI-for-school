@@ -610,7 +610,7 @@ void fillv1()
 
 }
 
-int main() 
+void showCrossword() 
 {
 	int a,b,c,d,e,q,h,i,j,k,m,n,n1,n2,n3;
 	srand(time(NULL));

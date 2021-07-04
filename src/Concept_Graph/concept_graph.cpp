@@ -86,7 +86,7 @@ void conceptHandler()
 	else
 		cout<<"Invalid command\n";
 }
-int main()
+void show()
 {	
 	ifstream file;
 	file.open("input.txt");

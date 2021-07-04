@@ -4,7 +4,7 @@ CXX_FLAGS := -std=c++17 -ggdb
 BIN     := bin
 SRC     := src
 TREE    := Tree_Games
-INCLUDE := include/Tree_Games
+INCLUDE := include
 
 LIBRARIES   :=
 EXECUTABLE  := main
@@ -16,7 +16,7 @@ run: clean all
 	clear
 	./$(BIN)/$(EXECUTABLE)
 
-$(BIN)/$(EXECUTABLE): $(SRC)/$(TREE)/*.cpp
+$(BIN)/$(EXECUTABLE): $(SRC)/*/*.cpp
 	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) $^ -o $@ $(LIBRARIES)
 
 clean:
