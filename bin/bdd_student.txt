@@ -5,6 +5,6 @@ v0i0
 v0i0 -> One
 v0i0 -> v1i0 [style=dashed]
 v1i0 
-v1i0 -> Zero
-v1i0 -> One [style=dashed]
+v1i0 -> One
+v1i0 -> Zero [style=dashed]
 }

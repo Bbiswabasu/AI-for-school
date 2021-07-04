@@ -89,6 +89,20 @@ void WriteExpression::expressionParser(string& s)
     fclose(fp_dot);
 }
 
+bool WriteExpression::verifyAnswer()
+{
+    FILE *f1=fopen("bdd_actual.txt","r");
+    FILE *f2=fopen("bdd_student.txt","r");
+    char ch1,ch2;
+    do
+    {
+        ch1=fgetc(f1); ch2=fgetc(f2);
+        if(ch1!=ch2)
+            return 0;
+    } while (ch1!=EOF && ch2!=EOF);
+    return (ch1==EOF && ch2==EOF);
+}
+
 void WriteExpression::startGame()
 {
     cout<<"Write expression at node 0 : ";
@@ -107,4 +121,9 @@ void WriteExpression::startGame()
     fclose(fp_dot);
 
     expressionParser(s);
+
+    if(verifyAnswer())
+        cout<<"CORRECT\n";
+    else
+        cout<<"WRONG\n";
 }
