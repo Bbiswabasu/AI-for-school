@@ -25,32 +25,38 @@ int main()
 	cout<<"3. Fill missing operators\n";
 	cout<<"4. Write Expression\n";
 	cout<<"Which game? ";
-	int tmp;
-	cin>>tmp;
-	switch(tmp)
+	while(1)
 	{
-		case 1:
+		int tmp;
+		cin>>tmp;
+		switch(tmp)
 		{
-			ExpressionEvaluation exp;
-			exp.startGame();
+			case 1:
+			{
+				ExpressionEvaluation exp;
+				exp.startGame();
+			}
+			break;
+
+			case 2:
+			{
+				MatchExpression mat;
+				mat.startGame();
+			}
+			break;
+
+			case 3:
+			MissingOperators mop;
+			mop.startGame();
+			break; 
+
+			case 4:
+			WriteExpression write;
+			write.startGame();
+			break;
+
+			default:
+			return 0;
 		}
-		break;
-
-		case 2:
-		{
-			MatchExpression mat;
-			mat.startGame();
-		}
-		break;
-
-		case 3:
-		MissingOperators mop;
-		mop.startGame();
-		break; 
-
-		case 4:
-		WriteExpression write;
-		write.startGame();
-		break;
 	}
 }
