@@ -24,9 +24,10 @@ int main()
 	cout<<"2. Match Expression With Node\n";
 	cout<<"3. Fill missing operators\n";
 	cout<<"4. Write Expression\n";
-	cout<<"Which game? ";
+	
 	while(1)
 	{
+		cout<<"Which game? ";
 		int tmp;
 		cin>>tmp;
 		switch(tmp)

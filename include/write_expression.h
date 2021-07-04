@@ -6,6 +6,8 @@ using namespace std;
 class WriteExpression
 {
 public:
-    BDD build(int node,bddMgr& mgr,vector<BDD> &vars);
+    BDD buildBDDFromAdj(int, bddMgr&, vector<BDD>&);
+    BDD buildBDDFromStr(int, bddMgr&, vector<BDD>&, string&, vector<int>&);
+    void expressionParser(string&);
 	void startGame();
 };
