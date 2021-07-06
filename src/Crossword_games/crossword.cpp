@@ -62,7 +62,7 @@ void init(int n)
 void formgrid(int n,int uplen)
 {
 	int md=1<<(uplen);
-	for(int i=1;i<n+1;i++)
+	for(int i=1;i<=n;i++)
 	{
 		if((i&1))
 		{
@@ -74,7 +74,7 @@ void formgrid(int n,int uplen)
 				while(1)
 				{
 				 	val=rand()%(md)+1;
-					for(int j=0;j<uplen+2;j++)
+					for(int j=0;j<=uplen+1;j++)
 					{
 						if(val<=dist[j])
 						{
@@ -127,7 +127,7 @@ void printgrid(int n)
 
 void transpose(int n)
 {
-	for(int i=1;i<n+1;i++)
+	for(int i=1;i<=n;i++)
 	{
 		for(int j=1;j<i;j++)
 		{
@@ -139,14 +139,14 @@ void transpose(int n)
 
 void remove2(int n)
 {
-	for(int i=1;i<n+2;i++)
+	for(int i=1;i<=n+1;i++)
 	{
 		if((i&1)==0)
 		{
 			continue;
 		}
 		int ct=0;
-		for(int j=1;j<n+2;j++)
+		for(int j=1;j<=n+1;j++)
 		{
 			if(ar[i][j]=='.')
 				ct+=1;
@@ -188,30 +188,28 @@ void remove1(int n)
 	}	
 }
 
-void distribution(int n,int uplen)
+void distribution(int uplen) //Makes binomial distribution
 {
 	fac[0]=1;
-	for(int i=1;i<uplen+1;i++)
+	for(int i=1;i<=uplen;i++)
 	{
 		fac[i]=i*fac[i-1];
 	}
-	cout<<"\n";
 	dist[0]=1;
-	for(int i=1;i<uplen+1;i++)
+	for(int i=1;i<=uplen;i++)
 	{
 		dist[i]=fac[uplen]/(fac[i]*fac[uplen-i])+dist[i-1];
 	}
-	cout<<"\n";
 }
 
 
 
 void cspify(int n)
 {
-	for(int i=1;i<n+2;i++)
+	for(int i=1;i<=n+1;i++)
 	{
 		int ct=0;
-		for(int j=1;j<n+2;j++)
+		for(int j=1;j<=n+1;j++)
 		{
 			if(ar[i][j]=='.')
 			{
@@ -614,10 +612,11 @@ void showCrossword()
 {
 	int a,b,c,d,e,q,h,i,j,k,m,n,n1,n2,n3;
 	srand(time(NULL));
+	cout<<"Enter size of crossword : ";
 	cin>>n;
 	init(n);
 	int uplen=sqrt(n)+3;
-	distribution(n,uplen);
+	distribution(uplen);
 	formgrid(n,uplen);
 	szbag=20;
 
