@@ -3,7 +3,6 @@ CXX_FLAGS := -std=c++17 -ggdb
 
 BIN     := bin
 SRC     := src
-TREE    := Tree_Games
 INCLUDE := include
 
 LIBRARIES   :=

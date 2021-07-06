@@ -1,18 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-extern int num_vars; 
-extern int num_nodes;
+class DAGGenerator
+{
+public:
+    static int num_vars; 
+    static int num_nodes;
 
-extern vector<vector<int>> adj;
-extern vector<string> content; 
-extern vector<int> values;
-extern vector<string> operators;
-extern vector<string> expressions;
+    static vector<vector<int>> adj;
+    static vector<string> content; 
+    static vector<int> values;
+    static vector<string> operators;
+    static vector<int> indeg;
+    static vector<string> expressions;
 
-void init();
-void generate_dag();
-void assign_content();
-void assign_values();
-void display_dag();
-void display_expression();
+    void init();
+    void generate_dag();
+    void assign_content();
+    void assign_values();
+    void display_dag();
+};

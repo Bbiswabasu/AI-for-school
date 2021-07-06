@@ -10,29 +10,29 @@ vector<pair<string,int>> exp_node;
 
 MatchExpression::MatchExpression()
 {
-	done.resize(adj.size(),0);
+	done.resize(DAGGenerator::adj.size(),0);
 }
 string MatchExpression::compute_expressions(int node)
 {
 	if(done[node])
-		return expressions[node];
-	if(adj[node].size()==0)
+		return DAGGenerator::expressions[node];
+	if(DAGGenerator::adj[node].size()==0)
 	{
 		done[node]=1;
-		return expressions[node]=content[node];
+		return DAGGenerator::expressions[node]=DAGGenerator::content[node];
 	}
-	if(adj[node].size()==1)
+	if(DAGGenerator::adj[node].size()==1)
 	{
-		expressions[node]="( ~ "+compute_expressions(adj[node][0])+" )";
+		DAGGenerator::expressions[node]="( ~ "+compute_expressions(DAGGenerator::adj[node][0])+" )";
 		done[node]=1;
-		return expressions[node];
+		return DAGGenerator::expressions[node];
 	}
 	string ans="( ";
-	ans+=compute_expressions(adj[node][0])+" ";
-	ans+=content[node]+" ";
-	ans+=compute_expressions(adj[node][1])+" ";
+	ans+=compute_expressions(DAGGenerator::adj[node][0])+" ";
+	ans+=DAGGenerator::content[node]+" ";
+	ans+=compute_expressions(DAGGenerator::adj[node][1])+" ";
 	ans+=")";
-	expressions[node]=ans;
+	DAGGenerator::expressions[node]=ans;
 	done[node]=1;
 	return ans;
 }
@@ -40,23 +40,23 @@ string MatchExpression::compute_expressions(int node)
 void MatchExpression::startGame()
 {
 	compute_expressions(0);
-	exp_node.resize(num_nodes);
+	exp_node.resize(DAGGenerator::num_nodes);
 
-	for(int i=0;i<num_nodes;i++)
-		exp_node[i]={expressions[i],i};
-	random_shuffle(exp_node.begin(),exp_node.end()); //Shuffle the list of expressions
+	for(int i=0;i<DAGGenerator::num_nodes;i++)
+		exp_node[i]={DAGGenerator::expressions[i],i};
+	random_shuffle(exp_node.begin(),exp_node.end()); //Shuffle the list of DAGGenerator::expressions
 	
-	for(int i=0;i<num_nodes;i++)
+	for(int i=0;i<DAGGenerator::num_nodes;i++)
 	{
-		if(adj[exp_node[i].second].size()!=0)
+		if(DAGGenerator::adj[exp_node[i].second].size()!=0)
 			cout<<exp_node[i].first<<"\n";
 	}
 
 	cout<<"Match each expression with corresponding node number : \n";
 	bool correct=1;
-	for(int i=0;i<num_nodes;i++)
+	for(int i=0;i<DAGGenerator::num_nodes;i++)
 	{
-		if(adj[exp_node[i].second].size()==0)
+		if(DAGGenerator::adj[exp_node[i].second].size()==0)
 			continue;
 		int n;
 		cin>>n;
@@ -68,9 +68,9 @@ void MatchExpression::startGame()
 		cout<<"CORRECT\n";
 	else{
 		cout<<"WRONG\nCorrect order: \n";
-		for(int i=0;i<num_nodes;i++)
+		for(int i=0;i<DAGGenerator::num_nodes;i++)
 		{
-			if(adj[exp_node[i].second].size()!=0)
+			if(DAGGenerator::adj[exp_node[i].second].size()!=0)
 				cout<<exp_node[i].second<<"\n";
 		}
 	}

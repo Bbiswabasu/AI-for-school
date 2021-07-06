@@ -2,19 +2,19 @@
 #include "dag_generator.h"
 using namespace std;
 
-int num_vars; //number of variables
-int num_nodes;
+int DAGGenerator::num_vars; //number of variables
+int DAGGenerator::num_nodes;
 int id; //id of current node to be added
 int var_name;
 
-vector<vector<int>> adj; //stores adjacency list
-vector<string> content; //stores content of each node
-vector<int> values; //stores values at each node
-vector<string> operators; //stores list of operators
-vector<int> indeg; //stores indegree of each node
-vector<string> expressions;
+vector<vector<int>> DAGGenerator::adj; //stores adjacency list
+vector<string> DAGGenerator::content; //stores content of each node
+vector<int> DAGGenerator::values; //stores values at each node
+vector<string> DAGGenerator::operators; //stores list of operators
+vector<int> DAGGenerator::indeg; //stores indegree of each node
+vector<string> DAGGenerator::expressions;
 
-void init()
+void DAGGenerator::init()
 {
 	id=0;
 	var_name='a';
@@ -25,7 +25,7 @@ int random(int a,int b)
 {
 	return a+rand()%(b-a+1);
 }
-void generate_dag()
+void DAGGenerator::generate_dag()
 {
 	int num_not=random(0,num_vars); //numbers of NOT nodes to be inserted
 
@@ -94,7 +94,7 @@ void generate_dag()
 	}
 }
 
-void assign_content()
+void DAGGenerator::assign_content()
 {
 	content.resize(adj.size());
 	expressions.resize(adj.size());
@@ -109,7 +109,7 @@ void assign_content()
 	}
 }
 
-void assign_values()
+void DAGGenerator::assign_values()
 {
 	values.resize(adj.size());
 	for(int i=0;i<adj.size();i++){
@@ -119,7 +119,7 @@ void assign_values()
 	}
 }
 
-void display_dag()
+void DAGGenerator::display_dag()
 {
 	cout<<"Adjacency list and content of each node :\n";
 	for(int i=0;i<adj.size();i++)
@@ -132,31 +132,4 @@ void display_dag()
 		cout<<"\n";
 
 	}
-}
-
-void display_expression(int node)
-{
-	if(adj[node].size()==0)
-	{
-		cout<<content[node]<<" ";
-		return;
-	}
-	if(adj[node].size()==1)
-	{
-		cout<<"( ";
-		cout<<content[node]<<" ";
-		display_expression(adj[node][0]);
-		cout<<") ";
-		return;
-	}
-	cout<<"( ";
-	display_expression(adj[node][0]);
-	cout<<content[node]<<" ";
-	display_expression(adj[node][1]);
-	cout<<") ";
-}
-
-void display_expression()
-{
-	display_expression(0);
 }

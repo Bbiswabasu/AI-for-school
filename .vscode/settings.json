@@ -1,3 +1,14 @@
 {
-    "makefile.extensionOutputFolder": "./.vscode"
+    "makefile.extensionOutputFolder": "./.vscode",
+    "files.associations": {
+        "deque": "cpp",
+        "list": "cpp",
+        "vector": "cpp",
+        "array": "cpp",
+        "forward_list": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "initializer_list": "cpp",
+        "valarray": "cpp"
+    }
 }

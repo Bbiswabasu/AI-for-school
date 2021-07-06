@@ -11,15 +11,16 @@ using namespace std;
 
 int main()
 {
+	DAGGenerator dag_gen;
 	cout<<"No of variables : ";
-	cin>>num_vars;
+	cin>>DAGGenerator::num_vars;
 	cout<<"No of nodes : ";
-	cin>>num_nodes;
-	init();
-	generate_dag();
-	assign_content();
-	display_dag(); 
-	assign_values();
+	cin>>DAGGenerator::num_nodes;
+	dag_gen.init();
+	dag_gen.generate_dag();
+	dag_gen.assign_content();
+	dag_gen.display_dag(); 
+	dag_gen.assign_values();
 	cout<<"1. Expression Evaluation\n";
 	cout<<"2. Match Expression With Node\n";
 	cout<<"3. Fill missing operators\n";
