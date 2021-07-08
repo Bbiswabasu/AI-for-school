@@ -1,17 +1,14 @@
 #include<bits/stdc++.h>
+#include "crossword_generator.h"
+#include "CSPify.h"
+#include "find_missing_arc.h"
 using namespace std;
 
 
 const int M=30;
-char ar[M+5][M+5];
-pair<int,int> edges[M+5][M+5][2]; 
-int vis[M+5][M+5]; 
-int len[M+5][M+5][2]; 
 vector<int> notdom[M+5][M+5][2]; 
 
-vector<pair<int,int>> graph[M+5][M+5][2]; 
 int szbag;
-deque <pair<pair<pair<int,int>,int>,pair<pair<int,int>,int>>> q;
 string bag[12][250]={
 	{},
 	{},
@@ -29,632 +26,273 @@ string bag[12][250]={
 
 int bagct[12]={0,0,0,120,240,190,160,130,80,40,30,10};
 int rebag[12][50];
-pair<int,int> moves[4]={{0,1},{1,0},{0,-1},{-1,0}};
-int fac[M+5];
-int dist[M+5];
-int n;
-vector<pair<pair<int,int>,int> > nodes;
-
-void init(int n)
-{
-	memset(vis,0,sizeof(vis));
-	for(int i=0;i<2*n;i++)
-	{
-		for(int j=0;j<2*n;j++)
-		{
-			ar[i][j]='#';
-		}
-	}
-
-	for(int i=1;i<n+1;i++)
-	{
-		for(int j=1;j<n+1;j++)
-		{
-			ar[i][j]='.';
-			if((i&1)==0 and (j&1)==0)
-			{
-				ar[i][j]='#';
-			}
-		}
-	}
-}
-
-void formgrid(int n,int uplen)
-{
-	int md=1<<(uplen);
-	for(int i=1;i<=n;i++)
-	{
-		if((i&1))
-		{
-			int val;
-			int len;
-			int pos=1;
-			while(pos<=n)
-			{
-				while(1)
-				{
-				 	val=rand()%(md)+1;
-					for(int j=0;j<=uplen+1;j++)
-					{
-						if(val<=dist[j])
-						{
-							len=j;
-							break;
-						}
-					}			
-					if(len>2 and len<=uplen)
-					{
-						break;
-					}
-				}
-				int pl;
-				if(pos==1)
-					pl=rand()%(uplen-3);
-				else
-				{
-					pl=rand()%(uplen-4);
-				}
-				for(int j=pos;j<pos+pl;j++)
-				{
-					ar[i][j]='#';
-				}
-				for(int j=pl+pos;j<pl+pos+len;j++)
-				{
-					ar[i][j]='.';
-				}		
-				ar[i][pl+pos+len]='#';	
-				pos+=pl+len+1;
-				ar[i][n+1]='#';			
-			}
-
-		}
-	}
-
-}
-
-void printgrid(int n)
-{
-	for(int i=1;i<n+1;i++)
-	{
-		for(int j=1;j<n+1;j++)
-		{
-			cout<<ar[i][j];cout<<" ";;
-		}
-		cout<<"\n";
-	}	
-	cout<<"\n";
-}
-
-void transpose(int n)
-{
-	for(int i=1;i<=n;i++)
-	{
-		for(int j=1;j<i;j++)
-		{
-			swap(ar[i][j],ar[j][i]);
-		}
-	}
-	
-}
-
-void remove2(int n)
-{
-	for(int i=1;i<=n+1;i++)
-	{
-		if((i&1)==0)
-		{
-			continue;
-		}
-		int ct=0;
-		for(int j=1;j<=n+1;j++)
-		{
-			if(ar[i][j]=='.')
-				ct+=1;
-			else
-			{
-				if(ct==2)
-				{
-					if((j&1))
-					{
-						ar[i][j-1]='#';
-					}
-					else
-					{
-						ar[i][j-2]='#';
-					}
-				}
-				ct=0;
-			}
-		}
-	}
-}
-void remove1(int n)
-{
-	for(int i=1;i<n+1;i++)
-	{
-		for(int j=1;j<n+1;j++)
-		{
-			int cur=0;
-			for(int k=0;k<4;k++)
-			{
-				if(ar[i+moves[k].first][j+moves[k].second]=='#')
-					cur++;
-			}
-			if(cur==4)
-			{
-				ar[i][j]='#';
-			}			
-		}
-	}	
-}
-
-void distribution(int uplen) //Makes binomial distribution
-{
-	fac[0]=1;
-	for(int i=1;i<=uplen;i++)
-	{
-		fac[i]=i*fac[i-1];
-	}
-	dist[0]=1;
-	for(int i=1;i<=uplen;i++)
-	{
-		dist[i]=fac[uplen]/(fac[i]*fac[uplen-i])+dist[i-1];
-	}
-}
 
 
+// void choose(int n)
+// {
+// 	for(int i=3;i<n+1;i++)
+// 	{
+// 		int tp[bagct[i]];
+// 		for(int j=0;j<bagct[i];j++)
+// 		{
+// 			tp[j]=j;
+// 		}
+// 		random_shuffle(tp,tp+bagct[i]);
+// 		for(int j=0;j<szbag;j++)
+// 		{
+// 			rebag[i][j]=tp[j];
+// 			cout<<(bag[i][tp[j]]);
+// 			cout<<" ";;
+// 		}
+// 		cout<<"\n";
+// 	}
+// 	cout<<"\n";
+// }
 
-void cspify(int n)
-{
-	for(int i=1;i<=n+1;i++)
-	{
-		int ct=0;
-		for(int j=1;j<=n+1;j++)
-		{
-			if(ar[i][j]=='.')
-			{
-				ct++;
-			}
-			else
-			{
-				if(ct>1)
-				{
-					nodes.push_back({{i,j-ct},0});
-					len[i][j-ct][0]=ct;
-				}
-				ct=0;
-			}
-		}
-	}
-	for(int j=1;j<n+2;j++)
-	{
-		int ct=0;
-		for(int i=1;i<n+2;i++)
-		{
-			if(ar[i][j]=='.')
-			{
-				ct++;
-			}
-			else
-			{
-				if(ct>1)
-				{
-					nodes.push_back({{i-ct,j},1});
-					len[i-ct][j][1]=ct;
-				}
-				ct=0;
-			}
-		}
-	}
+// void printbag(int n)
+// {
+// 	int i,j,k;
+// 	for(auto node:nodes)
+// 	{
+// 		i=node.first.first;
+// 		j=node.first.second;
+// 		k=node.second;
 
-	int m=nodes.size();
+// 		cout<<i;cout<<"-";
+// 		cout<<j;cout<<"-";
+// 		cout<<k;cout<<"\n";
+// 		int length=len[i][j][k];
 
+// 		vector<int> temp;
+// 		int flag;
+// 		for(int cur=0;cur<szbag;cur++)
+// 		{
+// 			flag=0;
+// 			for(auto x: notdom[i][j][k])
+// 			{
+// 				if(cur==x)
+// 				{
+// 					flag=1;
+// 				}
+// 			}	
+// 			if(!flag)
+// 			{
+// 				temp.push_back(cur);
+// 			}					
+// 		}
+// 		for(auto x: temp)
+// 		{
+// 			int pos=rebag[length][x];
+// 			string s=bag[length][pos];
+// 			cout<<s;cout<<" ";;
+// 		}
+// 		cout<<"\n";
+// 	}
+// }
 
-	for(int i=0;i<m;i++)
-	{
+// bool revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> sp)
+// {
+// 	int fx=fp.first.first;
+// 	int fy=fp.first.second;
+// 	int fbin=fp.second;
 
-		auto cur=nodes[i];
-		int x=cur.first.first;
-		int y=cur.first.second;
-		int t=cur.second;
+// 	int sx=sp.first.first;
+// 	int sy=sp.first.second;
+// 	int sbin=sp.second;
 
-		int ty=y;
-		int tx=x;
-		if(t==1)
-		{
-			while(ar[tx][ty]=='.')
-			{
-				if(ar[tx][ty-1]=='.' or ar[tx][ty+1]=='.')
-				{
-					edges[tx][ty][1]={x,y};
-					vis[tx][ty]=1;
-				}
-				tx++;
-			}
-		}
+// 	int flength=len[fx][fy][fbin];
+// 	int slength=len[sx][sy][sbin];
 
-		if(t==0)
-		{
-			while(ar[tx][ty]=='.')
-			{
-				if(ar[tx-1][ty]=='.' or ar[tx+1][ty]=='.')
-				{
-					edges[tx][ty][0]={x,y};
-					vis[tx][ty]=1;
-				}
-				ty++;
-			}
-		}
+// 	int intx;
+// 	int inty;
 
-	}
+// 	if(fbin==0)
+// 	{
+// 		intx=fx;
+// 		inty=sy;
+// 	}
+// 	else
+// 	{
+// 		intx=sx;
+// 		inty=fy;
+// 	}
 
-	for(int i=1;i<n+1;i++)
-	{
-		for(int j=1;j<n+1;j++)
-		{
-			if(vis[i][j])
-			{
-				auto ph=edges[i][j][0];
-				auto pv=edges[i][j][1];
+// 	int gf=0;
+// 	for(int i=0;i<szbag;i++)
+// 	{
+// 		int fpos=rebag[flength][i];
+// 		string fcur=bag[flength][fpos];
+// 		int top=0;
+// 		for(auto x: notdom[fx][fy][fbin])
+// 		{
+// 			if(x==i)
+// 			{
+// 				top=1;
+// 			}
+// 		}
+// 		if(top)
+// 		{
+// 			continue;
+// 		}
 
-				graph[ph.first][ph.second][0].push_back(pv);
-				graph[pv.first][pv.second][1].push_back(ph);
+// 		int flag=0;
+// 		if(fbin==0)
+// 		{
+// 			for(int j=0;j<szbag;j++)
+// 			{
+// 				int top=0;
+// 				for(auto x: notdom[sx][sy][sbin])
+// 				{
+// 					if(x==j)
+// 					{
+// 						top=1;
+// 					}
+// 				}
+// 				if(top)
+// 				{
+// 					continue;
+// 				}
+// 				int spos=rebag[slength][j];
+// 				string scur=bag[slength][spos];
+// 				if(fcur[inty-fy]==scur[intx-sx])
+// 				{
+// 					flag=1;
+// 				}
+// 			}			
+// 		}
+// 		else
+// 		{
+// 			for(int j=0;j<szbag;j++)
+// 			{
+// 				int top=0;
+// 				for(auto x: notdom[sx][sy][sbin])
+// 				{
+// 					if(x==j)
+// 					{
+// 						top=1;
+// 					}
+// 				}
+// 				if(top)
+// 				{
+// 					continue;
+// 				}
+// 				int spos=rebag[slength][j];
+// 				string scur=bag[slength][spos];
+// 				if(fcur[intx-fx]==scur[inty-sy])
+// 				{
+// 					flag=1;
+// 				}
+// 			}						
+// 		}
+// 		if(!flag)
+// 		{
+// 			gf=1;
+// 			notdom[fx][fy][fbin].push_back(i);
 
-				q.push_back({{{ph.first,ph.second},0},{{pv.first,pv.second},1}});
-				q.push_back({{{pv.first,pv.second},1},{{ph.first,ph.second},0}});
-			}
-		}
-	}
-}
+// 		}
+// 	}
+// 	return gf;
+// }
+
+// void ac3()
+// {
+// 	while(!q.empty())
+// 	{
+// 		auto tp=q.front();
+// 		q.pop_front();
+// 		auto fp=tp.first;
+// 		auto sp=tp.second;
+// 		if(revise(fp,sp))
+// 		{
+// 			int x=fp.first.first;
+// 			int y=fp.first.second;
+// 			int bin=fp.second;
+// 			for(int i=0;i<graph[x][y][bin].size();i++)
+// 			{
+// 				auto val=graph[x][y][bin][i];
+// 				if(val==sp.first)
+// 				{
+// 					continue;
+// 				}
+
+// 				// int valx=val.first.first;
+// 				// int valy=val.first.second;
+// 				// int valbin=val.second;
+// 				q.push_back({{val,1-bin},fp});
+// 			}
+// 		}
+// 	}
+// }
 
 
 
-void printgraph(int n)
-{
-	int i,j,k;
-	for(auto node:nodes)
-	{
-		i=node.first.first;
-		j=node.first.second;
-		k=node.second;
+// void fillv1()
+// {
+// 	cout<<"What all nodes are more constrained than others?";
+// 	cout<<"\n";
+// 	int numofnodes=nodes.size();
+// 	int temp=rand()%numofnodes;
+// 	auto cur=nodes[temp];
 
-		cout<<i;cout<<"-";
-		cout<<j;cout<<"-";
-		cout<<k;cout<<"\n";
-		for(auto x: graph[i][j][k])
-		{
-			cout<<x.first;cout<<"-";
-			cout<<x.second;cout<<" ";;
-		}
-		cout<<"\n";
-	}
-}
+// 	int x=cur.first.first;
+// 	int y=cur.first.second;
+// 	int t=cur.second;
+// 	int ct=len[x][y][t];
+// 	string s=bag[ct][rand()%30];
+// 	if(t==0)
+// 	{
+// 		for(int i=0;i<ct;i++)
+// 		{
+// 			ar[x][y+i]=s[i];
+// 		}
+// 	}
+// 	else
+// 	{
+// 		for(int i=0;i<ct;i++)
+// 		{
+// 			ar[x+i][y]=s[i];
+// 		}
+// 	}
+// 	for(auto cur:graph[x][y][t])
+// 	{
+// 		cout<<cur.first;cout<<"-";
+// 		cout<<cur.second;cout<<" ";;
+// 		cout<<"\n";
+// 	}
 
-
-
-void choose(int n)
-{
-	for(int i=3;i<n+1;i++)
-	{
-		int tp[bagct[i]];
-		for(int j=0;j<bagct[i];j++)
-		{
-			tp[j]=j;
-		}
-		random_shuffle(tp,tp+bagct[i]);
-		for(int j=0;j<szbag;j++)
-		{
-			rebag[i][j]=tp[j];
-			cout<<(bag[i][tp[j]]);
-			cout<<" ";;
-		}
-		cout<<"\n";
-	}
-	cout<<"\n";
-}
-
-void printbag(int n)
-{
-	int i,j,k;
-	for(auto node:nodes)
-	{
-		i=node.first.first;
-		j=node.first.second;
-		k=node.second;
-
-		cout<<i;cout<<"-";
-		cout<<j;cout<<"-";
-		cout<<k;cout<<"\n";
-		int length=len[i][j][k];
-
-		vector<int> temp;
-		int flag;
-		for(int cur=0;cur<szbag;cur++)
-		{
-			flag=0;
-			for(auto x: notdom[i][j][k])
-			{
-				if(cur==x)
-				{
-					flag=1;
-				}
-			}	
-			if(!flag)
-			{
-				temp.push_back(cur);
-			}					
-		}
-		for(auto x: temp)
-		{
-			int pos=rebag[length][x];
-			string s=bag[length][pos];
-			cout<<s;cout<<" ";;
-		}
-		cout<<"\n";
-	}
-}
-
-bool revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> sp)
-{
-	int fx=fp.first.first;
-	int fy=fp.first.second;
-	int fbin=fp.second;
-
-	int sx=sp.first.first;
-	int sy=sp.first.second;
-	int sbin=sp.second;
-
-	int flength=len[fx][fy][fbin];
-	int slength=len[sx][sy][sbin];
-
-	int intx;
-	int inty;
-
-	if(fbin==0)
-	{
-		intx=fx;
-		inty=sy;
-	}
-	else
-	{
-		intx=sx;
-		inty=fy;
-	}
-
-	int gf=0;
-	for(int i=0;i<szbag;i++)
-	{
-		int fpos=rebag[flength][i];
-		string fcur=bag[flength][fpos];
-		int top=0;
-		for(auto x: notdom[fx][fy][fbin])
-		{
-			if(x==i)
-			{
-				top=1;
-			}
-		}
-		if(top)
-		{
-			continue;
-		}
-
-		int flag=0;
-		if(fbin==0)
-		{
-			for(int j=0;j<szbag;j++)
-			{
-				int top=0;
-				for(auto x: notdom[sx][sy][sbin])
-				{
-					if(x==j)
-					{
-						top=1;
-					}
-				}
-				if(top)
-				{
-					continue;
-				}
-				int spos=rebag[slength][j];
-				string scur=bag[slength][spos];
-				if(fcur[inty-fy]==scur[intx-sx])
-				{
-					flag=1;
-				}
-			}			
-		}
-		else
-		{
-			for(int j=0;j<szbag;j++)
-			{
-				int top=0;
-				for(auto x: notdom[sx][sy][sbin])
-				{
-					if(x==j)
-					{
-						top=1;
-					}
-				}
-				if(top)
-				{
-					continue;
-				}
-				int spos=rebag[slength][j];
-				string scur=bag[slength][spos];
-				if(fcur[intx-fx]==scur[inty-sy])
-				{
-					flag=1;
-				}
-			}						
-		}
-		if(!flag)
-		{
-			gf=1;
-			notdom[fx][fy][fbin].push_back(i);
-
-		}
-	}
-	return gf;
-}
-
-void ac3()
-{
-	while(!q.empty())
-	{
-		auto tp=q.front();
-		q.pop_front();
-		auto fp=tp.first;
-		auto sp=tp.second;
-		if(revise(fp,sp))
-		{
-			int x=fp.first.first;
-			int y=fp.first.second;
-			int bin=fp.second;
-			for(int i=0;i<graph[x][y][bin].size();i++)
-			{
-				auto val=graph[x][y][bin][i];
-				if(val==sp.first)
-				{
-					continue;
-				}
-
-				// int valx=val.first.first;
-				// int valy=val.first.second;
-				// int valbin=val.second;
-				q.push_back({{val,1-bin},fp});
-			}
-		}
-	}
-}
-
-void findarc()
-{
-	cout<<"Find the missing constraint for the above crossword grid";cout<<"\n";
-	int numofarcs=q.size();
-	int temp=rand()%numofarcs;
-	// auto cur=q[temp];
-	int i=0;
-	pair<pair<pair<int,int>,int>,pair<pair<int,int>,int> > ans;
-	for(auto cur: q)
-	{
-		if(i!=temp and (i&1)==(temp&1 ))
-		{
-			cout<<cur.first.first.first;cout<<"-";
-			cout<<cur.first.first.second;cout<<"-";
-			cout<<cur.first.second;cout<<" ";;
-
-			cout<<cur.second.first.first;cout<<"-";
-			cout<<cur.second.first.second;cout<<"-";
-			cout<<cur.second.second;cout<<" ";;
-			cout<<"\n";
-		}
-		else
-		{
-			ans=cur;
-		}
-		i++;
-	}
-
-
-	cout<<"Ans:\n";
-
-	// i=temp;
-	cout<<ans.first.first.first;cout<<"-";
-	cout<<ans.first.first.second;cout<<"-";
-	cout<<ans.first.second;cout<<" ";;
-
-	cout<<ans.second.first.first;cout<<"-";
-	cout<<ans.second.first.second;cout<<"-";
-	cout<<ans.second.second;cout<<" ";;
-	cout<<"\n";
-
-}
-
-
-void fillv1()
-{
-	cout<<"What all nodes are more constrained than others?";
-	cout<<"\n";
-	int numofnodes=nodes.size();
-	int temp=rand()%numofnodes;
-	auto cur=nodes[temp];
-
-	int x=cur.first.first;
-	int y=cur.first.second;
-	int t=cur.second;
-	int ct=len[x][y][t];
-	string s=bag[ct][rand()%30];
-	if(t==0)
-	{
-		for(int i=0;i<ct;i++)
-		{
-			ar[x][y+i]=s[i];
-		}
-	}
-	else
-	{
-		for(int i=0;i<ct;i++)
-		{
-			ar[x+i][y]=s[i];
-		}
-	}
-	for(auto cur:graph[x][y][t])
-	{
-		cout<<cur.first;cout<<"-";
-		cout<<cur.second;cout<<" ";;
-		cout<<"\n";
-	}
-
-}
+// }
 
 void showCrossword() 
 {
-	int a,b,c,d,e,q,h,i,j,k,m,n,n1,n2,n3;
-	srand(time(NULL));
+	CrosswordGenerator cross_gen;
 	cout<<"Enter size of crossword : ";
-	cin>>n;
-	init(n);
-	int uplen=sqrt(n)+3;
-	distribution(uplen);
-	formgrid(n,uplen);
+	cin>>CrosswordGenerator::grid_size;
+	cross_gen.init();
+	cross_gen.distribution();
+	cross_gen.form_grid();
+	cross_gen.adjust();
+	
 	szbag=20;
 
-	remove2(n);
-	// printgrid(n);
+	cross_gen.print_grid();
 
-	transpose(n);
-	// printgrid(n);
+	CSPify csp_obj;
+	csp_obj.init();
+	csp_obj.cspify();
+	csp_obj.print_graph();
 
-	remove2(n);
-	// printgrid(n);
+	FindMissingArc miss_arc;
+	miss_arc.startGame();
 
-	transpose(n);
-	// printgrid(n);
-	
-	remove1(n);
-	// printgrid(n);
-
-	if(rand()%2)
-	{
-		transpose(n);
-	}
-	printgrid(n);
-
-	cspify(n);
-	printgraph(n);
-
-	findarc();
-
-	fillv1();
-	printgrid(n);
+	// fillv1();
+	// cross_gen.print_grid();
 
 
 
-	choose(n);
+	// choose(n);
 
-	ac3();
-	cout<<"\n";
-	printbag(n);
-	printgrid(n);
+	// ac3();
+	// cout<<"\n";
+	// printbag(n);
+	// cross_gen.print_grid();
 }
