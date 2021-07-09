@@ -17,6 +17,7 @@
         "sstream": "cpp",
         "functional": "cpp",
         "shared_mutex": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "iostream": "cpp"
     }
 }

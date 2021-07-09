@@ -2,6 +2,7 @@
 #include "crossword_generator.h"
 #include "CSPify.h"
 #include "find_missing_arc.h"
+#include "more_constraint_node.h"
 using namespace std;
 
 
@@ -28,241 +29,207 @@ int bagct[12]={0,0,0,120,240,190,160,130,80,40,30,10};
 int rebag[12][50];
 
 
-// void choose(int n)
-// {
-// 	for(int i=3;i<n+1;i++)
-// 	{
-// 		int tp[bagct[i]];
-// 		for(int j=0;j<bagct[i];j++)
-// 		{
-// 			tp[j]=j;
-// 		}
-// 		random_shuffle(tp,tp+bagct[i]);
-// 		for(int j=0;j<szbag;j++)
-// 		{
-// 			rebag[i][j]=tp[j];
-// 			cout<<(bag[i][tp[j]]);
-// 			cout<<" ";;
-// 		}
-// 		cout<<"\n";
-// 	}
-// 	cout<<"\n";
-// }
+void choose()
+{
+	for(int i=3;i<CrosswordGenerator::grid_size+1;i++)
+	{
+		int tp[bagct[i]];
+		for(int j=0;j<bagct[i];j++)
+		{
+			tp[j]=j;
+		}
+		random_shuffle(tp,tp+bagct[i]);
+		for(int j=0;j<szbag;j++)
+		{
+			rebag[i][j]=tp[j];
+			cout<<(bag[i][tp[j]]);
+			cout<<" ";;
+		}
+		cout<<"\n";
+	}
+	cout<<"\n";
+}
 
-// void printbag(int n)
-// {
-// 	int i,j,k;
-// 	for(auto node:nodes)
-// 	{
-// 		i=node.first.first;
-// 		j=node.first.second;
-// 		k=node.second;
+void printbag()
+{
+	int i,j,k;
+	for(auto node:CSPify::nodes)
+	{
+		i=node.first.first;
+		j=node.first.second;
+		k=node.second;
 
-// 		cout<<i;cout<<"-";
-// 		cout<<j;cout<<"-";
-// 		cout<<k;cout<<"\n";
-// 		int length=len[i][j][k];
+		cout<<i;cout<<"-";
+		cout<<j;cout<<"-";
+		cout<<k;cout<<"\n";
+		int length=CSPify::CSPify::len[i][j][k];
 
-// 		vector<int> temp;
-// 		int flag;
-// 		for(int cur=0;cur<szbag;cur++)
-// 		{
-// 			flag=0;
-// 			for(auto x: notdom[i][j][k])
-// 			{
-// 				if(cur==x)
-// 				{
-// 					flag=1;
-// 				}
-// 			}	
-// 			if(!flag)
-// 			{
-// 				temp.push_back(cur);
-// 			}					
-// 		}
-// 		for(auto x: temp)
-// 		{
-// 			int pos=rebag[length][x];
-// 			string s=bag[length][pos];
-// 			cout<<s;cout<<" ";;
-// 		}
-// 		cout<<"\n";
-// 	}
-// }
+		vector<int> temp;
+		int flag;
+		for(int cur=0;cur<szbag;cur++)
+		{
+			flag=0;
+			for(auto x: notdom[i][j][k])
+			{
+				if(cur==x)
+				{
+					flag=1;
+				}
+			}	
+			if(!flag)
+			{
+				temp.push_back(cur);
+			}					
+		}
+		for(auto x: temp)
+		{
+			int pos=rebag[length][x];
+			string s=bag[length][pos];
+			cout<<s;cout<<" ";;
+		}
+		cout<<"\n";
+	}
+}
 
-// bool revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> sp)
-// {
-// 	int fx=fp.first.first;
-// 	int fy=fp.first.second;
-// 	int fbin=fp.second;
+bool revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> sp)
+{
+	int fx=fp.first.first;
+	int fy=fp.first.second;
+	int fbin=fp.second;
 
-// 	int sx=sp.first.first;
-// 	int sy=sp.first.second;
-// 	int sbin=sp.second;
+	int sx=sp.first.first;
+	int sy=sp.first.second;
+	int sbin=sp.second;
 
-// 	int flength=len[fx][fy][fbin];
-// 	int slength=len[sx][sy][sbin];
+	int flength=CSPify::len[fx][fy][fbin];
+	int slength=CSPify::len[sx][sy][sbin];
 
-// 	int intx;
-// 	int inty;
+	int intx;
+	int inty;
 
-// 	if(fbin==0)
-// 	{
-// 		intx=fx;
-// 		inty=sy;
-// 	}
-// 	else
-// 	{
-// 		intx=sx;
-// 		inty=fy;
-// 	}
+	if(fbin==0)
+	{
+		intx=fx;
+		inty=sy;
+	}
+	else
+	{
+		intx=sx;
+		inty=fy;
+	}
 
-// 	int gf=0;
-// 	for(int i=0;i<szbag;i++)
-// 	{
-// 		int fpos=rebag[flength][i];
-// 		string fcur=bag[flength][fpos];
-// 		int top=0;
-// 		for(auto x: notdom[fx][fy][fbin])
-// 		{
-// 			if(x==i)
-// 			{
-// 				top=1;
-// 			}
-// 		}
-// 		if(top)
-// 		{
-// 			continue;
-// 		}
+	int gf=0;
+	for(int i=0;i<szbag;i++)
+	{
+		int fpos=rebag[flength][i];
+		string fcur=bag[flength][fpos];
+		int top=0;
+		for(auto x: notdom[fx][fy][fbin])
+		{
+			if(x==i)
+			{
+				top=1;
+			}
+		}
+		if(top)
+		{
+			continue;
+		}
 
-// 		int flag=0;
-// 		if(fbin==0)
-// 		{
-// 			for(int j=0;j<szbag;j++)
-// 			{
-// 				int top=0;
-// 				for(auto x: notdom[sx][sy][sbin])
-// 				{
-// 					if(x==j)
-// 					{
-// 						top=1;
-// 					}
-// 				}
-// 				if(top)
-// 				{
-// 					continue;
-// 				}
-// 				int spos=rebag[slength][j];
-// 				string scur=bag[slength][spos];
-// 				if(fcur[inty-fy]==scur[intx-sx])
-// 				{
-// 					flag=1;
-// 				}
-// 			}			
-// 		}
-// 		else
-// 		{
-// 			for(int j=0;j<szbag;j++)
-// 			{
-// 				int top=0;
-// 				for(auto x: notdom[sx][sy][sbin])
-// 				{
-// 					if(x==j)
-// 					{
-// 						top=1;
-// 					}
-// 				}
-// 				if(top)
-// 				{
-// 					continue;
-// 				}
-// 				int spos=rebag[slength][j];
-// 				string scur=bag[slength][spos];
-// 				if(fcur[intx-fx]==scur[inty-sy])
-// 				{
-// 					flag=1;
-// 				}
-// 			}						
-// 		}
-// 		if(!flag)
-// 		{
-// 			gf=1;
-// 			notdom[fx][fy][fbin].push_back(i);
+		int flag=0;
+		if(fbin==0)
+		{
+			for(int j=0;j<szbag;j++)
+			{
+				int top=0;
+				for(auto x: notdom[sx][sy][sbin])
+				{
+					if(x==j)
+					{
+						top=1;
+					}
+				}
+				if(top)
+				{
+					continue;
+				}
+				int spos=rebag[slength][j];
+				string scur=bag[slength][spos];
+				if(fcur[inty-fy]==scur[intx-sx])
+				{
+					flag=1;
+				}
+			}			
+		}
+		else
+		{
+			for(int j=0;j<szbag;j++)
+			{
+				int top=0;
+				for(auto x: notdom[sx][sy][sbin])
+				{
+					if(x==j)
+					{
+						top=1;
+					}
+				}
+				if(top)
+				{
+					continue;
+				}
+				int spos=rebag[slength][j];
+				string scur=bag[slength][spos];
+				if(fcur[intx-fx]==scur[inty-sy])
+				{
+					flag=1;
+				}
+			}						
+		}
+		if(!flag)
+		{
+			gf=1;
+			notdom[fx][fy][fbin].push_back(i);
 
-// 		}
-// 	}
-// 	return gf;
-// }
+		}
+	}
+	return gf;
+}
 
-// void ac3()
-// {
-// 	while(!q.empty())
-// 	{
-// 		auto tp=q.front();
-// 		q.pop_front();
-// 		auto fp=tp.first;
-// 		auto sp=tp.second;
-// 		if(revise(fp,sp))
-// 		{
-// 			int x=fp.first.first;
-// 			int y=fp.first.second;
-// 			int bin=fp.second;
-// 			for(int i=0;i<graph[x][y][bin].size();i++)
-// 			{
-// 				auto val=graph[x][y][bin][i];
-// 				if(val==sp.first)
-// 				{
-// 					continue;
-// 				}
+void ac3()
+{
+	while(!CSPify::q.empty())
+	{
+		auto tp=CSPify::q.front();
+		CSPify::q.pop_front();
+		auto fp=tp.first;
+		auto sp=tp.second;
+		if(revise(fp,sp))
+		{
+			int x=fp.first.first;
+			int y=fp.first.second;
+			int bin=fp.second;
+			for(int i=0;i<CSPify::graph[x][y][bin].size();i++)
+			{
+				auto val=CSPify::graph[x][y][bin][i];
+				if(val==sp.first)
+				{
+					continue;
+				}
 
-// 				// int valx=val.first.first;
-// 				// int valy=val.first.second;
-// 				// int valbin=val.second;
-// 				q.push_back({{val,1-bin},fp});
-// 			}
-// 		}
-// 	}
-// }
+				// int valx=val.first.first;
+				// int valy=val.first.second;
+				// int valbin=val.second;
+				CSPify::q.push_back({{val,1-bin},fp});
+			}
+		}
+	}
+}
 
 
 
-// void fillv1()
-// {
-// 	cout<<"What all nodes are more constrained than others?";
-// 	cout<<"\n";
-// 	int numofnodes=nodes.size();
-// 	int temp=rand()%numofnodes;
-// 	auto cur=nodes[temp];
 
-// 	int x=cur.first.first;
-// 	int y=cur.first.second;
-// 	int t=cur.second;
-// 	int ct=len[x][y][t];
-// 	string s=bag[ct][rand()%30];
-// 	if(t==0)
-// 	{
-// 		for(int i=0;i<ct;i++)
-// 		{
-// 			ar[x][y+i]=s[i];
-// 		}
-// 	}
-// 	else
-// 	{
-// 		for(int i=0;i<ct;i++)
-// 		{
-// 			ar[x+i][y]=s[i];
-// 		}
-// 	}
-// 	for(auto cur:graph[x][y][t])
-// 	{
-// 		cout<<cur.first;cout<<"-";
-// 		cout<<cur.second;cout<<" ";;
-// 		cout<<"\n";
-// 	}
 
-// }
-
-void showCrossword() 
+int main_later() 
 {
 	CrosswordGenerator cross_gen;
 	cout<<"Enter size of crossword : ";
@@ -281,18 +248,36 @@ void showCrossword()
 	csp_obj.cspify();
 	csp_obj.print_graph();
 
-	FindMissingArc miss_arc;
-	miss_arc.startGame();
+	cout<<"1. Find Missing Arc\n";
+	cout<<"2. Find more constraint node\n";
+	while(1)
+	{
+		cout<<"Which game? ";
+		int tmp;
+		cin>>tmp;
+		switch(tmp)
+		{
+			case 1:
+			FindMissingArc miss_arc;
+			miss_arc.startGame();
+			break;
 
-	// fillv1();
-	// cross_gen.print_grid();
+			case 2:
+			MoreConstraintNode more_cons;
+			more_cons.startGame();
+			break;
+
+			default:
+			return 0;
+		}
+	}
 
 
 
-	// choose(n);
+	// choose(CrosswordGenerator::grid_size);
 
 	// ac3();
-	// cout<<"\n";
-	// printbag(n);
+	// cout<<"\CrosswordGenerator::grid_size";
+	// printbag(CrosswordGenerator::grid_size);
 	// cross_gen.print_grid();
 }

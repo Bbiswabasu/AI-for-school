@@ -7,6 +7,7 @@ public:
     static int grid_size; 
     static vector<vector<char>> grid;
     static vector<pair<int,int>> moves;
+    static vector<vector<string>> bag;
 
     void init();
     void form_grid();

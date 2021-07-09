@@ -127,6 +127,7 @@ void CSPify::cspify()
 
 void CSPify::print_graph()
 {
+	cout<<"Constraint graph :\n";
 	int i,j,k;
 	for(auto node:nodes)
 	{
