@@ -22,6 +22,7 @@ void CSPify::init()
 
 void CSPify::cspify()
 {
+	//Find across nodes in the grid
 	for(int i=1;i<=CrosswordGenerator::grid_size+1;i++)
 	{
 		int ct=0;
@@ -42,10 +43,12 @@ void CSPify::cspify()
 			}
 		}
 	}
-	for(int j=1;j<CrosswordGenerator::grid_size+2;j++)
+
+	//Find down nodes in the grid
+	for(int j=1;j<=CrosswordGenerator::grid_size+1;j++)
 	{
 		int ct=0;
-		for(int i=1;i<CrosswordGenerator::grid_size+2;i++)
+		for(int i=1;i<=CrosswordGenerator::grid_size+1;i++)
 		{
 			if(CrosswordGenerator::grid[i][j]=='.')
 			{
@@ -65,11 +68,9 @@ void CSPify::cspify()
 
 	int m=nodes.size();
 
-
-	for(int i=0;i<m;i++)
+	//Find crossover points between two nodes
+	for(auto cur:nodes)
 	{
-
-		auto cur=nodes[i];
 		int x=cur.first.first;
 		int y=cur.first.second;
 		int t=cur.second;
@@ -104,14 +105,15 @@ void CSPify::cspify()
 
 	}
 
+	//Based on the crossover points build graph
 	for(int i=1;i<CrosswordGenerator::grid_size+1;i++)
 	{
 		for(int j=1;j<CrosswordGenerator::grid_size+1;j++)
 		{
 			if(vis[i][j])
 			{
-				auto ph=edges[i][j][0];
-				auto pv=edges[i][j][1];
+				auto ph=edges[i][j][0]; //node for starting of across
+				auto pv=edges[i][j][1]; //node for starting of down
 
 				graph[ph.first][ph.second][0].push_back(pv);
 				graph[pv.first][pv.second][1].push_back(ph);

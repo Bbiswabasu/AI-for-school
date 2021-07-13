@@ -61,7 +61,7 @@ void printbag()
 
 		cout<<i;cout<<"-";
 		cout<<j;cout<<"-";
-		cout<<k;cout<<"\n";
+		cout<<(k?"D":"A");cout<<"\n";
 		int length=CSPify::CSPify::len[i][j][k];
 
 		vector<int> temp;
@@ -252,6 +252,7 @@ int main_later()
 	cout<<"2. Find more constraint node\n";
 	while(1)
 	{
+		break;
 		cout<<"Which game? ";
 		int tmp;
 		cin>>tmp;
@@ -274,10 +275,10 @@ int main_later()
 
 
 
-	// choose(CrosswordGenerator::grid_size);
+	choose();
 
-	// ac3();
-	// cout<<"\CrosswordGenerator::grid_size";
-	// printbag(CrosswordGenerator::grid_size);
-	// cross_gen.print_grid();
+	ac3();
+	cout<<"\n";
+	printbag();
+	cross_gen.print_grid();
 }

@@ -32,9 +32,10 @@ void CrosswordGenerator::init()
 		{"adaptation", "collection", "commercial", "conference", "democratic", "difference", "discussion", "especially", "everything", "experience", "flamboyant", "generation", "government", "horizontal", "hypothesis", "individual", "investment", "management", "particular", "passionate", "population", "production", "skateboard", "successful", "technology", "television", "themselves", "throughout", "understand"},
 		{"environment", "information", "institution", "interesting", "opportunity", "participant", "performance", "significant", "traditional"}
 	});
-	uplen=sqrt(grid_size)+3;
+	uplen=sqrt(grid_size)+3; //maximum length of words along one axis
 	srand(time(NULL));
 
+	//for padding the grid
 	for(int i=0;i<2*grid_size;i++)
 	{
 		for(int j=0;j<2*grid_size;j++)
@@ -58,7 +59,7 @@ void CrosswordGenerator::init()
 
 void CrosswordGenerator::form_grid()
 {
-	int md=1<<(uplen);
+	int md=1<<(uplen); //maximum value in dist[]
 	for(int i=1;i<=grid_size;i++)
 	{
 		if((i&1))
@@ -84,13 +85,11 @@ void CrosswordGenerator::form_grid()
 						break;
 					}
 				}
-				int pl;
+				int pl; //count of black boxes starting from pos
 				if(pos==1)
 					pl=rand()%(uplen-3);
 				else
-				{
 					pl=rand()%(uplen-4);
-				}
 				for(int j=pos;j<pos+pl;j++)
 				{
 					grid[i][j]='#';
@@ -101,7 +100,7 @@ void CrosswordGenerator::form_grid()
 				}		
 				grid[i][pl+pos+len]='#';	
 				pos+=pl+len+1;
-				grid[i][grid_size+1]='#';			
+				grid[i][grid_size+1]='#'; //update for maintaining padding			
 			}
 
 		}
@@ -111,9 +110,9 @@ void CrosswordGenerator::form_grid()
 
 void CrosswordGenerator::print_grid()
 {
-	for(int i=1;i<grid_size+1;i++)
+	for(int i=1;i<=grid_size;i++)
 	{
-		for(int j=1;j<grid_size+1;j++)
+		for(int j=1;j<=grid_size;j++)
 		{
 			cout<<grid[i][j]<<" ";
 		}
