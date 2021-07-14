@@ -9,7 +9,7 @@
 
 using namespace std;
 
-int main()
+int main_later()
 {
 	DAGGenerator dag_gen;
 	cout<<"No of variables : ";

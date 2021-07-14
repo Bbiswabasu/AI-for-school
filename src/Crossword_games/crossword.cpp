@@ -6,7 +6,7 @@
 #include "arc_consistency.h"
 using namespace std;
 
-int main_later() 
+int main() 
 {
 	CrosswordGenerator cross_gen;
 	cout<<"Enter size of crossword : ";
@@ -43,11 +43,12 @@ int main_later()
 			more_cons.startGame();
 			break;
 
-			case 3:
-			ArcConsistency arc_con;
-			arc_con.startGame();
-			break;
-
+			case 3:{
+				ArcConsistency arc_con;
+				arc_con.startGame();
+				break;
+			}
+ 
 			default:
 			return 0;
 		}

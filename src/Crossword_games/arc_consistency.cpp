@@ -6,23 +6,19 @@ using namespace std;
 
 const int M=35;
 
-int szbag;
-vector<int> notdom[M][M][2]; 
-vector<int> bagct;
-vector<vector<int>> rebag;
-
 void ArcConsistency::choose()
 {
 	for(int i=3;i<CrosswordGenerator::grid_size+1;i++)
 	{
-		int tp[bagct[i]];
+		vector<int> tp;
 		for(int j=0;j<bagct[i]-1;j++)
 		{
-			tp[j]=j;
+			tp.push_back(j);
 		}
-		random_shuffle(tp,tp+bagct[i]);
+		random_shuffle(tp.begin(),tp.end());
 		for(int j=0;j<szbag;j++)
 		{
+			cout<<tp[j]<<" ";
 			rebag[i][j]=tp[j];
 			cout<<(CrosswordGenerator::bag[i][tp[j]]);
 			cout<<" ";;
@@ -212,6 +208,7 @@ void ArcConsistency::startGame()
     cin>>szbag;
     bagct=vector<int>({0,0,0,120,240,190,160,130,80,40,30,10});
     rebag.resize(12,vector<int>(50));
+	notdom.resize(M,vector<vector<vector<int>>>(M,vector<vector<int>>(2)));
     choose();
     ac3();
     print_bag();
