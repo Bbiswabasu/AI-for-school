@@ -2,7 +2,7 @@
 #include "crossword_generator.h"
 
 int CrosswordGenerator::grid_size;
-int uplen;
+int CrosswordGenerator::uplen;
 
 const int M=35;
 vector<vector<char>> CrosswordGenerator::grid;

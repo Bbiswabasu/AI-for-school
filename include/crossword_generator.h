@@ -8,6 +8,7 @@ public:
     static vector<vector<char>> grid;
     static vector<pair<int,int>> moves;
     static vector<vector<string>> bag;
+    static int uplen;
 
     void init();
     void form_grid();

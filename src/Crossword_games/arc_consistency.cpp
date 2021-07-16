@@ -8,7 +8,7 @@ const int M=35;
 
 void ArcConsistency::choose()
 {
-	for(int i=3;i<CrosswordGenerator::grid_size+1;i++)
+	for(int i=3;i<=CrosswordGenerator::uplen;i++)
 	{
 		vector<int> tp;
 		for(int j=0;j<bagct[i]-1;j++)
