@@ -18,7 +18,6 @@ void ArcConsistency::choose()
 		random_shuffle(tp.begin(),tp.end());
 		for(int j=0;j<szbag;j++)
 		{
-			cout<<tp[j]<<" ";
 			rebag[i][j]=tp[j];
 			cout<<(CrosswordGenerator::bag[i][tp[j]]);
 			cout<<" ";;
@@ -40,7 +39,7 @@ void ArcConsistency::print_bag()
 		cout<<i;cout<<"-";
 		cout<<j;cout<<"-";
 		cout<<(k?"D":"A");cout<<"\n";
-		int length=CSPify::CSPify::len[i][j][k];
+		int length=CSPify::len[i][j][k];
 
 		vector<int> temp;
 		int flag;

@@ -57,8 +57,8 @@ void MoreConstraintNode::startGame()
 	for(auto cur:CSPify::graph[x][y][t])
 	{
 		cout<<cur.first;cout<<"-";
-		cout<<cur.second;cout<<" ";;
-		cout<<"\n";
+		cout<<cur.second;cout<<"-";
+		cout<<(t?"A":"D")<<"\n";
 	}
 
     empty_grid();
