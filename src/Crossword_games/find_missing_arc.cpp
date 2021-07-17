@@ -8,11 +8,14 @@ void FindMissingArc::startGame()
 	cout<<"Find the missing constraint for the above crossword grid :\n";
 	int numofarcs=CSPify::q.size();
 	int temp=rand()%numofarcs;
-	int i=0;
+	int i=-1;
 	pair<pair<pair<int,int>,int>,pair<pair<int,int>,int> > ans;
 	for(auto cur: CSPify::q)
 	{
-		if(i!=temp and (i&1)==(temp&1 ))
+		i++;
+		if(i%2 != temp%2)
+		continue;
+		if(i!=temp)
 		{
 			cout<<cur.first.first.first;cout<<"-";
 			cout<<cur.first.first.second;cout<<"-";
@@ -27,7 +30,6 @@ void FindMissingArc::startGame()
 		{
 			ans=cur;
 		}
-		i++;
 	}
 
 

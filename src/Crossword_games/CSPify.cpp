@@ -139,7 +139,7 @@ void CSPify::print_graph()
 
 		cout<<i;cout<<"-";
 		cout<<j;cout<<"-";
-		cout<<(k?"D":"A");cout<<"\n";
+		cout<<(k?"D":"A");cout<<" --> ";
 		for(auto x: graph[i][j][k])
 		{
 			cout<<x.first;cout<<"-";
