@@ -6,6 +6,12 @@ using namespace std;
 
 const int M=35;
 
+void ArcConsistency::init()
+{
+	bagct=vector<int>({0,0,0,120,240,190,160,130,80,40,30,10});
+    rebag.resize(CrosswordGenerator::grid_size+2,vector<int>(szbag));
+	domain.resize(M,vector<vector<vector<bool>>>(M,vector<vector<bool>>(2,vector<bool>(szbag,1))));
+}
 void ArcConsistency::choose()
 {
 	for(int i=3;i<=CrosswordGenerator::grid_size;i++)
@@ -166,9 +172,7 @@ void ArcConsistency::startGame()
 {
     cout<<"Enter bag size : ";
     cin>>szbag;
-    bagct=vector<int>({0,0,0,120,240,190,160,130,80,40,30,10});
-    rebag.resize(CrosswordGenerator::grid_size+2,vector<int>(szbag));
-	domain.resize(M,vector<vector<vector<bool>>>(M,vector<vector<bool>>(2,vector<bool>(szbag,1))));
+	init();
     choose();
     ac3();
     print_bag();

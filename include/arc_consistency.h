@@ -9,6 +9,7 @@ public:
     vector<int> bagct;
     vector<vector<int>> rebag;
 
+    void init();
     void choose();
     void print_bag();
     bool revise(pair<pair<int,int>,int>,pair<pair<int,int>,int>);
