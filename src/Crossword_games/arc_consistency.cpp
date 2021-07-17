@@ -8,7 +8,7 @@ const int M=35;
 
 void ArcConsistency::choose()
 {
-	for(int i=3;i<=CrosswordGenerator::uplen;i++)
+	for(int i=3;i<=CrosswordGenerator::grid_size;i++)
 	{
 		vector<int> tp;
 		for(int j=0;j<bagct[i]-1;j++)
@@ -45,18 +45,8 @@ void ArcConsistency::print_bag()
 		int flag;
 		for(int cur=0;cur<szbag;cur++)
 		{
-			flag=0;
-			for(auto x: notdom[i][j][k])
-			{
-				if(cur==x)
-				{
-					flag=1;
-				}
-			}	
-			if(!flag)
-			{
-				temp.push_back(cur);
-			}					
+			if(domain[i][j][k][cur])
+				temp.push_back(cur);				
 		}
 		for(auto x: temp)
 		{
@@ -101,35 +91,16 @@ bool ArcConsistency::revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> s
 		int fpos=rebag[flength][i];
 		string fcur=CrosswordGenerator::bag[flength][fpos];
 		int top=0;
-		for(auto x: notdom[fx][fy][fbin])
-		{
-			if(x==i)
-			{
-				top=1;
-			}
-		}
-		if(top)
-		{
+		if(!domain[fx][fx][fbin][i])
 			continue;
-		}
 
 		int flag=0;
 		if(fbin==0)
 		{
 			for(int j=0;j<szbag;j++)
 			{
-				int top=0;
-				for(auto x: notdom[sx][sy][sbin])
-				{
-					if(x==j)
-					{
-						top=1;
-					}
-				}
-				if(top)
-				{
+				if(!domain[sx][sy][sbin][j])
 					continue;
-				}
 				int spos=rebag[slength][j];
 				string scur=CrosswordGenerator::bag[slength][spos];
 				if(fcur[inty-fy]==scur[intx-sx])
@@ -142,18 +113,8 @@ bool ArcConsistency::revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> s
 		{
 			for(int j=0;j<szbag;j++)
 			{
-				int top=0;
-				for(auto x: notdom[sx][sy][sbin])
-				{
-					if(x==j)
-					{
-						top=1;
-					}
-				}
-				if(top)
-				{
+				if(!domain[fx][fx][fbin][i])
 					continue;
-				}
 				int spos=rebag[slength][j];
 				string scur=CrosswordGenerator::bag[slength][spos];
 				if(fcur[intx-fx]==scur[inty-sy])
@@ -165,7 +126,7 @@ bool ArcConsistency::revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> s
 		if(!flag)
 		{
 			gf=1;
-			notdom[fx][fy][fbin].push_back(i);
+			domain[fx][fy][fbin][i]=0;
 
 		}
 	}
@@ -206,8 +167,8 @@ void ArcConsistency::startGame()
     cout<<"Enter bag size : ";
     cin>>szbag;
     bagct=vector<int>({0,0,0,120,240,190,160,130,80,40,30,10});
-    rebag.resize(12,vector<int>(50));
-	notdom.resize(M,vector<vector<vector<int>>>(M,vector<vector<int>>(2)));
+    rebag.resize(CrosswordGenerator::grid_size+2,vector<int>(szbag));
+	domain.resize(M,vector<vector<vector<bool>>>(M,vector<vector<bool>>(2,vector<bool>(szbag,1))));
     choose();
     ac3();
     print_bag();

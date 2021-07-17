@@ -31,6 +31,7 @@ int main()
 		cout<<"Which game? ";
 		int tmp;
 		cin>>tmp;
+		cross_gen.print_grid();
 		switch(tmp)
 		{
 			case 1:
