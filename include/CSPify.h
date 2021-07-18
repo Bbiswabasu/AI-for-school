@@ -8,6 +8,7 @@ public:
     static vector<vector<vector<int>>> len;
     static vector<vector<vector<pair<int,int>>>> edges;
     static vector<vector<vector<vector<pair<int,int>>>>> graph;
+    vector<vector<int>> vis;
     static deque <pair<pair<pair<int,int>,int>,pair<pair<int,int>,int>>> q;
 
     void init();

@@ -4,8 +4,7 @@ using namespace std;
 
 int DAGGenerator::num_vars; //number of variables
 int DAGGenerator::num_nodes;
-int id; //id of current node to be added
-int var_name;
+
 
 vector<vector<int>> DAGGenerator::adj; //stores adjacency list
 vector<string> DAGGenerator::content; //stores content of each node
@@ -19,6 +18,11 @@ void DAGGenerator::init()
 	id=0;
 	var_name='a';
 	operators=vector<string>({"&","|","=>","<=>"});
+	adj.clear();
+	content.clear();
+	values.clear();
+	indeg.clear();
+	expressions.clear();
 	srand((unsigned)time( NULL ));
 }
 int random(int a,int b)

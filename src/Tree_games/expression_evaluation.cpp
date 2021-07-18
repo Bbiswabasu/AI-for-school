@@ -7,8 +7,6 @@
 
 using namespace std;
 
-int answer;
-
 ExpressionEvaluation::ExpressionEvaluation()
 {
 	done.resize(DAGGenerator::adj.size(),0);
@@ -64,7 +62,7 @@ void ExpressionEvaluation::startGame()
 	
 	int user_value;
 	cin>>user_value;
-	answer=evaluate(0);
+	int answer=evaluate(0);
 	if(user_value==answer)
 		cout<<"CORRECT\n";
 	else

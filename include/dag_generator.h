@@ -6,6 +6,8 @@ class DAGGenerator
 public:
     static int num_vars; 
     static int num_nodes;
+    int id; //id of current node to be added
+    int var_name;
 
     static vector<vector<int>> adj;
     static vector<string> content; 

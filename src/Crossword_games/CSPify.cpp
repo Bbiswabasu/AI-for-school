@@ -9,7 +9,6 @@ vector<pair<pair<int,int>,int>> CSPify::nodes;
 vector<vector<vector<int>>> CSPify::len;
 vector<vector<vector<pair<int,int>>>> CSPify::edges;
 vector<vector<vector<vector<pair<int,int>>>>> CSPify::graph;
-vector<vector<int>> vis;
 deque <pair<pair<pair<int,int>,int>,pair<pair<int,int>,int>>> CSPify::q;
 
 void CSPify::init()

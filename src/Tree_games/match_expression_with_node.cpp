@@ -6,8 +6,6 @@
 
 using namespace std;
 
-vector<pair<string,int>> exp_node;
-
 MatchExpression::MatchExpression()
 {
 	done.resize(DAGGenerator::adj.size(),0);
@@ -40,6 +38,7 @@ string MatchExpression::compute_expressions(int node)
 void MatchExpression::startGame()
 {
 	compute_expressions(0);
+	vector<pair<string,int>> exp_node;
 	exp_node.resize(DAGGenerator::num_nodes);
 
 	for(int i=0;i<DAGGenerator::num_nodes;i++)
