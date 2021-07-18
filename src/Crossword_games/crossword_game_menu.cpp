@@ -4,9 +4,10 @@
 #include "find_missing_arc.h"
 #include "more_constraint_node.h"
 #include "arc_consistency.h"
+#include "crossword_game_menu.h"
 using namespace std;
 
-int main() 
+void CrosswordGameMenu::showMenu() 
 {
 	CrosswordGenerator cross_gen;
 	cout<<"Enter size of crossword : ";
@@ -51,7 +52,7 @@ int main()
 			}
  
 			default:
-			return 0;
+			return;
 		}
 	}
 }

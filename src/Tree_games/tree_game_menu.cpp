@@ -6,10 +6,11 @@
 #include "match_expression_with_node.h"
 #include "fill_missing_operators.h"
 #include "write_expression.h"
+#include "tree_game_menu.h"
 
 using namespace std;
 
-int main_later()
+void TreeGameMenu::showMenu()
 {
 	DAGGenerator dag_gen;
 	cout<<"No of variables : ";
@@ -58,7 +59,7 @@ int main_later()
 			break;
 
 			default:
-			return 0;
+			return;
 		}
 	}
 }
