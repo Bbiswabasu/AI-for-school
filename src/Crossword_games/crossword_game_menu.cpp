@@ -6,6 +6,7 @@
 #include "arc_consistency.h"
 #include "crossword_game_menu.h"
 #include "find_crossword_nodes.h"
+#include "draw_crossword_graph.h"
 using namespace std;
 
 void CrosswordGameMenu::showMenu() 
@@ -32,8 +33,9 @@ void CrosswordGameMenu::showMenu()
 
 	cout<<"1. Find Nodes in Crossword\n";
 	cout<<"2. Find Missing Arc\n";
-	cout<<"3. Find more constraint node\n";
-	cout<<"4. Arc consistency\n";
+	cout<<"3. Draw Constraint Graph\n";
+	cout<<"4. Find more constraint node\n";
+	cout<<"5. Arc consistency\n";
 	while(1)
 	{
 		cout<<"Which game? ";
@@ -55,11 +57,16 @@ void CrosswordGameMenu::showMenu()
 			break;
 
 			case 3:
+			DrawCrosswordGraph draw_graph;
+			draw_graph.startGame();
+			break;
+
+			case 4:
 			MoreConstraintNode more_cons;
 			more_cons.startGame();
 			break;
 
-			case 4:{
+			case 5:{
 				ArcConsistency arc_con;
 				arc_con.startGame();
 				break;
