@@ -57,9 +57,11 @@ void CrosswordGameMenu::showMenu()
 			break;
 
 			case 3:
-			DrawCrosswordGraph draw_graph;
-			draw_graph.startGame();
-			break;
+			{
+				DrawCrosswordGraph draw_graph;
+				draw_graph.startGame();
+				break;
+			}
 
 			case 4:
 			MoreConstraintNode more_cons;
