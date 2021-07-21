@@ -47,18 +47,10 @@ void ArcConsistency::print_bag()
 		cout<<(k?"D":"A");cout<<"\n";
 		int length=CSPify::len[i][j][k];
 
-		vector<int> temp;
-		int flag;
 		for(int cur=0;cur<szbag;cur++)
 		{
 			if(domain[i][j][k][cur])
-				temp.push_back(cur);				
-		}
-		for(auto x: temp)
-		{
-			int pos=rebag[length][x];
-			string s=CrosswordGenerator::bag[length][pos];
-			cout<<s;cout<<" ";;
+				cout<<CrosswordGenerator::bag[length][rebag[length][cur]]<<" ";				
 		}
 		cout<<"\n";
 	}
@@ -112,6 +104,7 @@ bool ArcConsistency::revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> s
 				if(fcur[inty-fy]==scur[intx-sx])
 				{
 					flag=1;
+					break;
 				}
 			}			
 		}
@@ -126,6 +119,7 @@ bool ArcConsistency::revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> s
 				if(fcur[intx-fx]==scur[inty-sy])
 				{
 					flag=1;
+					break;
 				}
 			}						
 		}

@@ -31,6 +31,8 @@ void CrosswordBacktrackingTree::backtrack(int node)
     {
         if (arc_con.domain[x][y][dir][i])
         {
+            arc_con.print_bag();
+            int kkx;cin>>kkx;
             //fill this node with i-th word
             int tx = x, ty = y;
             for (int pos = 0; pos < CSPify::len[x][y][dir]; pos++)
@@ -63,11 +65,13 @@ void CrosswordBacktrackingTree::backtrack(int node)
                 }
             }
             adj[my_id].push_back(node_id + 1);
+            arc_con.print_bag();
+            cin>>kkx;
             backtrack(node + 1);
             //revert back to original state
             for (auto pos : empty_spots)
             {
-                CrosswordGenerator::grid[x + (1 - dir) * pos][y + dir * pos] = '.';
+                CrosswordGenerator::grid[x + dir * pos][y + (1 - dir) * pos] = '.';
             }
             for (auto it : removed_current)
             {
