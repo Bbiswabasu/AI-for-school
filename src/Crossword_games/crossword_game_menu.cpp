@@ -7,6 +7,7 @@
 #include "crossword_game_menu.h"
 #include "find_crossword_nodes.h"
 #include "draw_crossword_graph.h"
+#include "crossword_backtracking_tree.h"
 using namespace std;
 
 void CrosswordGameMenu::showMenu() 
@@ -36,6 +37,7 @@ void CrosswordGameMenu::showMenu()
 	cout<<"3. Draw Constraint Graph\n";
 	cout<<"4. Find more constraint node\n";
 	cout<<"5. Arc consistency\n";
+	cout<<"6. Backtracking Tree\n";
 	while(1)
 	{
 		cout<<"Which game? ";
@@ -71,6 +73,13 @@ void CrosswordGameMenu::showMenu()
 			case 5:{
 				ArcConsistency arc_con;
 				arc_con.startGame();
+				break;
+			}
+			
+			case 6:
+			{
+				CrosswordBacktrackingTree cross_back;
+				cross_back.startGame();
 				break;
 			}
  
