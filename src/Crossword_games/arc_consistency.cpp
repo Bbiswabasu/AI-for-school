@@ -9,8 +9,8 @@ const int M=35;
 void ArcConsistency::init()
 {
 	bagct=vector<int>({0,0,0,120,240,190,160,130,80,40,30,10});
-    rebag.resize(CrosswordGenerator::grid_size+2,vector<int>(szbag));
-	domain.resize(M,vector<vector<vector<bool>>>(M,vector<vector<bool>>(2,vector<bool>(szbag,1))));
+    rebag.assign(CrosswordGenerator::grid_size+2,vector<int>(szbag));
+	domain.assign(M,vector<vector<vector<int>>>(M,vector<vector<int>>(2,vector<int>(szbag,1))));
 }
 void ArcConsistency::choose()
 {
@@ -89,7 +89,9 @@ bool ArcConsistency::revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> s
 		int fpos=rebag[flength][i];
 		string fcur=CrosswordGenerator::bag[flength][fpos];
 		int top=0;
-		if(!domain[fx][fx][fbin][i])
+		// if(fp==make_pair(make_pair(1,3),1))
+		// 	cout<<"Value is :"<<domain[fx][fy][fbin][i]<<"\n";
+		if(domain[fx][fy][fbin][i]!=1)
 			continue;
 
 		int flag=0;
@@ -112,12 +114,13 @@ bool ArcConsistency::revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> s
 		{
 			for(int j=0;j<szbag;j++)
 			{
-				if(!domain[fx][fx][fbin][i])
+				if(!domain[sx][sy][sbin][j])
 					continue;
 				int spos=rebag[slength][j];
 				string scur=CrosswordGenerator::bag[slength][spos];
 				if(fcur[intx-fx]==scur[inty-sy])
 				{
+					// cout<<"consistent : "<<i<<" "<<j<<"\n";
 					flag=1;
 					break;
 				}
@@ -143,8 +146,12 @@ void ArcConsistency::ac3()
 		temp_q.pop_front();
 		auto fp=tp.first;
 		auto sp=tp.second;
+		// cout<<fp.first.first<<"-"<<fp.first.second<<"-"<<fp.second<<" ";
+		// cout<<sp.first.first<<"-"<<sp.first.second<<"-"<<sp.second<<" ";
 		if(revise(fp,sp))
 		{
+			// int kkx;cin>>kkx;
+			// print_bag();
 			int x=fp.first.first;
 			int y=fp.first.second;
 			int bin=fp.second;

@@ -64,10 +64,13 @@ void CrosswordBacktrackingTree::backtrack(int node)
                     removed_domain.push_back(j);
                 }
             }
+            arc_con.domain[x][y][dir][i]=2;
+
             adj[my_id].push_back(node_id + 1);
             arc_con.print_bag();
             cin>>kkx;
             backtrack(node + 1);
+            
             //revert back to original state
             for (auto pos : empty_spots)
             {
@@ -82,6 +85,7 @@ void CrosswordBacktrackingTree::backtrack(int node)
             {
                 arc_con.domain[x][y][dir][it] = 1;
             }
+            arc_con.domain[x][y][dir][i]=1;
         }
     }
 }
