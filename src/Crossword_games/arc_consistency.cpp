@@ -89,8 +89,6 @@ bool ArcConsistency::revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> s
 		int fpos=rebag[flength][i];
 		string fcur=CrosswordGenerator::bag[flength][fpos];
 		int top=0;
-		// if(fp==make_pair(make_pair(1,3),1))
-		// 	cout<<"Value is :"<<domain[fx][fy][fbin][i]<<"\n";
 		if(domain[fx][fy][fbin][i]!=1)
 			continue;
 
@@ -120,7 +118,6 @@ bool ArcConsistency::revise(pair<pair<int,int>,int> fp,pair<pair<int,int>,int> s
 				string scur=CrosswordGenerator::bag[slength][spos];
 				if(fcur[intx-fx]==scur[inty-sy])
 				{
-					// cout<<"consistent : "<<i<<" "<<j<<"\n";
 					flag=1;
 					break;
 				}
@@ -146,12 +143,8 @@ void ArcConsistency::ac3()
 		temp_q.pop_front();
 		auto fp=tp.first;
 		auto sp=tp.second;
-		// cout<<fp.first.first<<"-"<<fp.first.second<<"-"<<fp.second<<" ";
-		// cout<<sp.first.first<<"-"<<sp.first.second<<"-"<<sp.second<<" ";
 		if(revise(fp,sp))
 		{
-			// int kkx;cin>>kkx;
-			// print_bag();
 			int x=fp.first.first;
 			int y=fp.first.second;
 			int bin=fp.second;

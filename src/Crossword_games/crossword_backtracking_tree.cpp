@@ -10,15 +10,18 @@ ArcConsistency arc_con;
 void CrosswordBacktrackingTree::backtrack(int node)
 {
     arc_con.ac3();
-    node_id++;
-    int my_id=node_id;
+    ArcConsistency temp_obj = arc_con; //to revert it back to intial state after backtracking
     grid_state.push_back(CrosswordGenerator::grid);
     adj.push_back(vector<int>());
     domain_state.push_back(arc_con.domain);
+
+    node_id++;
+    int my_id = node_id;
     if (node == CSPify::nodes.size())
         return;
     int x = CSPify::nodes[node].first.first, y = CSPify::nodes[node].first.second, dir = CSPify::nodes[node].second;
     int length = CSPify::len[x][y][dir];
+
     vector<int> empty_spots;                           //stores which spots in crossword are empty
     vector<pair<pair<int, int>, int>> removed_current; //stores nodes from which current word got removed
     vector<int> removed_domain;                        //stores which words were removed from nodes domain
@@ -27,12 +30,12 @@ void CrosswordBacktrackingTree::backtrack(int node)
         if (CrosswordGenerator::grid[x + dir * i][y + (1 - dir) * i] == '.')
             empty_spots.push_back(i);
     }
+
     for (int i = 0; i < arc_con.szbag; i++)
     {
         if (arc_con.domain[x][y][dir][i])
         {
-            arc_con.print_bag();
-            int kkx;cin>>kkx;
+
             //fill this node with i-th word
             int tx = x, ty = y;
             for (int pos = 0; pos < CSPify::len[x][y][dir]; pos++)
@@ -43,18 +46,23 @@ void CrosswordBacktrackingTree::backtrack(int node)
                 else
                     tx++;
             }
+
             //remove this word from all other nodes
-            for (auto it : CSPify::nodes)
+            if (!repetion_allowed)
             {
-                int sx = it.first.first, sy = it.first.second, sdir = it.second;
-                if (sx == x && sy == y && sdir == dir)
-                    continue;
-                if (CSPify::len[sx][sy][sdir] == length && arc_con.domain[sx][sy][sdir][i])
+                for (auto it : CSPify::nodes)
                 {
-                    arc_con.domain[sx][sy][sdir][i] = 0;
-                    removed_current.push_back(it);
+                    int sx = it.first.first, sy = it.first.second, sdir = it.second;
+                    if (sx == x && sy == y && sdir == dir)
+                        continue;
+                    if (CSPify::len[sx][sy][sdir] == length && arc_con.domain[sx][sy][sdir][i])
+                    {
+                        arc_con.domain[sx][sy][sdir][i] = 0;
+                        removed_current.push_back(it);
+                    }
                 }
             }
+
             //remove all words from domain of node
             for (int j = 0; j < arc_con.szbag; j++)
             {
@@ -64,13 +72,11 @@ void CrosswordBacktrackingTree::backtrack(int node)
                     removed_domain.push_back(j);
                 }
             }
-            arc_con.domain[x][y][dir][i]=2;
+            arc_con.domain[x][y][dir][i] = 2;
 
             adj[my_id].push_back(node_id + 1);
-            arc_con.print_bag();
-            cin>>kkx;
             backtrack(node + 1);
-            
+
             //revert back to original state
             for (auto pos : empty_spots)
             {
@@ -85,7 +91,8 @@ void CrosswordBacktrackingTree::backtrack(int node)
             {
                 arc_con.domain[x][y][dir][it] = 1;
             }
-            arc_con.domain[x][y][dir][i]=1;
+            arc_con.domain[x][y][dir][i] = 1;
+            arc_con = temp_obj;
         }
     }
 }
@@ -94,6 +101,8 @@ void CrosswordBacktrackingTree::startGame()
     node_id = -1;
     cout << "Enter bag size : ";
     cin >> arc_con.szbag;
+    cout << "Allow repetion of words : ";
+    cin >> repetion_allowed;
     arc_con.init();
     arc_con.choose();
     backtrack(0);
@@ -121,7 +130,7 @@ void CrosswordBacktrackingTree::startGame()
             }
             cout << "\n";
         }
-        cout<<"\nDomain state :\n";
+        cout << "\nDomain state :\n";
         arc_con.domain = domain_state[n];
         arc_con.print_bag();
     }
