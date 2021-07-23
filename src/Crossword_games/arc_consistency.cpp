@@ -8,7 +8,6 @@ const int M=35;
 
 void ArcConsistency::init()
 {
-	bagct=vector<int>({0,0,0,120,240,190,160,130,80,40,30,10});
     rebag.assign(CrosswordGenerator::grid_size+2,vector<int>(szbag));
 	domain.assign(M,vector<vector<vector<int>>>(M,vector<vector<int>>(2,vector<int>(szbag,1))));
 }
@@ -17,7 +16,7 @@ void ArcConsistency::choose()
 	for(int i=3;i<=CrosswordGenerator::grid_size;i++)
 	{
 		vector<int> tp;
-		for(int j=0;j<bagct[i]-1;j++)
+		for(int j=0;j<CrosswordGenerator::bag[i].size();j++)
 		{
 			tp.push_back(j);
 		}

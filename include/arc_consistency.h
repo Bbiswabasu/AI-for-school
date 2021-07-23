@@ -6,7 +6,6 @@ class ArcConsistency
 public:
     int szbag;
     vector<vector<vector<vector<int>>>> domain; 
-    vector<int> bagct;
     vector<vector<int>> rebag;
 
     void init();

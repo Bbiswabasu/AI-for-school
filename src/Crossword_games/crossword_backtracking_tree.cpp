@@ -18,7 +18,10 @@ void CrosswordBacktrackingTree::backtrack(int node)
     node_id++;
     int my_id = node_id;
     if (node == CSPify::nodes.size())
+    {
+        solution_indices.push_back(node_id);
         return;
+    }
     int x = CSPify::nodes[node].first.first, y = CSPify::nodes[node].first.second, dir = CSPify::nodes[node].second;
     int length = CSPify::len[x][y][dir];
 
@@ -114,6 +117,7 @@ void CrosswordBacktrackingTree::startGame()
             cout << it << " ";
         cout << "\n";
     }
+    cout<<"\nFound "<<solution_indices.size()<<" solutions\n";
     while (1)
     {
         int n;
@@ -121,7 +125,7 @@ void CrosswordBacktrackingTree::startGame()
         cin >> n;
         if (n >= adj.size())
             break;
-        cout << "Crossword state :\n";
+        cout << "\nCrossword state :\n";
         for (int i = 1; i <= CrosswordGenerator::grid_size; i++)
         {
             for (int j = 1; j <= CrosswordGenerator::grid_size; j++)
@@ -133,5 +137,6 @@ void CrosswordBacktrackingTree::startGame()
         cout << "\nDomain state :\n";
         arc_con.domain = domain_state[n];
         arc_con.print_bag();
+        cout<<"\n";
     }
 }
