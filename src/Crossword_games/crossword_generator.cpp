@@ -166,9 +166,9 @@ void CrosswordGenerator::remove2()
 }
 void CrosswordGenerator::remove1()
 {
-	for(int i=1;i<grid_size+1;i++)
+	for(int i=1;i<=grid_size;i++)
 	{
-		for(int j=1;j<grid_size+1;j++)
+		for(int j=1;j<=grid_size;j++)
 		{
 			int cur=0;
 			for(int k=0;k<4;k++)
@@ -180,6 +180,26 @@ void CrosswordGenerator::remove1()
 			{
 				grid[i][j]='#';
 			}			
+		}
+	}	
+}
+
+void CrosswordGenerator::remove_long_words()
+{
+	for(int i=1;i<=grid_size;i++)
+	{
+		int count=0;
+		for(int j=1;j<=grid_size;j++)
+		{
+			if(grid[j][i]=='.')
+				count++;
+			else
+				count=0;
+			if(count>uplen)
+			{
+				grid[j][i]='#';
+				count=0;
+			}	
 		}
 	}	
 }
@@ -205,6 +225,7 @@ void CrosswordGenerator::adjust()
 	remove2();
 	transpose();
 	remove1();
+	remove_long_words();
 
 	if(rand()%2)
 	{

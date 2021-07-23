@@ -16,6 +16,7 @@ public:
     void transpose();
     void remove2();
     void remove1();
+    void remove_long_words();
     void distribution(); 
     void adjust();
 };
