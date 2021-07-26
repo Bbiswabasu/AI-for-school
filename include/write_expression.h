@@ -1,4 +1,3 @@
-#include <bits/stdc++.h>
 #include "bddObj.h"
 
 using namespace std;

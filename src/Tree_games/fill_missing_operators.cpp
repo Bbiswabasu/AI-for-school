@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
 #include "fill_missing_operators.h"
 #include "expression_evaluation.h"
 #include "dag_generator.h"

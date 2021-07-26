@@ -1,6 +1,6 @@
 //generates games based on parameters
 
-#include <bits/stdc++.h>
+#include <iostream>
 #include "dag_generator.h"
 #include "expression_evaluation.h"
 #include "match_expression_with_node.h"

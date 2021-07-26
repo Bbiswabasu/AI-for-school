@@ -1,6 +1,7 @@
 //Implementation of the match expression with node game
 
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
 #include "dag_generator.h"
 #include "match_expression_with_node.h"
 

@@ -1,11 +1,11 @@
-#include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 
 class FindCrosswordNodes
 {
 public:
-    vector<pair<int,int>> nodes_across;
-    vector<pair<int,int>> nodes_down;
+    vector<pair<int, int>> nodes_across;
+    vector<pair<int, int>> nodes_down;
     void check();
-	void startGame();
+    void startGame();
 };

@@ -1,12 +1,13 @@
-#include <bits/stdc++.h>
+#include <vector>
+#include <string>
 using namespace std;
 
 class CrosswordGenerator
 {
 public:
-    static int grid_size; 
+    static int grid_size;
     static vector<vector<char>> grid;
-    static vector<pair<int,int>> moves;
+    static vector<pair<int, int>> moves;
     static vector<vector<string>> bag;
     static int uplen;
 
@@ -17,6 +18,6 @@ public:
     void remove2();
     void remove1();
     void remove_long_words();
-    void distribution(); 
+    void distribution();
     void adjust();
 };
