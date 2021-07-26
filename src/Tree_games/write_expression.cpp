@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <stack>
 #include "dag_generator.h"
 #include "write_expression.h"
 #include "bddObj.h"

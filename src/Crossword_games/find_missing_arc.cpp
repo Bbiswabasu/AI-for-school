@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include <iostream>
 #include "find_missing_arc.h"
 #include "CSPify.h"
 using namespace std;

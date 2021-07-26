@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
 #include "crossword_generator.h"
 #include "find_crossword_nodes.h"
 #include "CSPify.h"

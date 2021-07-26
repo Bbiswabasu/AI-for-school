@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+#include <iostream>
 #include "crossword_generator.h"
 #include "CSPify.h"
 #include "find_missing_arc.h"

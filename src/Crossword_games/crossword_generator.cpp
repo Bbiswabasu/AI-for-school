@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <ctime>
+#include <iostream>
+#include <math.h>
 #include "crossword_generator.h"
 
 int CrosswordGenerator::grid_size;

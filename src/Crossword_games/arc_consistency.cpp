@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <iostream>
 #include "arc_consistency.h"
 #include "crossword_generator.h"
 #include "CSPify.h"

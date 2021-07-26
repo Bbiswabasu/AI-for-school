@@ -1,5 +1,9 @@
 //Demonstrate how to take students through the concepts modelled as Hyper-graph
-#include <bits/stdc++.h>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <set>
+#include <fstream>
 using namespace std;
 
 int v,e;
