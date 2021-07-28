@@ -26,7 +26,7 @@ void DAGGenerator::init()
 	expressions.clear();
 	srand((unsigned)time( NULL ));
 }
-int random(int a,int b)
+int DAGGenerator::random(int a,int b)
 {
 	return a+rand()%(b-a+1);
 }

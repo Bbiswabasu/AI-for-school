@@ -18,6 +18,7 @@ public:
     static vector<string> expressions;
 
     void init();
+    int random(int, int);
     void generate_dag();
     void assign_content();
     void assign_values();

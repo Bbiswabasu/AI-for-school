@@ -15,10 +15,7 @@ void CrosswordGameMenu::showMenu()
 	CrosswordGenerator cross_gen;
 	cout<<"Enter size of crossword : ";
 	cin>>CrosswordGenerator::grid_size;
-	cross_gen.init();
-	cross_gen.distribution();
-	cross_gen.form_grid();
-	cross_gen.adjust();
+	cross_gen.generate_crossword();
 	
 	// string s[5]={"#....",".#.#.",".....",".####","....."}; // to generate grid manually
 	// for(int i=1;i<=CrosswordGenerator::grid_size;i++)

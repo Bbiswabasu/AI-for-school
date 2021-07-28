@@ -12,12 +12,12 @@ public:
     static int uplen;
 
     void init();
+    int random(int, int);
     void form_grid();
     void print_grid();
     void transpose();
     void remove2();
     void remove1();
-    void remove_long_words();
     void distribution();
-    void adjust();
+    void generate_crossword();
 };
