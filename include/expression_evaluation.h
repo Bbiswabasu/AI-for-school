@@ -6,6 +6,7 @@ class ExpressionEvaluation
 public:
 	vector<bool> done;
 	ExpressionEvaluation();
+	void init();
 	int evaluate(int);
 	void startGame();
 };

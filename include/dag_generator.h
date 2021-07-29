@@ -17,6 +17,18 @@ public:
     static vector<int> indeg;
     static vector<string> expressions;
 
+    int get_num_vars() const;
+    void set_num_vars(int);
+    int get_num_nodes() const;
+    void set_num_nodes(int);
+    vector<vector<int>> get_adj() const;
+    vector<string> get_content() const;
+    vector<int> get_values() const;
+    vector<string> get_operators() const;
+    vector<int> get_indeg() const;
+    vector<string> get_expressions() const;
+
+    DAGGenerator();
     void init();
     int random(int, int);
     void generate_dag();

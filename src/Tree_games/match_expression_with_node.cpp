@@ -11,6 +11,13 @@ MatchExpression::MatchExpression()
 {
 	done.resize(DAGGenerator::adj.size(), 0);
 }
+
+vector<int> MatchExpression::get_indices() const { return indices; }
+
+void MatchExpression::init()
+{
+	done.resize(DAGGenerator::adj.size(), 0);
+}
 string MatchExpression::compute_expressions(int node)
 {
 	if (done[node])
@@ -36,11 +43,10 @@ string MatchExpression::compute_expressions(int node)
 	return ans;
 }
 
-void MatchExpression::startGame()
+void MatchExpression::preprocessing()
 {
 	compute_expressions(0);
-	vector<int> indices(DAGGenerator::num_nodes);
-
+	indices.resize(DAGGenerator::num_nodes);
 	for (int i = 0; i < DAGGenerator::num_nodes; i++)
 		indices[i] = i;
 	random_shuffle(indices.begin(), indices.end());
@@ -50,7 +56,11 @@ void MatchExpression::startGame()
 		if (DAGGenerator::adj[indices[i]].size() != 0)
 			cout << DAGGenerator::expressions[indices[i]] << "\n";
 	}
+}
 
+void MatchExpression::startGame()
+{
+	preprocessing();
 	cout << "Match each expression with corresponding node number : \n";
 	bool correct = 1;
 	for (int i = 0; i < DAGGenerator::num_nodes; i++)

@@ -13,6 +13,19 @@ vector<string> DAGGenerator::operators; //stores list of operators
 vector<int> DAGGenerator::indeg;		//stores indegree of each node
 vector<string> DAGGenerator::expressions;
 
+DAGGenerator::DAGGenerator() {}
+
+int DAGGenerator::get_num_vars() const { return num_vars; }
+void DAGGenerator::set_num_vars(int x_) { num_vars = x_; }
+int DAGGenerator::get_num_nodes() const { return num_nodes; }
+void DAGGenerator::set_num_nodes(int x_) { num_nodes = x_; }
+vector<vector<int>> DAGGenerator::get_adj() const { return adj; }
+vector<string> DAGGenerator::get_content() const { return content; }
+vector<int> DAGGenerator::get_values() const { return values; }
+vector<string> DAGGenerator::get_operators() const { return operators; }
+vector<int> DAGGenerator::get_indeg() const { return indeg; }
+vector<string> DAGGenerator::get_expressions() const { return expressions; }
+
 void DAGGenerator::init()
 {
 	id = 0;
