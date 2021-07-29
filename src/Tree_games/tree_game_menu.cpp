@@ -54,8 +54,10 @@ void TreeGameMenu::showMenu()
 			break; 
 
 			case 4:
-			WriteExpression write;
-			write.startGame();
+			{
+				WriteExpression write;
+				write.startGame();
+			}
 			break;
 
 			default:

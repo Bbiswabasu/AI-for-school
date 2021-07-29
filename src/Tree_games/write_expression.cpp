@@ -62,8 +62,8 @@ BDD WriteExpression::buildBDDFromStr(int i, bddMgr& mgr,vector<BDD>& vars,string
 
 void WriteExpression::expressionParser(string& s)
 {
-    vector<int> matching(s.size()); //Stores index of matching ')' for each '('
     stack<int> st;
+    matching.resize(s.size());
     for(int i=0;i<s.size();i++)
     {
         if(s[i]=='(')
@@ -76,7 +76,10 @@ void WriteExpression::expressionParser(string& s)
         if(isalpha(s[i]))
             matching[i]=i;
     }
+}
 
+bool WriteExpression::verifyAnswer(string &s)
+{
     bddMgr mgr_student(0,0);
     vector<BDD> vars_student;
     for(int i=0;i<DAGGenerator::num_vars;i++)
@@ -88,10 +91,7 @@ void WriteExpression::expressionParser(string& s)
     FILE *fp_dot=fopen("bdd_student.txt","w");    
     bddToDot(mgr_student, exp_student, DAGGenerator::num_vars, fp_dot);
     fclose(fp_dot);
-}
 
-bool WriteExpression::verifyAnswer()
-{
     FILE *f1=fopen("bdd_actual.txt","r");
     FILE *f2=fopen("bdd_student.txt","r");
     char ch1,ch2;
@@ -123,7 +123,7 @@ void WriteExpression::startGame()
 
     expressionParser(s);
 
-    if(verifyAnswer())
+    if(verifyAnswer(s))
         cout<<"CORRECT\n";
     else
         cout<<"WRONG\n";
