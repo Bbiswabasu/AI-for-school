@@ -9,69 +9,70 @@ using namespace std;
 
 MatchExpression::MatchExpression()
 {
-	done.resize(DAGGenerator::adj.size(),0);
+	done.resize(DAGGenerator::adj.size(), 0);
 }
 string MatchExpression::compute_expressions(int node)
 {
-	if(done[node])
+	if (done[node])
 		return DAGGenerator::expressions[node];
-	if(DAGGenerator::adj[node].size()==0)
+	if (DAGGenerator::adj[node].size() == 0)
 	{
-		done[node]=1;
-		return DAGGenerator::expressions[node]=DAGGenerator::content[node];
+		done[node] = 1;
+		return DAGGenerator::expressions[node] = DAGGenerator::content[node];
 	}
-	if(DAGGenerator::adj[node].size()==1)
+	if (DAGGenerator::adj[node].size() == 1)
 	{
-		DAGGenerator::expressions[node]="( ~ "+compute_expressions(DAGGenerator::adj[node][0])+" )";
-		done[node]=1;
+		DAGGenerator::expressions[node] = "( ~ " + compute_expressions(DAGGenerator::adj[node][0]) + " )";
+		done[node] = 1;
 		return DAGGenerator::expressions[node];
 	}
-	string ans="( ";
-	ans+=compute_expressions(DAGGenerator::adj[node][0])+" ";
-	ans+=DAGGenerator::content[node]+" ";
-	ans+=compute_expressions(DAGGenerator::adj[node][1])+" ";
-	ans+=")";
-	DAGGenerator::expressions[node]=ans;
-	done[node]=1;
+	string ans = "( ";
+	ans += compute_expressions(DAGGenerator::adj[node][0]) + " ";
+	ans += DAGGenerator::content[node] + " ";
+	ans += compute_expressions(DAGGenerator::adj[node][1]) + " ";
+	ans += ")";
+	DAGGenerator::expressions[node] = ans;
+	done[node] = 1;
 	return ans;
 }
 
 void MatchExpression::startGame()
 {
 	compute_expressions(0);
-	vector<pair<string,int>> exp_node;
-	exp_node.resize(DAGGenerator::num_nodes);
+	vector<int> indices(DAGGenerator::num_nodes);
 
-	for(int i=0;i<DAGGenerator::num_nodes;i++)
-		exp_node[i]={DAGGenerator::expressions[i],i};
-	random_shuffle(exp_node.begin(),exp_node.end()); //Shuffle the list of DAGGenerator::expressions
-	
-	for(int i=0;i<DAGGenerator::num_nodes;i++)
+	for (int i = 0; i < DAGGenerator::num_nodes; i++)
+		indices[i] = i;
+	random_shuffle(indices.begin(), indices.end());
+
+	for (int i = 0; i < DAGGenerator::num_nodes; i++)
 	{
-		if(DAGGenerator::adj[exp_node[i].second].size()!=0)
-			cout<<exp_node[i].first<<"\n";
+		if (DAGGenerator::adj[indices[i]].size() != 0)
+			cout << DAGGenerator::expressions[indices[i]] << "\n";
 	}
 
-	cout<<"Match each expression with corresponding node number : \n";
-	bool correct=1;
-	for(int i=0;i<DAGGenerator::num_nodes;i++)
+	cout << "Match each expression with corresponding node number : \n";
+	bool correct = 1;
+	for (int i = 0; i < DAGGenerator::num_nodes; i++)
 	{
-		if(DAGGenerator::adj[exp_node[i].second].size()==0)
+		if (DAGGenerator::adj[indices[i]].size() == 0)
 			continue;
 		int n;
-		cin>>n;
-		if(n!=exp_node[i].second){
-			correct=0;
+		cin >> n;
+		if (DAGGenerator::expressions[n] != DAGGenerator::expressions[indices[i]])
+		{
+			correct = 0;
 		}
 	}
-	if(correct)
-		cout<<"CORRECT\n";
-	else{
-		cout<<"WRONG\nCorrect order: \n";
-		for(int i=0;i<DAGGenerator::num_nodes;i++)
+	if (correct)
+		cout << "CORRECT\n";
+	else
+	{
+		cout << "WRONG\nCorrect order: \n";
+		for (int i = 0; i < DAGGenerator::num_nodes; i++)
 		{
-			if(DAGGenerator::adj[exp_node[i].second].size()!=0)
-				cout<<exp_node[i].second<<"\n";
+			if (DAGGenerator::adj[indices[i]].size() != 0)
+				cout << indices[i] << "\n";
 		}
 	}
 }
