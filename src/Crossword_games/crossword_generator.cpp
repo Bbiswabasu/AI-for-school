@@ -206,7 +206,7 @@ void CrosswordGenerator::distribution() //Makes binomial distribution
 	}
 }
 
-void CrosswordGenerator::generate_crossword()
+void CrosswordGenerator::do_all_tasks()
 {
 	init();
 	distribution();
@@ -215,4 +215,5 @@ void CrosswordGenerator::generate_crossword()
 	remove1();
 	if (rand() % 2)
 		transpose();
+	print_grid();
 }

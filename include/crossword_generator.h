@@ -19,5 +19,5 @@ public:
     void remove2();
     void remove1();
     void distribution();
-    void generate_crossword();
+    void do_all_tasks();
 };

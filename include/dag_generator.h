@@ -23,4 +23,5 @@ public:
     void assign_content();
     void assign_values();
     void display_dag();
+    void do_all_tasks();
 };
