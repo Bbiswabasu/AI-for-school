@@ -6,9 +6,8 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # PARTICULAR PURPOSE.
 
 # This program built for i686-pc-msys
- 
 
-# Make data base, printed on Thu Jul 29 19:52:09 2021
+# Make data base, printed on Fri Jul 30 15:46:42 2021
 
 # Variables
 
@@ -19,7 +18,6 @@ VSCODE_GIT_ASKPASS_MAIN = c:\Users\bbisw\AppData\Local\Programs\Microsoft VS Cod
 # automatic
 ?F = $(notdir $?)
 # environment
- 
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # makefile (from `Makefile', line 5)
 SRC := src
@@ -62,11 +60,11 @@ PROGRAMW6432 = C:\Program Files
 # environment
 PROGRAMDATA = C:\ProgramData
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-8b7edde0-63da-4d18-b616-9a9ef38eba45-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-05e350cc-a2cc-4c21-bffe-299ab771ce8e-sock
 # environment
 VSCODE_CWD = D:\AI For School\AI-for-school
 # environment
-PATH = /c/WINDOWS/system32:/c/WINDOWS:/c/WINDOWS/System32/Wbem:/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/c/WINDOWS/System32/OpenSSH/:/mingw/bin:/c/Program Files/Git/cmd:/c/Program Files/MATLAB/R2021a/bin:/c/Users/bbisw/AppData/Local/Programs/Python/Python39:/usr/bin/:/c/Users/bbisw/AppData/Local/Microsoft/WindowsApps:/c/Users/bbisw/AppData/Local/Programs/Microsoft VS Code/bin:/c/Program Files/Android/Android Studio/jre/bin:.
+PATH = /c/WINDOWS/system32:/c/WINDOWS:/c/WINDOWS/System32/Wbem:/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/c/WINDOWS/System32/OpenSSH/:/mingw/bin:/c/Program Files/Git/cmd:/c/Program Files/MATLAB/R2021a/bin:/c/Users/bbisw/AppData/Local/Programs/Python/Python39:/usr/bin/:/c/Program Files/nodejs/:/c/Users/bbisw/AppData/Local/Microsoft/WindowsApps:/c/Users/bbisw/AppData/Local/Programs/Microsoft VS Code/bin:/c/Program Files/Android/Android Studio/jre/bin:/c/Users/bbisw/AppData/Roaming/npm
 # environment
 COMMONPROGRAMW6432 = C:\Program Files\Common Files
 # environment
@@ -86,7 +84,7 @@ ELECTRON_RUN_AS_NODE = 1
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_10484_YTVMOLJRUXSEHVHG
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_12876_OUBKWBDKMHQVIMSA
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -226,12 +224,11 @@ PROCESSOR_LEVEL = 6
 # environment
 TERM = cygwin
 # environment
-VSCODE_PID = 10484
+VSCODE_PID = 12876
 # environment
 USERDOMAIN_ROAMINGPROFILE = BBISWABASU-ROY
 # variable set hash-table stats:
- 
-# Load=108/1024=11%, Rehash=0, Collisions=13/145=9%
+# Load=108/1024=11%, Rehash=0, Collisions=12/139=9%
 
 # Pattern-specific Variable Values
 
@@ -240,14 +237,14 @@ USERDOMAIN_ROAMINGPROFILE = BBISWABASU-ROY
 # Directories
 
 # src/Tree_games (device -21089, inode 131689): 9 files, no impossibilities.
-# . (device -21089, inode 131611): 10 files, no impossibilities.
+# . (device -21089, inode 131611): 11 files, no impossibilities.
 # src/Concept_Graph (device -21089, inode 131688): 5 files, no impossibilities.
 # src/Truth_table (device -21089, inode 278409): 3 files, no impossibilities.
 # src/BDD (device -21089, inode 328731): 4 files, no impossibilities.
 # src/Crossword_games (device -21089, inode 328524): 11 files, no impossibilities.
 # src/main.cpp (device -21089, inode 394584): could not be opened.
 
-# 42 files, no impossibilities in 7 directories.
+# 43 files, no impossibilities in 7 directories.
 
 # Implicit Rules
 
@@ -258,7 +255,6 @@ USERDOMAIN_ROAMINGPROFILE = BBISWABASU-ROY
 # Not a target:
 src/Crossword_games/find_crossword_nodes.cpp:
 #  Implicit rule search has been done.
- 
 #  Last modified 2021-07-26 11:34:56
 #  File has been updated.
 #  Successfully updated.
@@ -270,14 +266,14 @@ all: bin/main
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Needs to be updated (-q is set).
+#  Successfully updated.
 # variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # Not a target:
 src/Tree_games/match_expression_with_node.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-29 15:46:07
+#  Last modified 2021-07-29 20:20:47
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -295,7 +291,7 @@ src/Tree_games/write_expression.cpp:
 # Not a target:
 src/Tree_games/dag_generator.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-29 19:05:38
+#  Last modified 2021-07-29 20:01:58
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -432,7 +428,7 @@ src/Crossword_games/crossword_backtracking_tree.cpp:
 # Not a target:
 src/Tree_games/expression_evaluation.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-26 10:43:38
+#  Last modified 2021-07-29 20:03:02
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -458,28 +454,11 @@ src/Crossword_games/CSPify.cpp:
 
 bin/main: src/BDD/bddObj.cpp src/BDD/bddToDot.cpp src/Concept_Graph/concept_graph.cpp src/Crossword_games/CSPify.cpp src/Crossword_games/arc_consistency.cpp src/Crossword_games/crossword_backtracking_tree.cpp src/Crossword_games/crossword_game_menu.cpp src/Crossword_games/crossword_generator.cpp src/Crossword_games/draw_crossword_graph.cpp src/Crossword_games/find_crossword_nodes.cpp src/Crossword_games/find_missing_arc.cpp src/Crossword_games/more_constraint_node.cpp src/Tree_games/dag_generator.cpp src/Tree_games/expression_evaluation.cpp src/Tree_games/fill_missing_operators.cpp src/Tree_games/make_tautology.cpp src/Tree_games/match_expression_with_node.cpp src/Tree_games/tree_game_menu.cpp src/Tree_games/write_expression.cpp src/Truth_table/truth_table.cpp src/main.cpp
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `'
-#  Last modified 2021-07-29 19:05:10
+#  Last modified 2021-07-29 20:25:19
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := bin/main
-# automatic
-# % := 
-# automatic
-# * := 
-# automatic
-# + := src/BDD/bddObj.cpp src/BDD/bddToDot.cpp src/Concept_Graph/concept_graph.cpp src/Crossword_games/CSPify.cpp src/Crossword_games/arc_consistency.cpp src/Crossword_games/crossword_backtracking_tree.cpp src/Crossword_games/crossword_game_menu.cpp src/Crossword_games/crossword_generator.cpp src/Crossword_games/draw_crossword_graph.cpp src/Crossword_games/find_crossword_nodes.cpp src/Crossword_games/find_missing_arc.cpp src/Crossword_games/more_constraint_node.cpp src/Tree_games/dag_generator.cpp src/Tree_games/expression_evaluation.cpp src/Tree_games/fill_missing_operators.cpp src/Tree_games/make_tautology.cpp src/Tree_games/match_expression_with_node.cpp src/Tree_games/tree_game_menu.cpp src/Tree_games/write_expression.cpp src/Truth_table/truth_table.cpp src/main.cpp
-# automatic
-# | := 
-# automatic
-# < := src/BDD/bddObj.cpp
-# automatic
-# ^ := src/BDD/bddObj.cpp src/BDD/bddToDot.cpp src/Concept_Graph/concept_graph.cpp src/Crossword_games/CSPify.cpp src/Crossword_games/arc_consistency.cpp src/Crossword_games/crossword_backtracking_tree.cpp src/Crossword_games/crossword_game_menu.cpp src/Crossword_games/crossword_generator.cpp src/Crossword_games/draw_crossword_graph.cpp src/Crossword_games/find_crossword_nodes.cpp src/Crossword_games/find_missing_arc.cpp src/Crossword_games/more_constraint_node.cpp src/Tree_games/dag_generator.cpp src/Tree_games/expression_evaluation.cpp src/Tree_games/fill_missing_operators.cpp src/Tree_games/make_tautology.cpp src/Tree_games/match_expression_with_node.cpp src/Tree_games/tree_game_menu.cpp src/Tree_games/write_expression.cpp src/Truth_table/truth_table.cpp src/main.cpp
-# automatic
-# ? := src/Crossword_games/crossword_game_menu.cpp src/Tree_games/dag_generator.cpp src/Tree_games/tree_game_menu.cpp
+#  Successfully updated.
 # variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=2/16=12%
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 #  commands to execute (from `Makefile', line 19):
 	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) $^ -o $@ $(LIBRARIES)
 	
@@ -521,7 +500,7 @@ src/Truth_table/truth_table.cpp:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # files hash-table stats:
-# Load=28/1024=3%, Rehash=0, Collisions=3/65=5%
+# Load=28/1024=3%, Rehash=0, Collisions=3/64=5%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -533,6 +512,6 @@ src/Truth_table/truth_table.cpp:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Thu Jul 29 19:52:09 2021
+# Finished Make data base on Fri Jul 30 15:46:43 2021
 
  
