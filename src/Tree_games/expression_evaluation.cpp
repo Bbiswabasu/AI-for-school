@@ -11,10 +11,12 @@ ExpressionEvaluation::ExpressionEvaluation()
 {
 	done.resize(DAGGenerator::adj.size(), 0);
 }
+vector<int> ExpressionEvaluation::get_order_of_evaluation() const { return order_of_evaluation; }
 
 void ExpressionEvaluation::init()
 {
 	done.resize(DAGGenerator::adj.size(), 0);
+	order_of_evaluation.clear();
 }
 
 int ExpressionEvaluation::evaluate(int node)
@@ -23,7 +25,7 @@ int ExpressionEvaluation::evaluate(int node)
 		return DAGGenerator::values[node];
 	if (DAGGenerator::adj[node].size() == 0)
 	{
-		cout << node << " -> " << DAGGenerator::values[node] << "\n";
+		order_of_evaluation.push_back(node);
 		done[node] = 1;
 		return DAGGenerator::values[node];
 	}
@@ -31,7 +33,8 @@ int ExpressionEvaluation::evaluate(int node)
 	if (DAGGenerator::adj[node].size() == 1)
 	{
 		ans = !(evaluate(DAGGenerator::adj[node][0]));
-		cout << node << " -> " << ans << "\n";
+		order_of_evaluation.push_back(node);
+		DAGGenerator::values[node] = ans;
 		done[node] = 1;
 		return ans;
 	}
@@ -45,10 +48,16 @@ int ExpressionEvaluation::evaluate(int node)
 		ans = (!left) | right;
 	else if (DAGGenerator::content[node] == "<=>")
 		ans = ((!left) & (!right)) | (left & right);
-	cout << node << " -> " << ans << "\n";
+	order_of_evaluation.push_back(node);
 	DAGGenerator::values[node] = ans;
 	done[node] = 1;
 	return ans;
+}
+
+void ExpressionEvaluation::display_evaluation()
+{
+	for (auto node : order_of_evaluation)
+		cout << node << " -> " << DAGGenerator::values[node] << "\n";
 }
 
 void ExpressionEvaluation::startGame()
@@ -73,4 +82,6 @@ void ExpressionEvaluation::startGame()
 		cout << "CORRECT\n";
 	else
 		cout << "WRONG\n";
+
+	display_evaluation();
 }
