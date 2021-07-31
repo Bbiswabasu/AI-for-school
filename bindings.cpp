@@ -19,13 +19,15 @@ EMSCRIPTEN_BINDINGS(dag_generator)
         .function("assign_content", &DAGGenerator::assign_content)
         .function("assign_values", &DAGGenerator::assign_values)
         .function("display_dag", &DAGGenerator::display_dag)
+        .function("compute_depth", &DAGGenerator::compute_depth)
         .function("do_all_tasks", &DAGGenerator::do_all_tasks)
         .property("num_vars", &DAGGenerator::get_num_vars, &DAGGenerator::set_num_vars)
         .property("num_nodes", &DAGGenerator::get_num_nodes, &DAGGenerator::set_num_nodes)
         .property("adj", &DAGGenerator::get_adj)
         .property("content", &DAGGenerator::get_content)
         .property("values", &DAGGenerator::get_values)
-        .property("expressions", &DAGGenerator::get_expressions);
+        .property("expressions", &DAGGenerator::get_expressions)
+        .property("depth", &DAGGenerator::get_depth);
 
     class_<MatchExpression>("MatchExpression")
         .constructor<>()

@@ -16,6 +16,7 @@ public:
     static vector<string> operators;
     static vector<int> indeg;
     static vector<string> expressions;
+    static vector<int> depth;
 
     int get_num_vars() const;
     void set_num_vars(int);
@@ -27,6 +28,7 @@ public:
     vector<string> get_operators() const;
     vector<int> get_indeg() const;
     vector<string> get_expressions() const;
+    vector<int> get_depth() const;
 
     DAGGenerator();
     void init();
@@ -35,5 +37,6 @@ public:
     void assign_content();
     void assign_values();
     void display_dag();
+    void compute_depth();
     void do_all_tasks();
 };

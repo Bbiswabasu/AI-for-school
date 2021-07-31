@@ -1,17 +1,19 @@
 #include <iostream>
 #include <ctime>
+#include <queue>
 #include "dag_generator.h"
 using namespace std;
 
 int DAGGenerator::num_vars; //number of variables
 int DAGGenerator::num_nodes;
 
-vector<vector<int>> DAGGenerator::adj;	//stores adjacency list
-vector<string> DAGGenerator::content;	//stores content of each node
-vector<int> DAGGenerator::values;		//stores values at each node
-vector<string> DAGGenerator::operators; //stores list of operators
-vector<int> DAGGenerator::indeg;		//stores indegree of each node
-vector<string> DAGGenerator::expressions;
+vector<vector<int>> DAGGenerator::adj;	  //stores adjacency list
+vector<string> DAGGenerator::content;	  //stores content of each node
+vector<int> DAGGenerator::values;		  //stores values at each node
+vector<string> DAGGenerator::operators;	  //stores list of operators
+vector<int> DAGGenerator::indeg;		  //stores indegree of each node
+vector<string> DAGGenerator::expressions; //stores expression at each node
+vector<int> DAGGenerator::depth;		  //stores depth of each node
 
 DAGGenerator::DAGGenerator() {}
 
@@ -25,6 +27,7 @@ vector<int> DAGGenerator::get_values() const { return values; }
 vector<string> DAGGenerator::get_operators() const { return operators; }
 vector<int> DAGGenerator::get_indeg() const { return indeg; }
 vector<string> DAGGenerator::get_expressions() const { return expressions; }
+vector<int> DAGGenerator::get_depth() const { return depth; }
 
 void DAGGenerator::init()
 {
@@ -152,7 +155,23 @@ void DAGGenerator::display_dag()
 		cout << "\n";
 	}
 }
-
+void DAGGenerator::compute_depth()
+{
+	depth.resize(num_nodes);
+	queue<int> q;
+	q.push(0);
+	depth[0]=0;
+	while(!q.empty())
+	{
+		int u=q.front();
+		q.pop();
+		for(auto it:adj[u])
+		{
+			depth[it]=depth[u]+1;
+			q.push(it);
+		}
+	}
+}
 void DAGGenerator::do_all_tasks()
 {
 	init();
@@ -160,4 +179,5 @@ void DAGGenerator::do_all_tasks()
 	assign_content();
 	display_dag();
 	assign_values();
+	compute_depth();
 }
