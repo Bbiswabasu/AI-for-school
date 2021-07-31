@@ -30,12 +30,11 @@ EMSCRIPTEN_BINDINGS(dag_generator)
     class_<MatchExpression>("MatchExpression")
         .constructor<>()
         .function("init", &MatchExpression::init)
-        .function("compute_expressions", &MatchExpression::compute_expressions)
-        .function("startGame", &MatchExpression::startGame);
+        .function("compute_expressions", &MatchExpression::compute_expressions);
 
     class_<ExpressionEvaluation>("ExpressionEvaluation")
         .constructor<>()
         .function("init", &ExpressionEvaluation::init)
         .function("evaluate", &ExpressionEvaluation::evaluate)
-        .function("startGame", &ExpressionEvaluation::startGame);
+        .property("order_of_evaluation", &ExpressionEvaluation::get_order_of_evaluation);
 };
