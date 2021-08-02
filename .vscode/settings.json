@@ -62,6 +62,10 @@
         "typeinfo": "cpp",
         "utility": "cpp",
         "string": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "algorithm": "cpp",
+        "iterator": "cpp",
+        "memory_resource": "cpp",
+        "random": "cpp"
     }
 }

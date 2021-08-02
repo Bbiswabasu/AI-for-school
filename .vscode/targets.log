@@ -4,16 +4,15 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This is free software; see the source for copying conditions.
 # There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
+ 
 
 # This program built for i686-pc-msys
  
 
-# Make data base, printed on Mon Aug  2 09:22:28 2021
+# Make data base, printed on Mon Aug  2 21:16:57 2021
 
 # Variables
 
-# environment
-VSCODE_GIT_ASKPASS_MAIN = c:\Users\bbisw\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\git\dist\askpass-main.js
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
@@ -22,7 +21,6 @@ VSCODE_GIT_ASKPASS_MAIN = c:\Users\bbisw\AppData\Local\Programs\Microsoft VS Cod
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # makefile (from `Makefile', line 5)
 SRC := src
- 
 # makefile
 MAKEFLAGS = Rrqp
 # environment
@@ -44,6 +42,7 @@ SHELL := /bin/sh
 # makefile (from `Makefile', line 4)
 BIN := bin
 # environment
+ 
 WINDIR = C:\WINDOWS
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
@@ -64,7 +63,7 @@ PROGRAMW6432 = C:\Program Files
 # environment
 PROGRAMDATA = C:\ProgramData
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-6a94fbc8-64a3-404f-9b33-507de45ddfb4-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-c6380181-9373-4c61-a7a1-19b94eb39f64-sock
 # environment
 VSCODE_CWD = D:\AI For School\AI-for-school
 # environment
@@ -88,7 +87,7 @@ ELECTRON_RUN_AS_NODE = 1
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_16876_QFMPETKNHFTHWEJI
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_4596_MNSMXSVGZZSHLHWB
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -121,8 +120,6 @@ ONEDRIVECONSUMER = C:\Users\bbisw\OneDrive
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # environment
 USERDOMAIN = BBISWABASU-ROY
-# environment
-MAKELEVEL := 0
 # environment
 COLORTERM = truecolor
 # default
@@ -166,8 +163,6 @@ OS = Windows_NT
 # environment
 VSCODE_IPC_HOOK = \\.\pipe\acff069d35382a61546647daa1a3403f-1.58.2-main-sock
 # environment
-VSCODE_GIT_ASKPASS_NODE = C:\Users\bbisw\AppData\Local\Programs\Microsoft VS Code\Code.exe
-# environment
 HOMEPATH = \
 # environment
 COMMONPROGRAMFILES(X86) = C:\Program Files (x86)\Common Files
@@ -184,6 +179,7 @@ SYSTEMROOT = C:\WINDOWS
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
+ 
 +F = $(notdir $+)
 # environment
 APPDATA = C:\Users\bbisw\AppData\Roaming
@@ -191,8 +187,6 @@ APPDATA = C:\Users\bbisw\AppData\Roaming
 TEMP = /tmp
 # environment
 COMSPEC = C:\WINDOWS\system32\cmd.exe
-# environment
-GIT_ASKPASS = c:\Users\bbisw\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\git\dist\askpass.sh
 # default
 MAKEFILES := 
 # environment
@@ -220,7 +214,7 @@ PROCESSOR_REVISION = 3d04
 # default
 .INCLUDE_DIRS = /usr/include /usr/include
 # environment
-VSCODE_GIT_IPC_HANDLE = \\.\pipe\vscode-git-a3793dde2d-sock
+MAKELEVEL := 0
 # environment
 LANG = C
 # environment
@@ -230,11 +224,12 @@ TERM = cygwin
 # environment
 FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
-VSCODE_PID = 16876
+VSCODE_PID = 4596
 # environment
 USERDOMAIN_ROAMINGPROFILE = BBISWABASU-ROY
 # variable set hash-table stats:
-# Load=110/1024=11%, Rehash=0, Collisions=13/147=9%
+ 
+# Load=106/1024=10%, Rehash=0, Collisions=11/143=8%
 
 # Pattern-specific Variable Values
 
@@ -274,6 +269,7 @@ all: bin/main
 #  File does not exist.
 #  File has been updated.
 #  Needs to be updated (-q is set).
+ 
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/6=0%
 
@@ -298,7 +294,7 @@ src/Tree_games/write_expression.cpp:
 # Not a target:
 src/Tree_games/dag_generator.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-31 16:23:45
+#  Last modified 2021-08-02 21:16:03
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -313,7 +309,7 @@ src/Tree_games/dag_generator.cpp:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-31 16:26:23
+#  Last modified 2021-08-02 09:45:41
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -358,7 +354,7 @@ src/Crossword_games/more_constraint_node.cpp:
 # Not a target:
 src/Crossword_games/crossword_generator.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-29 18:59:32
+#  Last modified 2021-08-02 09:26:19
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -371,6 +367,7 @@ src/Tree_games/fill_missing_operators.cpp:
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
+ 
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # Not a target:
@@ -435,7 +432,9 @@ src/Crossword_games/crossword_backtracking_tree.cpp:
 # Not a target:
 src/Tree_games/expression_evaluation.cpp:
 #  Implicit rule search has been done.
+ 
 #  Last modified 2021-07-31 10:01:21
+ 
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -462,7 +461,7 @@ src/Crossword_games/CSPify.cpp:
 bin/main: src/BDD/bddObj.cpp src/BDD/bddToDot.cpp src/Concept_Graph/concept_graph.cpp src/Crossword_games/CSPify.cpp src/Crossword_games/arc_consistency.cpp src/Crossword_games/crossword_backtracking_tree.cpp src/Crossword_games/crossword_game_menu.cpp src/Crossword_games/crossword_generator.cpp src/Crossword_games/draw_crossword_graph.cpp src/Crossword_games/find_crossword_nodes.cpp src/Crossword_games/find_missing_arc.cpp src/Crossword_games/more_constraint_node.cpp src/Tree_games/dag_generator.cpp src/Tree_games/expression_evaluation.cpp src/Tree_games/fill_missing_operators.cpp src/Tree_games/make_tautology.cpp src/Tree_games/match_expression_with_node.cpp src/Tree_games/tree_game_menu.cpp src/Tree_games/write_expression.cpp src/Truth_table/truth_table.cpp src/main.cpp
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `'
-#  Last modified 2021-07-31 16:22:28
+#  Last modified 2021-08-02 09:31:49
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # automatic
@@ -487,6 +486,7 @@ bin/main: src/BDD/bddObj.cpp src/BDD/bddToDot.cpp src/Concept_Graph/concept_grap
 	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) $^ -o $@ $(LIBRARIES)
 	
 
+ 
 # Not a target:
 src/Crossword_games/draw_crossword_graph.cpp:
 #  Implicit rule search has been done.
@@ -536,6 +536,6 @@ src/Truth_table/truth_table.cpp:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Mon Aug  2 09:22:28 2021
+# Finished Make data base on Mon Aug  2 21:16:57 2021
 
  

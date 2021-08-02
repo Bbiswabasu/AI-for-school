@@ -7,13 +7,15 @@ using namespace std;
 int DAGGenerator::num_vars; //number of variables
 int DAGGenerator::num_nodes;
 
-vector<vector<int>> DAGGenerator::adj;	  //stores adjacency list
-vector<string> DAGGenerator::content;	  //stores content of each node
-vector<int> DAGGenerator::values;		  //stores values at each node
-vector<string> DAGGenerator::operators;	  //stores list of operators
-vector<int> DAGGenerator::indeg;		  //stores indegree of each node
-vector<string> DAGGenerator::expressions; //stores expression at each node
-vector<int> DAGGenerator::depth;		  //stores depth of each node
+vector<vector<int>> DAGGenerator::adj;			  //stores adjacency list
+vector<string> DAGGenerator::content;			  //stores content of each node
+vector<int> DAGGenerator::values;				  //stores values at each node
+vector<string> DAGGenerator::operators;			  //stores list of operators
+vector<int> DAGGenerator::indeg;				  //stores indegree of each node
+vector<string> DAGGenerator::expressions;		  //stores expression at each node
+vector<int> DAGGenerator::x_coor;				  //stores x coordinate of each node
+vector<int> DAGGenerator::y_coor;				  //stores y coordinate of each node
+vector<vector<int>> DAGGenerator::edge_carvature; //stores carvature of each edge
 
 DAGGenerator::DAGGenerator() {}
 
@@ -27,7 +29,9 @@ vector<int> DAGGenerator::get_values() const { return values; }
 vector<string> DAGGenerator::get_operators() const { return operators; }
 vector<int> DAGGenerator::get_indeg() const { return indeg; }
 vector<string> DAGGenerator::get_expressions() const { return expressions; }
-vector<int> DAGGenerator::get_depth() const { return depth; }
+vector<int> DAGGenerator::get_x_coor() const { return x_coor; }
+vector<int> DAGGenerator::get_y_coor() const { return y_coor; }
+vector<vector<int>> DAGGenerator::get_edge_carvature() const { return edge_carvature; }
 
 void DAGGenerator::init()
 {
@@ -155,20 +159,55 @@ void DAGGenerator::display_dag()
 		cout << "\n";
 	}
 }
-void DAGGenerator::compute_depth()
+void DAGGenerator::compute_graph_layout()
 {
-	depth.resize(num_nodes);
+	//compute y coordinates
+	y_coor.resize(num_nodes);
 	queue<int> q;
 	q.push(0);
-	depth[0]=0;
-	while(!q.empty())
+	y_coor[0] = 0;
+	while (!q.empty())
 	{
-		int u=q.front();
+		int u = q.front();
 		q.pop();
-		for(auto it:adj[u])
+		for (auto it : adj[u])
 		{
-			depth[it]=depth[u]+1;
+			y_coor[it] = y_coor[u] + 1;
 			q.push(it);
+		}
+	}
+
+	//compute x coordinates
+	x_coor.resize(num_nodes);
+	vector<int> count(num_nodes, 0);
+	for (int i = 0; i < num_nodes; i++)
+	{
+		x_coor[i] = count[y_coor[i]];
+		count[y_coor[i]]++;
+	}
+
+	//compute carvature for each edge
+	edge_carvature.resize(num_nodes, vector<int>(2, 0));
+	for (int i = 0; i < num_nodes; i++)
+	{
+		int j = 0;
+		for (auto it : adj[i])
+		{
+			//for each edge check if there is other node who is collinear
+			for (int k = 0; k < num_nodes; k++)
+			{
+				if (k == i || k == it)
+					continue;
+				int i_x = x_coor[i], i_y = y_coor[i];
+				int it_x = x_coor[it], it_y = y_coor[it];
+				int k_x = x_coor[k], k_y = y_coor[k];
+				if ((i_x - it_x) * (it_y - k_y) == (it_x - k_x) * (i_y - it_y) && (k_y > i_y && k_y < it_y))
+				{
+					edge_carvature[i][j] = 2 * (j - 0.5) * (y_coor[it] - y_coor[i]);
+					break;
+				}
+			}
+			j++;
 		}
 	}
 }
@@ -179,5 +218,5 @@ void DAGGenerator::do_all_tasks()
 	assign_content();
 	display_dag();
 	assign_values();
-	compute_depth();
+	compute_graph_layout();
 }

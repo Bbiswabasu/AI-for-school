@@ -16,7 +16,9 @@ public:
     static vector<string> operators;
     static vector<int> indeg;
     static vector<string> expressions;
-    static vector<int> depth;
+    static vector<int> y_coor;
+    static vector<int> x_coor;
+    static vector<vector<int>> edge_carvature;
 
     int get_num_vars() const;
     void set_num_vars(int);
@@ -28,7 +30,9 @@ public:
     vector<string> get_operators() const;
     vector<int> get_indeg() const;
     vector<string> get_expressions() const;
-    vector<int> get_depth() const;
+    vector<int> get_x_coor() const;
+    vector<int> get_y_coor() const;
+    vector<vector<int>> get_edge_carvature() const;
 
     DAGGenerator();
     void init();
@@ -37,6 +41,6 @@ public:
     void assign_content();
     void assign_values();
     void display_dag();
-    void compute_depth();
+    void compute_graph_layout();
     void do_all_tasks();
 };
