@@ -11,6 +11,11 @@ public:
     static vector<vector<string>> bag;
     static int uplen;
 
+    int get_grid_size() const;
+    void set_grid_size(int);
+    vector<vector<char>> get_grid() const;
+
+    CrosswordGenerator();
     void init();
     int random(int, int);
     void form_grid();

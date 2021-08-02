@@ -2,11 +2,12 @@
 #include "dag_generator.h"
 #include "expression_evaluation.h"
 #include "match_expression_with_node.h"
+#include "crossword_generator.h"
 
 #include <string>
 using namespace emscripten;
 
-EMSCRIPTEN_BINDINGS(dag_generator)
+EMSCRIPTEN_BINDINGS(tree_games)
 {
     register_vector<string>("VectorString");
     register_vector<int>("VectorInt");
@@ -39,4 +40,16 @@ EMSCRIPTEN_BINDINGS(dag_generator)
         .function("init", &ExpressionEvaluation::init)
         .function("evaluate", &ExpressionEvaluation::evaluate)
         .property("order_of_evaluation", &ExpressionEvaluation::get_order_of_evaluation);
+};
+
+EMSCRIPTEN_BINDINGS(crossword_games)
+{
+    register_vector<char>("VectorChar");
+    register_vector<vector<char>>("VectorVectorChar");
+    class_<CrosswordGenerator>("CrosswordGenerator")
+        .constructor<>()
+        .function("init", &CrosswordGenerator::init)
+        .function("do_all_tasks", &CrosswordGenerator::do_all_tasks)
+        .property("grid_size", &CrosswordGenerator::get_grid_size, &CrosswordGenerator::set_grid_size)
+        .property("grid", &CrosswordGenerator::get_grid);        
 };

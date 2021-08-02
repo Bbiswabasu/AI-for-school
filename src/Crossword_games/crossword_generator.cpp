@@ -13,6 +13,11 @@ vector<vector<string>> CrosswordGenerator::bag;
 vector<long long int> dist;
 vector<long long int> fac;
 
+CrosswordGenerator::CrosswordGenerator() {}
+int CrosswordGenerator::get_grid_size() const { return grid_size; }
+void CrosswordGenerator::set_grid_size(int x_) { grid_size = x_; }
+vector<vector<char>> CrosswordGenerator::get_grid() const { return grid; }
+
 void CrosswordGenerator::init()
 {
 	moves = vector<pair<int, int>>({{0, 1}, {1, 0}, {0, -1}, {-1, 0}});
