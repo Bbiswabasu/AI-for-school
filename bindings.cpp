@@ -3,6 +3,7 @@
 #include "expression_evaluation.h"
 #include "match_expression_with_node.h"
 #include "crossword_generator.h"
+#include "find_crossword_nodes.h"
 
 #include <string>
 using namespace emscripten;
@@ -46,12 +47,26 @@ EMSCRIPTEN_BINDINGS(tree_games)
 
 EMSCRIPTEN_BINDINGS(crossword_games)
 {
-    register_vector<char>("VectorChar");
-    register_vector<vector<char>>("VectorVectorChar");
+    register_vector<char>("vector<char>");
+    register_vector<vector<char>>("vector<vector<char>>");
+    register_pair<int,int>("pair<int,int>");
+    register_vector<pair<int, int>>("vector<pair<int, int>>");
+    register_vector<pair<pair<int, int>, char>>("vector<pair<pair<int, int>, char>>");
+
     class_<CrosswordGenerator>("CrosswordGenerator")
         .constructor<>()
         .function("init", &CrosswordGenerator::init)
         .function("do_all_tasks", &CrosswordGenerator::do_all_tasks)
         .property("grid_size", &CrosswordGenerator::get_grid_size, &CrosswordGenerator::set_grid_size)
-        .property("grid", &CrosswordGenerator::get_grid);        
+        .property("grid", &CrosswordGenerator::get_grid);
+
+    class_<FindCrosswordNodes>("FindCrosswordNodes")
+        .constructor<>()
+        .function("check", &FindCrosswordNodes::check)
+        .function("get_nodes_across", &FindCrosswordNodes::get_nodes_across)
+        .property("nodes_across", &FindCrosswordNodes::get_nodes_across)
+        .property("nodes_down", &FindCrosswordNodes::get_nodes_down)
+        .property("missed_nodes", &FindCrosswordNodes::get_missed_nodes)
+        .property("wrong_nodes", &FindCrosswordNodes::get_wrong_nodes)
+        .property("correct_ndoes", &FindCrosswordNodes::get_correct_nodes);
 };

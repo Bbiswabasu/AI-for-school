@@ -23,9 +23,7 @@ void CrosswordGameMenu::showMenu()
 	// CrosswordGenerator::grid[i][j]=s[i-1][j-1];
 
 	CSPify csp_obj;
-	csp_obj.init();
-	csp_obj.cspify();
-	csp_obj.print_graph();
+	csp_obj.do_all_tasks();
 
 	cout << "1. Find Nodes in Crossword\n";
 	cout << "2. Find Missing Arc\n";

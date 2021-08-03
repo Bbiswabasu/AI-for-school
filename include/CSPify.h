@@ -12,7 +12,9 @@ public:
     vector<vector<int>> vis;
     static deque<pair<pair<pair<int, int>, int>, pair<pair<int, int>, int>>> q;
 
+    CSPify();
     void init();
     void cspify();
     void print_graph();
+    void do_all_tasks();
 };
