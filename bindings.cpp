@@ -3,6 +3,7 @@
 #include "expression_evaluation.h"
 #include "match_expression_with_node.h"
 #include "crossword_generator.h"
+#include "CSPify.h"
 #include "find_crossword_nodes.h"
 
 #include <string>
@@ -49,9 +50,16 @@ EMSCRIPTEN_BINDINGS(crossword_games)
 {
     register_vector<char>("vector<char>");
     register_vector<vector<char>>("vector<vector<char>>");
-    register_pair<int,int>("pair<int,int>");
     register_vector<pair<int, int>>("vector<pair<int, int>>");
     register_vector<pair<pair<int, int>, char>>("vector<pair<pair<int, int>, char>>");
+
+    class_<std::pair<int, int>>("pair<int, int>")
+        .property("first", &std::pair<int, int>::first)
+        .property("second", &std::pair<int, int>::second);
+
+    class_<std::pair<pair<int, int>, char>>("pair<pair<int, int>, char>")
+        .property("first", &std::pair<pair<int, int>, char>::first)
+        .property("second", &std::pair<pair<int, int>, char>::second);
 
     class_<CrosswordGenerator>("CrosswordGenerator")
         .constructor<>()
@@ -60,13 +68,17 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .property("grid_size", &CrosswordGenerator::get_grid_size, &CrosswordGenerator::set_grid_size)
         .property("grid", &CrosswordGenerator::get_grid);
 
+    class_<CSPify>("CSPify")
+        .constructor<>()
+        .function("do_all_tasks", &CSPify::do_all_tasks);
+
     class_<FindCrosswordNodes>("FindCrosswordNodes")
         .constructor<>()
         .function("check", &FindCrosswordNodes::check)
-        .function("get_nodes_across", &FindCrosswordNodes::get_nodes_across)
+        .function("add_node", &FindCrosswordNodes::add_node)
         .property("nodes_across", &FindCrosswordNodes::get_nodes_across)
         .property("nodes_down", &FindCrosswordNodes::get_nodes_down)
         .property("missed_nodes", &FindCrosswordNodes::get_missed_nodes)
         .property("wrong_nodes", &FindCrosswordNodes::get_wrong_nodes)
-        .property("correct_ndoes", &FindCrosswordNodes::get_correct_nodes);
+        .property("correct_nodes", &FindCrosswordNodes::get_correct_nodes);
 };

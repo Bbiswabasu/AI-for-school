@@ -117,6 +117,13 @@ void FindCrosswordNodes::display_result()
     if (correct)
         cout << "ALL ARE CORRECT\n";
 }
+void FindCrosswordNodes::add_node(int x, int y, char dir)
+{
+    if (dir == 'A')
+        nodes_across.push_back({x, y});
+    if (dir == 'D')
+        nodes_down.push_back({x, y});
+}
 void FindCrosswordNodes::startGame()
 {
     cout << "Find all nodes in the grid (x y direction) and write 0 to stop :\n";
@@ -130,10 +137,7 @@ void FindCrosswordNodes::startGame()
             break;
         }
         cin >> y >> dir;
-        if (dir == "A")
-            nodes_across.push_back({x, y});
-        if (dir == "D")
-            nodes_down.push_back({x, y});
+        add_node(x, y, dir[0]);
     }
     display_result();
 }

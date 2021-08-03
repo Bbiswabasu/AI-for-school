@@ -17,5 +17,6 @@ public:
     FindCrosswordNodes();
     bool check();
     void display_result();
+    void add_node(int, int, char);
     void startGame();
 };
