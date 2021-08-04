@@ -1,5 +1,6 @@
 make.exe all --dry-run --always-make --keep-going --print-directory
 "make.exe": Entering directory `/d/AI For School/AI-for-school'
 g++ -std=c++17 -ggdb -Iinclude src/BDD/bddObj.cpp src/BDD/bddToDot.cpp src/Concept_Graph/concept_graph.cpp src/Crossword_games/CSPify.cpp src/Crossword_games/arc_consistency.cpp src/Crossword_games/crossword_backtracking_tree.cpp src/Crossword_games/crossword_game_menu.cpp src/Crossword_games/crossword_generator.cpp src/Crossword_games/draw_crossword_graph.cpp src/Crossword_games/find_crossword_nodes.cpp src/Crossword_games/find_missing_arc.cpp src/Crossword_games/more_constraint_node.cpp src/Tree_games/dag_generator.cpp src/Tree_games/expression_evaluation.cpp src/Tree_games/fill_missing_operators.cpp src/Tree_games/make_tautology.cpp src/Tree_games/match_expression_with_node.cpp src/Tree_games/tree_game_menu.cpp src/Tree_games/write_expression.cpp src/Truth_table/truth_table.cpp src/main.cpp -o bin/main 
+ 
 "make.exe": Leaving directory `/d/AI For School/AI-for-school'
  

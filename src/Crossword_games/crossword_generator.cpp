@@ -48,7 +48,7 @@ void CrosswordGenerator::form_grid()
 	int md = 1 << (uplen); //2^(max length of word)
 	int step = 2;		   //stores how many rows we skipped last time
 	int count = 1;		   //stores count of row with word
-
+	bool done_step = 0;	   //stores if we ever stepped 1 row
 	vector<int> start(grid_size + 1, 0), end(grid_size + 1, 0), row_num(grid_size, 0);
 	for (int i = 1; i <= grid_size; count++)
 	{
@@ -103,15 +103,16 @@ void CrosswordGenerator::form_grid()
 		for (int j = start[count]; j < start[count] + len; j++)
 			grid[i][j] = '.';
 
-		//randomly step by 1 or 2 but don't step 2 consecutively 2 times
-		if (step == 1)
+		if (!done_step && grid_size > 5)
 		{
-			step = 2;
+			step = random(1, 3);
+			if (step == 1)
+				done_step = 1;
+			else
+				step = 2;
 		}
 		else
-		{
-			step = random(1, 2);
-		}
+			step = 2;
 		row_num[count] = i;
 		i += step;
 		end[count] = start[count] + len - 1;
@@ -173,6 +174,20 @@ void CrosswordGenerator::remove2()
 					grid[i - 1][j] = '.';
 				else
 					grid[i + 2][j] = '.';
+			}
+		}
+	}
+
+	for (int i = 1; i <= grid_size; i++)
+	{
+		for (int j = 1; j <= grid_size; j++)
+		{
+			if (grid[i][j] == '.' && grid[i][j + 1] == '.' && grid[i][j - 1] == '#' && grid[i][j + 2] == '#')
+			{
+				if (j != 1)
+					grid[i][j - 1] = '.';
+				else
+					grid[i][j + 2] = '.';
 			}
 		}
 	}
