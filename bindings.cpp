@@ -92,5 +92,6 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .constructor<>()
         .function("choose_arc", &FindMissingArc::choose_arc)
         .function("check", &FindMissingArc::check)
-        .property("arcs_to_display", &FindMissingArc::get_arcs_to_display);
+        .property("arcs_to_display", &FindMissingArc::get_arcs_to_display)
+        .property("answer", &FindMissingArc::get_answer);
 };

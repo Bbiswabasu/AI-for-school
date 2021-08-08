@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <algorithm>
+#include <random>
+#include <chrono>
 #include "dag_generator.h"
 #include "match_expression_with_node.h"
 
@@ -49,7 +51,8 @@ void MatchExpression::preprocessing()
 	indices.resize(DAGGenerator::num_nodes);
 	for (int i = 0; i < DAGGenerator::num_nodes; i++)
 		indices[i] = i;
-	random_shuffle(indices.begin(), indices.end());
+	unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
+	shuffle(indices.begin(), indices.end(), default_random_engine(seed));
 
 	for (int i = 0; i < DAGGenerator::num_nodes; i++)
 	{

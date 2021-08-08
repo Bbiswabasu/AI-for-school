@@ -5,6 +5,8 @@ using namespace std;
 
 FindMissingArc::FindMissingArc() {}
 vector<pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>>> FindMissingArc::get_arcs_to_display() const { return arcs_to_display; }
+pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>> FindMissingArc::get_answer() const { return answer; }
+
 void FindMissingArc::choose_arc()
 {
 	int numofarcs = CSPify::q.size();

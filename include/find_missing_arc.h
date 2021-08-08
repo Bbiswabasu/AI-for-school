@@ -8,6 +8,7 @@ public:
     pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>> answer, student_answer;
 
     vector<pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>>> get_arcs_to_display() const;
+    pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>> get_answer() const;
 
     FindMissingArc();
     void choose_arc();

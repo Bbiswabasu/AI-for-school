@@ -2,10 +2,10 @@
 #include "truth_table.h"
 using namespace std;
 
-int TruthTable::evaluateFromStr(int i,string &s,vector<int> &matching)
-{
+// int TruthTable::evaluateFromStr(int i,string &s,vector<int> &matching)
+// {
 
-}
+// }
 void TruthTable::start()
 {
     cout<<"Enter expression : ";

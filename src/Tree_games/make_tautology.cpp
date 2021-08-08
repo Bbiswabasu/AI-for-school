@@ -1,6 +1,6 @@
 #include "make_tautology.h"
 
-using namespace std;
+// using namespace std;
 
 void MakeTautology::startGame()
 {
