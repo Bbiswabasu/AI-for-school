@@ -1,10 +1,11 @@
-#include <emscripten/bind.h>
 #include "dag_generator.h"
 #include "expression_evaluation.h"
 #include "match_expression_with_node.h"
 #include "crossword_generator.h"
 #include "CSPify.h"
 #include "find_crossword_nodes.h"
+#include "find_missing_arc.h"
+#include <emscripten/bind.h>
 
 #include <string>
 using namespace emscripten;
@@ -52,6 +53,7 @@ EMSCRIPTEN_BINDINGS(crossword_games)
     register_vector<vector<char>>("vector<vector<char>>");
     register_vector<pair<int, int>>("vector<pair<int, int>>");
     register_vector<pair<pair<int, int>, char>>("vector<pair<pair<int, int>, char>>");
+    register_vector<pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>>>("vector<pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>>>");
 
     class_<std::pair<int, int>>("pair<int, int>")
         .property("first", &std::pair<int, int>::first)
@@ -60,6 +62,10 @@ EMSCRIPTEN_BINDINGS(crossword_games)
     class_<std::pair<pair<int, int>, char>>("pair<pair<int, int>, char>")
         .property("first", &std::pair<pair<int, int>, char>::first)
         .property("second", &std::pair<pair<int, int>, char>::second);
+
+    class_<std::pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>>>("pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>>")
+        .property("first", &std::pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>>::first)
+        .property("second", &std::pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>>::second);
 
     class_<CrosswordGenerator>("CrosswordGenerator")
         .constructor<>()
@@ -81,4 +87,10 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .property("missed_nodes", &FindCrosswordNodes::get_missed_nodes)
         .property("wrong_nodes", &FindCrosswordNodes::get_wrong_nodes)
         .property("correct_nodes", &FindCrosswordNodes::get_correct_nodes);
+
+    class_<FindMissingArc>("FindMissingArc")
+        .constructor<>()
+        .function("choose_arc", &FindMissingArc::choose_arc)
+        .function("check", &FindMissingArc::check)
+        .property("arcs_to_display", &FindMissingArc::get_arcs_to_display);
 };

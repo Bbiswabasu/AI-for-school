@@ -66,6 +66,8 @@
         "algorithm": "cpp",
         "iterator": "cpp",
         "memory_resource": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "map": "cpp",
+        "regex": "cpp"
     }
 }

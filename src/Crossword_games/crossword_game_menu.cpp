@@ -47,9 +47,11 @@ void CrosswordGameMenu::showMenu()
 		}
 
 		case 2:
+		{
 			FindMissingArc miss_arc;
 			miss_arc.startGame();
 			break;
+		}
 
 		case 3:
 		{
