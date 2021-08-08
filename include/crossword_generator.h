@@ -23,6 +23,5 @@ public:
     void transpose();
     void remove2();
     void remove1();
-    void distribution();
     void do_all_tasks();
 };

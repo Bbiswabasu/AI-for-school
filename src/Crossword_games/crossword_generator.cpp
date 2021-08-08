@@ -1,6 +1,8 @@
 #include <ctime>
 #include <iostream>
 #include <math.h>
+#include <random>
+#include <chrono>
 #include "crossword_generator.h"
 
 int CrosswordGenerator::grid_size;
@@ -10,8 +12,6 @@ const int M = 35;
 vector<vector<char>> CrosswordGenerator::grid;
 vector<pair<int, int>> CrosswordGenerator::moves;
 vector<vector<string>> CrosswordGenerator::bag;
-vector<long long int> dist;
-vector<long long int> fac;
 
 CrosswordGenerator::CrosswordGenerator() {}
 int CrosswordGenerator::get_grid_size() const { return grid_size; }
@@ -22,8 +22,6 @@ void CrosswordGenerator::init()
 {
 	moves = vector<pair<int, int>>({{0, 1}, {1, 0}, {0, -1}, {-1, 0}});
 	grid.resize(M, vector<char>(M, '#'));
-	dist.resize(M);
-	fac.resize(M);
 	bag = vector<vector<string>>({{},
 								  {},
 								  {},
@@ -36,7 +34,7 @@ void CrosswordGenerator::init()
 								  {"agreement", "attention", "authority", "available", "beautiful", "candidate", "certainly", "challenge", "character", "community", "condition", "determine", "different", "difficult", "direction", "education", "establish", "everybody", "executive", "financial", "important", "interview", "knowledge", "necessary", "newspaper", "operation", "political", "president", "professor", "recognize", "religious", "represent", "scientist", "situation", "something", "sometimes", "statement", "structure", "treatment"},
 								  {"adaptation", "collection", "commercial", "conference", "democratic", "difference", "discussion", "especially", "everything", "experience", "flamboyant", "generation", "government", "horizontal", "hypothesis", "individual", "investment", "management", "particular", "passionate", "population", "production", "skateboard", "successful", "technology", "television", "themselves", "throughout", "understand"},
 								  {"environment", "information", "institution", "interesting", "opportunity", "participant", "performance", "significant", "traditional"}});
-	uplen = sqrt(grid_size) + 3; //maximum length of words along one axis
+	uplen = min(max(5, grid_size - 2), 10); //maximum length of words along one axis
 	srand(time(NULL));
 }
 int CrosswordGenerator::random(int a, int b)
@@ -50,21 +48,16 @@ void CrosswordGenerator::form_grid()
 	int count = 1;		   //stores count of row with word
 	bool done_step = 0;	   //stores if we ever stepped 1 row
 	vector<int> start(grid_size + 1, 0), end(grid_size + 1, 0), row_num(grid_size, 0);
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	default_random_engine generator(seed);
+	binomial_distribution<int> distribution(uplen, 0.7);
 	for (int i = 1; i <= grid_size; count++)
 	{
 		int len, val;
 		//randomly choose length of word
 		while (1)
 		{
-			val = rand() % (md) + 1;
-			for (int j = 0; j <= uplen + 1; j++)
-			{
-				if (val <= dist[j])
-				{
-					len = j;
-					break;
-				}
-			}
+			len = distribution(generator);
 			if (len > 2 and len <= uplen)
 			{
 				break;
@@ -212,24 +205,9 @@ void CrosswordGenerator::remove1()
 	}
 }
 
-void CrosswordGenerator::distribution() //Makes binomial distribution
-{
-	fac[0] = 1;
-	for (int i = 1; i <= uplen; i++)
-	{
-		fac[i] = i * fac[i - 1];
-	}
-	dist[0] = 1;
-	for (int i = 1; i <= uplen; i++)
-	{
-		dist[i] = fac[uplen] / (fac[i] * fac[uplen - i]) + dist[i - 1];
-	}
-}
-
 void CrosswordGenerator::do_all_tasks()
 {
 	init();
-	distribution();
 	form_grid();
 	remove2();
 	remove1();
