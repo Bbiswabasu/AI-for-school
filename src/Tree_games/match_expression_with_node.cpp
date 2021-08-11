@@ -15,6 +15,11 @@ MatchExpression::MatchExpression()
 }
 
 vector<int> MatchExpression::get_indices() const { return indices; }
+vector<string> MatchExpression::get_exp_to_display() const { return exp_to_display; }
+vector<int> MatchExpression::get_student_response() const { return student_response; }
+vector<int> MatchExpression::get_correct_response() const { return correct_response; }
+vector<int> MatchExpression::get_wrong_response() const { return wrong_response; }
+vector<int> MatchExpression::get_correct_answers() const { return correct_answers; }
 
 void MatchExpression::init()
 {
@@ -57,35 +62,56 @@ void MatchExpression::preprocessing()
 	for (int i = 0; i < DAGGenerator::num_nodes; i++)
 	{
 		if (DAGGenerator::adj[indices[i]].size() != 0)
-			cout << DAGGenerator::expressions[indices[i]] << "\n";
+		{
+			exp_to_display.push_back(DAGGenerator::expressions[indices[i]]);
+			cout << exp_to_display.back() << "\n";
+		}
 	}
 }
-
+void MatchExpression::add_response(int n)
+{
+	student_response.push_back(n);
+}
+void MatchExpression::check()
+{
+	int j = 0;
+	for (int i = 0; i < exp_to_display.size(); i++)
+	{
+		while (DAGGenerator::adj[indices[j]].size() == 0)
+			j++;
+		if (exp_to_display[i] == DAGGenerator::expressions[student_response[i]])
+			correct_response.push_back(i);
+		else
+		{
+			wrong_response.push_back(i);
+			correct_answers.push_back(indices[j]);
+		}
+		j++;
+	}
+}
 void MatchExpression::startGame()
 {
 	preprocessing();
 	cout << "Match each expression with corresponding node number : \n";
 	bool correct = 1;
-	for (int i = 0; i < DAGGenerator::num_nodes; i++)
+	for (int i = 0; i < exp_to_display.size(); i++)
 	{
-		if (DAGGenerator::adj[indices[i]].size() == 0)
-			continue;
 		int n;
 		cin >> n;
-		if (DAGGenerator::expressions[n] != DAGGenerator::expressions[indices[i]])
-		{
-			correct = 0;
-		}
+		add_response(n);
 	}
-	if (correct)
+	check();
+	if (wrong_response.size() == 0)
 		cout << "CORRECT\n";
 	else
 	{
-		cout << "WRONG\nCorrect order: \n";
-		for (int i = 0; i < DAGGenerator::num_nodes; i++)
+		cout << "Correct response: ";
+		for (auto it : correct_response)
+			cout << it << " ";
+		cout << "\nWrong response\n";
+		for (int i = 0; i < wrong_response.size(); i++)
 		{
-			if (DAGGenerator::adj[indices[i]].size() != 0)
-				cout << indices[i] << "\n";
+			cout << wrong_response[i] << " - " << correct_answers[i] << "\n";
 		}
 	}
 }

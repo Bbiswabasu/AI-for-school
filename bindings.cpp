@@ -38,7 +38,15 @@ EMSCRIPTEN_BINDINGS(tree_games)
     class_<MatchExpression>("MatchExpression")
         .constructor<>()
         .function("init", &MatchExpression::init)
-        .function("compute_expressions", &MatchExpression::compute_expressions);
+        .function("compute_expressions", &MatchExpression::compute_expressions)
+        .function("preprocessing", &MatchExpression::preprocessing)
+        .function("add_response", &MatchExpression::add_response)
+        .function("check", &MatchExpression::check)
+        .property("indices", &MatchExpression::get_indices)
+        .property("exp_to_display", &MatchExpression::get_exp_to_display)
+        .property("correct_response", &MatchExpression::get_correct_response)
+        .property("wrong_response", &MatchExpression::get_wrong_response)
+        .property("correct_answers", &MatchExpression::get_correct_answers);
 
     class_<ExpressionEvaluation>("ExpressionEvaluation")
         .constructor<>()
