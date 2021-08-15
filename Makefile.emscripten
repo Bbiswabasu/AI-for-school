@@ -15,7 +15,7 @@ run: clean all
 	./$(BIN)/$(EXECUTABLE)
 
 $(BIN)/$(EXECUTABLE): $(SRC)/*/*.cpp  bindings.cpp
-					  $(CXX) $(CXX_FLAGS) --bind -I$(INCLUDE) $^ $(LIBRARIES) -s WASM=1 -s MODULARIZE=1 -o wasm/output.js
+					  $(CXX) $(CXX_FLAGS) --bind -I$(INCLUDE) $^ $(LIBRARIES) -o wasm/output.js
 
 clean:
 	-rm $(BIN)/*

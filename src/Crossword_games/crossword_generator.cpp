@@ -46,7 +46,7 @@ void CrosswordGenerator::form_grid()
 	int md = 1 << (uplen); //2^(max length of word)
 	int step = 2;		   //stores how many rows we skipped last time
 	int count = 1;		   //stores count of row with word
-	bool done_step = 0;	   //stores if we ever stepped 1 row
+	bool done_step = 1;	   //stores if we ever stepped 1 row
 	vector<int> start(grid_size + 1, 0), end(grid_size + 1, 0), row_num(grid_size, 0);
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	default_random_engine generator(seed);
@@ -65,6 +65,7 @@ void CrosswordGenerator::form_grid()
 		}
 		if (count == 1)
 		{
+			len = max(len, grid_size / 2 + 2);
 			if (len == grid_size)
 				start[count] = 1;
 			else
@@ -72,6 +73,7 @@ void CrosswordGenerator::form_grid()
 		}
 		else if (count == 2)
 		{
+			len = max(len, grid_size / 2 + 1);
 			if (len == grid_size)
 				start[count] = 1;
 			else
@@ -80,15 +82,15 @@ void CrosswordGenerator::form_grid()
 		else
 		{
 			//assure some overlap of count with count - 2
-			if (start[count - 2] <= grid_size / 2)
+			if (start[count - 2] <= grid_size / 3)
 			{
 				//it is left aligned
-				start[count] = min(grid_size - len + 1, random(start[count - 2], end[count - 2]));
+				start[count] = min(grid_size - len + 1, random(start[count - 2], end[count - 2] - 2));
 			}
 			else
 			{
 				//it is right aligned
-				end[count] = max(len, random(start[count - 2], end[count - 2]));
+				end[count] = max(len, random(start[count - 2] + 2, end[count - 2]));
 				start[count] = end[count] - len + 1;
 			}
 		}
@@ -111,22 +113,49 @@ void CrosswordGenerator::form_grid()
 		end[count] = start[count] + len - 1;
 	}
 
-	count = 1;
-	for (;; count++)
+	int starting_col = random(1, 2);
+	//connect 1st and 2nd rows
+	for (int i = starting_col; i <= grid_size; i += 2)
 	{
-		if (start[count + 2] == 0)
-			break;
-
-		//choose column among some overlapping region
-		int start_col = max(start[count], start[count + 2]), end_col = min(end[count], end[count + 2]), col = random(start_col, end_col), row = row_num[count];
-		if (row >= 3)
-			row -= rand() % 3;
-		int len = 0;
-		//connect them
-		for (int j = row; j <= row_num[count + 2]; j++)
+		if (grid[row_num[1]][i] == '.' && grid[row_num[2]][i] == '.')
 		{
-			len++;
-			grid[j][col] = '.';
+			grid[row_num[1] + 1][i] = '.';
+			break;
+		}
+	}
+
+	//draw vertical words
+	vector<bool> connected(grid_size + 1, 0);
+	for (int i = starting_col; i <= grid_size; i += 2)
+	{
+		for (count = 1; start[count] != 0; count++)
+		{
+			if (i >= start[count] && i <= end[count] && i >= start[count + 2] && i <= end[count + 2] && !connected[count])
+			{
+				connected[count] = 1;
+				for (int j = row_num[count]; j <= row_num[count + 2]; j++)
+				{
+					grid[j][i] = '.';
+				}
+				count += 2;
+			}
+		}
+	}
+
+	//check if still some pairs remained disconnected
+	for (count = 1; start[count + 2] != 0; count++)
+	{
+		if (connected[count])
+			continue;
+		for (int i = max(start[count], start[count + 2]); i <= min(end[count], end[count + 2]); i++)
+		{
+			if (i % 2 != starting_col % 2)
+				continue;
+			for (int j = row_num[count]; j <= row_num[count + 2]; j++)
+			{
+				grid[j][i] = '.';
+			}
+			break;
 		}
 	}
 }
@@ -171,19 +200,19 @@ void CrosswordGenerator::remove2()
 		}
 	}
 
-	for (int i = 1; i <= grid_size; i++)
-	{
-		for (int j = 1; j <= grid_size; j++)
-		{
-			if (grid[i][j] == '.' && grid[i][j + 1] == '.' && grid[i][j - 1] == '#' && grid[i][j + 2] == '#')
-			{
-				if (j != 1)
-					grid[i][j - 1] = '.';
-				else
-					grid[i][j + 2] = '.';
-			}
-		}
-	}
+	// for (int i = 1; i <= grid_size; i++)
+	// {
+	// 	for (int j = 1; j <= grid_size; j++)
+	// 	{
+	// 		if (grid[i][j] == '.' && grid[i][j + 1] == '.' && grid[i][j - 1] == '#' && grid[i][j + 2] == '#')
+	// 		{
+	// 			if (j != 1)
+	// 				grid[i][j - 1] = '.';
+	// 			else
+	// 				grid[i][j + 2] = '.';
+	// 		}
+	// 	}
+	// }
 }
 void CrosswordGenerator::remove1()
 {
@@ -209,9 +238,9 @@ void CrosswordGenerator::do_all_tasks()
 {
 	init();
 	form_grid();
-	remove2();
+	// remove2();
 	remove1();
-	if (rand() % 2)
-		transpose();
+	// if (rand() % 2)
+	// 	transpose();
 	print_grid();
 }
