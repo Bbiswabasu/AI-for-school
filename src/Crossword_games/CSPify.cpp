@@ -12,6 +12,7 @@ vector<vector<vector<vector<pair<int, int>>>>> CSPify::graph;
 deque<pair<pair<pair<int, int>, int>, pair<pair<int, int>, int>>> CSPify::q;
 
 CSPify::CSPify() {}
+vector<pair<pair<int, int>, int>> CSPify::get_nodes() const { return nodes; }
 
 void CSPify::init()
 {

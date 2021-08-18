@@ -66,18 +66,18 @@ void CrosswordGenerator::form_grid()
 		if (count == 1)
 		{
 			len = max(len, grid_size / 2 + 2);
-			if (len == grid_size)
-				start[count] = 1;
-			else
-				start[count] = random(1, 2);
+			// if (len == grid_size)
+			start[count] = 1;
+			// else
+			// start[count] = random(1, 2);
 		}
 		else if (count == 2)
 		{
 			len = max(len, grid_size / 2 + 1);
-			if (len == grid_size)
-				start[count] = 1;
-			else
-				start[count] = (grid_size - len + 1) - random(0, 1);
+			// if (len == grid_size)
+			// start[count] = 1;
+			// else
+			start[count] = (grid_size - len + 1); // - random(0, 1);
 		}
 		else
 		{
@@ -240,7 +240,7 @@ void CrosswordGenerator::do_all_tasks()
 	form_grid();
 	// remove2();
 	remove1();
-	// if (rand() % 2)
-	// 	transpose();
+	if (rand() % 2)
+		transpose();
 	print_grid();
 }

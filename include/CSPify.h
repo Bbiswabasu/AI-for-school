@@ -12,6 +12,8 @@ public:
     vector<vector<int>> vis;
     static deque<pair<pair<pair<int, int>, int>, pair<pair<int, int>, int>>> q;
 
+    vector<pair<pair<int,int>,int>> get_nodes() const;
+
     CSPify();
     void init();
     void cspify();

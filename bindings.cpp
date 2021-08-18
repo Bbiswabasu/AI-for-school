@@ -60,12 +60,17 @@ EMSCRIPTEN_BINDINGS(crossword_games)
     register_vector<char>("vector<char>");
     register_vector<vector<char>>("vector<vector<char>>");
     register_vector<pair<int, int>>("vector<pair<int, int>>");
+    register_vector<pair<pair<int, int>, int>>("vector<pair<pair<int, int>, int>>");
     register_vector<pair<pair<int, int>, char>>("vector<pair<pair<int, int>, char>>");
     register_vector<pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>>>("vector<pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>>>");
 
     class_<std::pair<int, int>>("pair<int, int>")
         .property("first", &std::pair<int, int>::first)
         .property("second", &std::pair<int, int>::second);
+
+    class_<std::pair<pair<int, int>, int>>("pair<pair<int, int>, int>")
+        .property("first", &std::pair<pair<int, int>, int>::first)
+        .property("second", &std::pair<pair<int, int>, int>::second);
 
     class_<std::pair<pair<int, int>, char>>("pair<pair<int, int>, char>")
         .property("first", &std::pair<pair<int, int>, char>::first)
@@ -83,7 +88,8 @@ EMSCRIPTEN_BINDINGS(crossword_games)
 
     class_<CSPify>("CSPify")
         .constructor<>()
-        .function("do_all_tasks", &CSPify::do_all_tasks);
+        .function("do_all_tasks", &CSPify::do_all_tasks)
+        .property("nodes", &CSPify::get_nodes);
 
     class_<FindCrosswordNodes>("FindCrosswordNodes")
         .constructor<>()
