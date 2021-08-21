@@ -5,6 +5,7 @@
 #include "CSPify.h"
 #include "find_crossword_nodes.h"
 #include "find_missing_arc.h"
+#include "draw_crossword_graph.h"
 #include <emscripten/bind.h>
 
 #include <string>
@@ -107,4 +108,13 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .function("check", &FindMissingArc::check)
         .property("arcs_to_display", &FindMissingArc::get_arcs_to_display)
         .property("answer", &FindMissingArc::get_answer);
+
+    class_<DrawCrosswordGraph>("DrawCrosswordGraph")
+        .constructor<>()
+        .function("init", &DrawCrosswordGraph::init)
+        .function("check", &DrawCrosswordGraph::check)
+        .function("add_edge", &DrawCrosswordGraph::add_edge)
+        .property("missed_edges", &DrawCrosswordGraph::get_missed_edges)
+        .property("wrong_edges", &DrawCrosswordGraph::get_wrong_edges)
+        .property("correct_edges", &DrawCrosswordGraph::get_correct_edges);
 };
