@@ -4,7 +4,7 @@
 #include "dag_generator.h"
 #include "expression_evaluation.h"
 #include "match_expression_with_node.h"
-#include "fill_missing_operators.h"
+#include "fill_missing_content.h"
 #include "write_expression.h"
 #include "tree_game_menu.h"
 
@@ -45,9 +45,11 @@ void TreeGameMenu::showMenu()
 		break;
 
 		case 3:
-			MissingOperators mop;
+		{
+			MissingContent mop;
 			mop.startGame();
-			break;
+		}
+		break;
 
 		case 4:
 		{

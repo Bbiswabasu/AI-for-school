@@ -2,13 +2,14 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
-#include "fill_missing_operators.h"
+#include "fill_missing_content.h"
 #include "expression_evaluation.h"
 #include "dag_generator.h"
 
 using namespace std;
 
-void MissingOperators::startGame()
+
+void MissingContent::startGame()
 {
 
 	ExpressionEvaluation exp;
@@ -31,7 +32,7 @@ void MissingOperators::startGame()
 
 	DAGGenerator dag_gen;
 	dag_gen.display_dag();
-	cout << "Fill missing operators such that the given DAGGenerator::values are satisfied : \n";
+	cout << "Fill missing content of nodes such that the given values are satisfied : \n";
 	for (int i = 0; i < num_operator / 2; i++)
 	{
 		int node;

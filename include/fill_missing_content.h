@@ -1,7 +1,8 @@
 using namespace std;
 
-class MissingOperators
+class MissingContent
 {
 public:
+	int cnt_op, cnt_var;
 	void startGame();
 };
