@@ -1,6 +1,7 @@
 #include "dag_generator.h"
 #include "expression_evaluation.h"
 #include "match_expression_with_node.h"
+#include "fill_missing_content.h"
 #include "crossword_generator.h"
 #include "CSPify.h"
 #include "find_crossword_nodes.h"
@@ -36,6 +37,12 @@ EMSCRIPTEN_BINDINGS(tree_games)
         .property("y_coor", &DAGGenerator::get_y_coor)
         .property("edge_carvature", &DAGGenerator::get_edge_carvature);
 
+    class_<ExpressionEvaluation>("ExpressionEvaluation")
+        .constructor<>()
+        .function("init", &ExpressionEvaluation::init)
+        .function("evaluate", &ExpressionEvaluation::evaluate)
+        .property("order_of_evaluation", &ExpressionEvaluation::get_order_of_evaluation);
+
     class_<MatchExpression>("MatchExpression")
         .constructor<>()
         .function("init", &MatchExpression::init)
@@ -49,11 +56,15 @@ EMSCRIPTEN_BINDINGS(tree_games)
         .property("wrong_response", &MatchExpression::get_wrong_response)
         .property("correct_answers", &MatchExpression::get_correct_answers);
 
-    class_<ExpressionEvaluation>("ExpressionEvaluation")
+    class_<MissingContent>("MissingContent")
         .constructor<>()
-        .function("init", &ExpressionEvaluation::init)
-        .function("evaluate", &ExpressionEvaluation::evaluate)
-        .property("order_of_evaluation", &ExpressionEvaluation::get_order_of_evaluation);
+        .function("backup_data", &MissingContent::backup_data)
+        .function("restore_data", &MissingContent::restore_data)
+        .function("miss_content", &MissingContent::miss_content)
+        .function("change_content", &MissingContent::change_content)
+        .function("check", &MissingContent::check)
+        .property("cnt_op", &MissingContent::get_cnt_op, &MissingContent::set_cnt_op)
+        .property("cnt_var", &MissingContent::get_cnt_var, &MissingContent::set_cnt_var);
 };
 
 EMSCRIPTEN_BINDINGS(crossword_games)
