@@ -6,125 +6,134 @@
 
 using namespace std;
 
-extern void bddToDot(bddMgr& mgr, BDD f, int num_vars, FILE* fp_dot, int debug = 0, int verbose = 0);
+extern void bddToDot(bddMgr &mgr, BDD f, int num_vars, FILE *fp_dot, int debug = 0, int verbose = 0);
 
-BDD WriteExpression::buildBDDFromAdj(int node, bddMgr& mgr,vector<BDD>& vars)
+WriteExpression::WriteExpression() {}
+
+void WriteExpression::init()
 {
-    if(DAGGenerator::adj[node].size()==0)
+    bddMgr mgr_actual(0, 0);
+    vector<BDD> vars_actual;
+    for (int i = 0; i < DAGGenerator::num_vars; i++)
     {
-        return vars[DAGGenerator::content[node][0]-'a'];
+        vars_actual.push_back(mgr_actual.bddVar());
     }
-    if(DAGGenerator::adj[node].size()==1)
-    {
-        return ~buildBDDFromAdj(DAGGenerator::adj[node][0],mgr,vars);
-    }
-    BDD left=buildBDDFromAdj(DAGGenerator::adj[node][0],mgr,vars);
-    BDD right=buildBDDFromAdj(DAGGenerator::adj[node][1],mgr,vars);
-    BDD ans;
-    if(DAGGenerator::content[node]=="&")
-		ans=(left & right);
-	else if(DAGGenerator::content[node]=="|")
-		ans=(left | right);
-	else if(DAGGenerator::content[node]=="=>")
-		ans=((~left) | right);
-	else if(DAGGenerator::content[node]=="<=>")
-		ans=(((~left) & (~right)) | (left & right));
-    return ans;	
+
+    BDD exp_actual = buildBDDFromAdj(0, mgr_actual, vars_actual);
+    FILE *fp_dot = fopen("bdd_actual.txt", "w");
+    bddToDot(mgr_actual, exp_actual, DAGGenerator::num_vars, fp_dot);
+    fclose(fp_dot);
 }
 
-BDD WriteExpression::buildBDDFromStr(int i, bddMgr& mgr,vector<BDD>& vars,string &s,vector<int>& matching)
+BDD WriteExpression::buildBDDFromAdj(int node, bddMgr &mgr, vector<BDD> &vars)
 {
-    if(s[i+1]=='~')
-        return ~buildBDDFromStr(i+2,mgr,vars,s,matching);
-    if(isalpha(s[i]))
-        return vars[s[i]-'a'];
-    BDD left=buildBDDFromStr(i+1,mgr,vars,s,matching);
-    string op="";
-    op+=s[matching[i+1]+1];
-    if(op=="=")
-        op+=">";
-    else if(op=="<")
-        op+="=>";
-
-    BDD right=buildBDDFromStr(matching[i+1]+op.size()+1,mgr,vars,s,matching);
+    if (DAGGenerator::adj[node].size() == 0)
+    {
+        return vars[DAGGenerator::content[node][0] - 'a'];
+    }
+    if (DAGGenerator::adj[node].size() == 1)
+    {
+        return ~buildBDDFromAdj(DAGGenerator::adj[node][0], mgr, vars);
+    }
+    BDD left = buildBDDFromAdj(DAGGenerator::adj[node][0], mgr, vars);
+    BDD right = buildBDDFromAdj(DAGGenerator::adj[node][1], mgr, vars);
     BDD ans;
-    
-    if(op=="&")
-		ans=(left & right);
-	else if(op=="|")
-		ans=(left | right);
-	else if(op=="=>")
-		ans=((~left) | right);
-	else if(op=="<=>")
-		ans=(((~left) & (~right)) | (left & right));
+    if (DAGGenerator::content[node] == "&")
+        ans = (left & right);
+    else if (DAGGenerator::content[node] == "|")
+        ans = (left | right);
+    else if (DAGGenerator::content[node] == "=>")
+        ans = ((~left) | right);
+    else if (DAGGenerator::content[node] == "<=>")
+        ans = (((~left) & (~right)) | (left & right));
     return ans;
 }
 
-void WriteExpression::expressionParser(string& s)
+BDD WriteExpression::buildBDDFromStr(int i, bddMgr &mgr, vector<BDD> &vars, string &s, vector<int> &matching)
+{
+    if (s[i + 1] == '~')
+        return ~buildBDDFromStr(i + 2, mgr, vars, s, matching);
+    if (isalpha(s[i]))
+        return vars[s[i] - 'a'];
+    BDD left = buildBDDFromStr(i + 1, mgr, vars, s, matching);
+    string op = "";
+    op += s[matching[i + 1] + 1];
+    if (op == "=")
+        op += ">";
+    else if (op == "<")
+        op += "=>";
+
+    BDD right = buildBDDFromStr(matching[i + 1] + op.size() + 1, mgr, vars, s, matching);
+    BDD ans;
+
+    if (op == "&")
+        ans = (left & right);
+    else if (op == "|")
+        ans = (left | right);
+    else if (op == "=>")
+        ans = ((~left) | right);
+    else if (op == "<=>")
+        ans = (((~left) & (~right)) | (left & right));
+    return ans;
+}
+
+void WriteExpression::expression_parser(string s)
 {
     stack<int> st;
     matching.resize(s.size());
-    for(int i=0;i<s.size();i++)
+    for (int i = 0; i < s.size(); i++)
     {
-        if(s[i]=='(')
+        if (s[i] == '(')
             st.push(i);
-        if(s[i]==')')
+        if (s[i] == ')')
         {
-            matching[st.top()]=i;
+            matching[st.top()] = i;
             st.pop();
         }
-        if(isalpha(s[i]))
-            matching[i]=i;
+        if (isalpha(s[i]))
+            matching[i] = i;
     }
 }
 
-bool WriteExpression::verifyAnswer(string &s)
+bool WriteExpression::check(string s)
 {
-    bddMgr mgr_student(0,0);
+    bddMgr mgr_student(0, 0);
     vector<BDD> vars_student;
-    for(int i=0;i<DAGGenerator::num_vars;i++)
+    for (int i = 0; i < DAGGenerator::num_vars; i++)
     {
         vars_student.push_back(mgr_student.bddVar());
     }
-    
-    BDD exp_student=buildBDDFromStr(0,mgr_student,vars_student,s,matching);
-    FILE *fp_dot=fopen("bdd_student.txt","w");    
+
+    BDD exp_student = buildBDDFromStr(0, mgr_student, vars_student, s, matching);
+    FILE *fp_dot = fopen("bdd_student.txt", "w");
     bddToDot(mgr_student, exp_student, DAGGenerator::num_vars, fp_dot);
     fclose(fp_dot);
 
-    FILE *f1=fopen("bdd_actual.txt","r");
-    FILE *f2=fopen("bdd_student.txt","r");
-    char ch1,ch2;
+    FILE *f1 = fopen("bdd_actual.txt", "r");
+    FILE *f2 = fopen("bdd_student.txt", "r");
+    char ch1, ch2;
     do
     {
-        ch1=fgetc(f1); ch2=fgetc(f2);
-        if(ch1!=ch2)
+        ch1 = fgetc(f1);
+        ch2 = fgetc(f2);
+        if (ch1 != ch2)
             return 0;
-    } while (ch1!=EOF && ch2!=EOF);
-    return (ch1==EOF && ch2==EOF);
+    } while (ch1 != EOF && ch2 != EOF);
+    fclose(f1);
+    fclose(f2);
+    return (ch1 == EOF && ch2 == EOF);
 }
 
 void WriteExpression::startGame()
 {
-    cout<<"Write expression at node 0 : ";
+    cout << "Write expression at node 0 : ";
     string s;
-    cin>>s;
-    bddMgr mgr_actual(0,0);
-    vector<BDD> vars_actual;
-    for(int i=0;i<DAGGenerator::num_vars;i++)
-    {
-        vars_actual.push_back(mgr_actual.bddVar());
-    }
-    
-    BDD exp_actual=buildBDDFromAdj(0,mgr_actual,vars_actual);
-    FILE *fp_dot=fopen("bdd_actual.txt","w");    
-    bddToDot(mgr_actual, exp_actual, DAGGenerator::num_vars, fp_dot);
-    fclose(fp_dot);
+    cin >> s;
+    init();
+    expression_parser(s);
 
-    expressionParser(s);
-
-    if(verifyAnswer(s))
-        cout<<"CORRECT\n";
+    if (check(s))
+        cout << "CORRECT\n";
     else
-        cout<<"WRONG\n";
+        cout << "WRONG\n";
 }

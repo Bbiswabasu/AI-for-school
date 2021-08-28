@@ -2,6 +2,7 @@
 #include "expression_evaluation.h"
 #include "match_expression_with_node.h"
 #include "fill_missing_content.h"
+#include "write_expression.h"
 #include "crossword_generator.h"
 #include "CSPify.h"
 #include "find_crossword_nodes.h"
@@ -65,6 +66,12 @@ EMSCRIPTEN_BINDINGS(tree_games)
         .function("check", &MissingContent::check)
         .property("cnt_op", &MissingContent::get_cnt_op, &MissingContent::set_cnt_op)
         .property("cnt_var", &MissingContent::get_cnt_var, &MissingContent::set_cnt_var);
+
+    class_<WriteExpression>("WriteExpression")
+        .constructor<>()
+        .function("init", &WriteExpression::init)
+        .function("expression_parser", &WriteExpression::expression_parser)
+        .function("check", &WriteExpression::check);
 };
 
 EMSCRIPTEN_BINDINGS(crossword_games)
