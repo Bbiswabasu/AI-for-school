@@ -12,6 +12,7 @@ ExpressionEvaluation::ExpressionEvaluation()
 	done.resize(DAGGenerator::adj.size(), 0);
 }
 vector<int> ExpressionEvaluation::get_order_of_evaluation() const { return order_of_evaluation; }
+string ExpressionEvaluation::get_exp_to_display() const { return exp_to_display; }
 
 void ExpressionEvaluation::init()
 {
@@ -60,11 +61,24 @@ void ExpressionEvaluation::display_evaluation()
 		cout << node << " -> " << DAGGenerator::values[node] << "\n";
 }
 
-void ExpressionEvaluation::startGame()
+bool ExpressionEvaluation::check(int n)
+{
+	return DAGGenerator::values[0] == n;
+}
+void ExpressionEvaluation::do_all_tasks()
 {
 	MatchExpression mat;
+	mat.init();
 	mat.compute_expressions(0);
-	cout << DAGGenerator::expressions[0] << "\n";
+	exp_to_display = DAGGenerator::expressions[0];
+	init();
+	evaluate(0);
+}
+
+void ExpressionEvaluation::startGame()
+{
+	do_all_tasks();
+	cout << exp_to_display << "\n";
 
 	int num_node = DAGGenerator::adj.size();
 	cout << "Enter the value of given expression when :\n";
@@ -77,8 +91,7 @@ void ExpressionEvaluation::startGame()
 
 	int user_value;
 	cin >> user_value;
-	int answer = evaluate(0);
-	if (user_value == answer)
+	if (check(user_value))
 		cout << "CORRECT\n";
 	else
 		cout << "WRONG\n";

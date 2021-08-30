@@ -42,7 +42,8 @@ EMSCRIPTEN_BINDINGS(tree_games)
         .constructor<>()
         .function("init", &ExpressionEvaluation::init)
         .function("evaluate", &ExpressionEvaluation::evaluate)
-        .property("order_of_evaluation", &ExpressionEvaluation::get_order_of_evaluation);
+        .property("order_of_evaluation", &ExpressionEvaluation::get_order_of_evaluation)
+        .property("exp_to_display", &ExpressionEvaluation::get_exp_to_display);
 
     class_<MatchExpression>("MatchExpression")
         .constructor<>()
