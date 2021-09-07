@@ -70,8 +70,6 @@ EMSCRIPTEN_BINDINGS(tree_games)
 
     class_<WriteExpression>("WriteExpression")
         .constructor<>()
-        .function("init", &WriteExpression::init)
-        .function("expression_parser", &WriteExpression::expression_parser)
         .function("check", &WriteExpression::check);
 };
 

@@ -8,10 +8,8 @@ public:
     vector<int> matching; //Stores index of matching ')' for each '('
 
     WriteExpression();
-    void init();
     BDD buildBDDFromAdj(int, bddMgr &, vector<BDD> &);
-    BDD buildBDDFromStr(int, bddMgr &, vector<BDD> &, string &, vector<int> &);
-    void expression_parser(string);
+    BDD buildBDDFromStr(string &, bddMgr &, vector<BDD> &);
     bool check(string);
     void startGame();
 };
