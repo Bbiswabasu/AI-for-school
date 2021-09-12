@@ -2,6 +2,7 @@
 #include <iostream>
 #include <random>
 #include <chrono>
+#include <set>
 #include "arc_consistency.h"
 #include "crossword_generator.h"
 #include "CSPify.h"
@@ -13,7 +14,9 @@ void ArcConsistency::init()
 {
 	rebag.assign(CrosswordGenerator::grid_size + 2, vector<int>(szbag));
 	domain.assign(M, vector<vector<vector<int>>>(M, vector<vector<int>>(2, vector<int>(szbag, 1))));
+	srand((unsigned)time(NULL));
 }
+
 void ArcConsistency::choose()
 {
 	unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -30,7 +33,6 @@ void ArcConsistency::choose()
 			rebag[i][j] = tp[j];
 			cout << (CrosswordGenerator::bag[i][tp[j]]);
 			cout << " ";
-			;
 		}
 		cout << "\n";
 	}
@@ -40,7 +42,7 @@ void ArcConsistency::choose()
 void ArcConsistency::print_bag()
 {
 	int i, j, k;
-	for (auto node : CSPify::nodes)
+	for (auto node : nodes)
 	{
 		i = node.first.first;
 		j = node.first.second;
@@ -139,14 +141,36 @@ bool ArcConsistency::revise(pair<pair<int, int>, int> fp, pair<pair<int, int>, i
 	return gf;
 }
 
+void ArcConsistency::add_node(pair<pair<int, int>, int> n)
+{
+	nodes.push_back(n);
+}
+
+void ArcConsistency::add_all_nodes()
+{
+	for (auto node : CSPify::nodes)
+		nodes.push_back(node);
+}
+
 void ArcConsistency::ac3()
 {
-	deque<pair<pair<pair<int, int>, int>, pair<pair<int, int>, int>>> temp_q = CSPify::q;
-
-	while (!temp_q.empty())
+	//insert all edges
+	set<pair<pair<int, int>, int>> nodes_set;
+	for (auto node : nodes)
+		nodes_set.insert(node);
+	for (auto node : nodes)
 	{
-		auto tp = temp_q.front();
-		temp_q.pop_front();
+		for (auto it : CSPify::graph[node.first.first][node.first.second][node.second])
+		{
+			if (nodes_set.find({it, 1 - node.second}) != nodes_set.end())
+				q.push({node, {it, 1 - node.second}});
+		}
+	}
+
+	while (!q.empty())
+	{
+		auto tp = q.front();
+		q.pop();
 		auto fp = tp.first;
 		auto sp = tp.second;
 		if (revise(fp, sp))
@@ -157,13 +181,47 @@ void ArcConsistency::ac3()
 			for (int i = 0; i < CSPify::graph[x][y][bin].size(); i++)
 			{
 				auto val = CSPify::graph[x][y][bin][i];
+				if (nodes_set.find({val, 1 - bin}) == nodes_set.end())
+					continue;
+				
 				if (val == sp.first)
 				{
 					continue;
 				}
-				temp_q.push_back({{val, 1 - bin}, fp});
+				q.push({{val, 1 - bin}, fp});
 			}
 		}
+	}
+}
+
+void ArcConsistency::choose_x_nodes(int x)
+{
+	vector<vector<vector<bool>>> vis(CrosswordGenerator::grid_size + 1, vector<vector<bool>>(CrosswordGenerator::grid_size + 1, vector<bool>(2, 0)));
+	queue<pair<pair<int, int>, int>> bfs;
+	auto start = CSPify::nodes[rand() % ((CSPify::nodes).size())];
+	int cnt = 1;
+	nodes.push_back(start);
+	vis[start.first.first][start.first.second][start.second] = 1;
+	bfs.push(start);
+	if (x == 1)
+		return;
+	while (!bfs.empty())
+	{
+		auto f = bfs.front();
+		bfs.pop();
+		for (auto it : CSPify::graph[f.first.first][f.first.second][f.second])
+		{
+			if (vis[it.first][it.second][1 - f.second])
+				continue;
+			vis[it.first][it.second][1 - f.second] = 1;
+			cnt++;
+			nodes.push_back({it, {1 - f.second}});
+			if (cnt == x)
+				break;
+			bfs.push({it, {1 - f.second}});
+		}
+		if (cnt == x)
+			break;
 	}
 }
 
@@ -173,6 +231,10 @@ void ArcConsistency::startGame()
 	cin >> szbag;
 	init();
 	choose();
+	int x;
+	cout << "Enter number of nodes for AC : ";
+	cin >> x;
+	choose_x_nodes(x);
 	ac3();
 	print_bag();
 }
