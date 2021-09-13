@@ -14,6 +14,7 @@ void ArcConsistency::init()
 {
 	rebag.assign(CrosswordGenerator::grid_size + 2, vector<int>(szbag));
 	domain.assign(M, vector<vector<vector<int>>>(M, vector<vector<int>>(2, vector<int>(szbag, 1))));
+	student_domain.assign(M, vector<int>(szbag, 1));
 	srand((unsigned)time(NULL));
 }
 
@@ -183,7 +184,7 @@ void ArcConsistency::ac3()
 				auto val = CSPify::graph[x][y][bin][i];
 				if (nodes_set.find({val, 1 - bin}) == nodes_set.end())
 					continue;
-				
+
 				if (val == sp.first)
 				{
 					continue;
@@ -224,6 +225,27 @@ void ArcConsistency::choose_x_nodes(int x)
 			break;
 	}
 }
+void ArcConsistency::add_response(int node, int ind, int resp)
+{
+	student_domain[node][ind] = resp;
+}
+
+void ArcConsistency::check()
+{
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		bool ok = 1;
+		for (int j = 0; j < szbag; j++)
+		{
+			if (domain[nodes[i].first.first][nodes[i].first.second][nodes[i].second][j] != student_domain[i][j])
+			{
+				ok = 0;
+				break;
+			}
+		}
+		result.push_back(ok);
+	}
+}
 
 void ArcConsistency::startGame()
 {
@@ -236,5 +258,26 @@ void ArcConsistency::startGame()
 	cin >> x;
 	choose_x_nodes(x);
 	ac3();
+	cout << "Answer :\n";
 	print_bag();
+
+	cout << "\n"
+		 << "Mark each word as whether they are AC :\n";
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		cout << nodes[i].first.first << "-" << nodes[i].first.second << "-" << (nodes[i].second ? "D" : "A") << "\n";
+		int len = CSPify::len[nodes[i].first.first][nodes[i].first.second][nodes[i].second];
+		for (auto it : rebag[len])
+			cout << CrosswordGenerator::bag[len][it] << " ";
+		cout << "\n";
+		for (int j = 0; j < szbag; j++)
+		{
+			int d;
+			cin >> d;
+			add_response(i, j, d);
+		}
+	}
+	check();
+	for (auto it : result)
+		cout << it << "\n";
 }
