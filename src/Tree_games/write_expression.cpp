@@ -132,13 +132,138 @@ bool WriteExpression::check(string s)
     return (ch1 == EOF && ch2 == EOF);
 }
 
+bool WriteExpression::syntax_check(string &s)
+{
+    bool bracketed = 0;
+    if (s[0] != '(')
+    {
+        bracketed = 1;
+        s = "(" + s + ")";
+    }
+    //check proper paranthesis and valid characters
+    int st = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (s[i] == ' ')
+            continue;
+        if (s[i] == '(')
+            st++;
+        else if (s[i] == ')')
+            st--;
+        else if (!(s[i] == '~' || s[i] == '|' || s[i] == '&' ||
+                   (i < s.size() - 1 && s[i] == '=' && s[i + 1] == '>') ||
+                   (i < s.size() - 2 && s[i] == '<' && s[i + 1] == '=' && s[i + 2] == '>') ||
+                   (s[i] >= 'a' && s[i] <= 'a' + DAGGenerator::num_vars - 1)))
+        {
+            syntax_error = "Invalid character at position : " + to_string(i + 1 - bracketed);
+            return 0;
+        }
+        if (s[i] == '=')
+            i++;
+        else if (s[i] == '<')
+            i += 2;
+        if (st < 0)
+        {
+            syntax_error = "Expression is not properly parenthesized";
+            return 0;
+        }
+    }
+    if (st != 0)
+    {
+        syntax_error = "Expression is not properly parenthesized";
+        return 0;
+    }
+
+    //check proper operator and operand
+    stack<pair<char, int>> oprtr;
+    stack<pair<char, int>> operand;
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (s[i] == ' ')
+            continue;
+        if (s[i] == '(' || s[i] == '|' || s[i] == '&' || s[i] == '~')
+            oprtr.push({s[i], i});
+        else if (s[i] == '=' && i + 1 < s.size() && s[i + 1] == '>')
+        {
+            oprtr.push({'=', i});
+            i++;
+        }
+        else if (s[i] == '<' && i + 2 < s.size() && s[i + 1] == '=' && s[i + 2] == '>')
+        {
+            oprtr.push({'<', i});
+            i += 2;
+        }
+        else if (s[i] >= 'a' && s[i] <= 'a' + DAGGenerator::num_vars - 1)
+            operand.push({'z', i});
+        else if (s[i] == ')')
+        {
+            if (operand.empty())
+            {
+                syntax_error = "Operand missing";
+                return 0;
+            }
+            auto right = operand.top();
+            operand.pop();
+
+            if (oprtr.top().first == '(')
+                operand.push(right);
+            else if (oprtr.top().first == '~')
+            {
+                operand.push(right);
+                oprtr.pop();
+                if (oprtr.top().first != '(')
+                {
+                    syntax_error = "Subexpressions are not properly parenthesized";
+                    return 0;
+                }
+                oprtr.pop();
+            }
+            else
+            {
+                if (operand.empty())
+                {
+                    syntax_error = "Operand missing";
+                    return 0;
+                }
+                auto left = operand.top();
+                operand.pop();
+                auto op = oprtr.top();
+                oprtr.pop();
+                if (op.first != '|' && op.first != '&' && op.first != '=' && op.first != '<')
+                {
+                    syntax_error = "Operator missing";
+                    return 0;
+                }
+                if (!(right.second > op.second && left.second < op.second))
+                {
+                    syntax_error = "Operator missing";
+                    return 0;
+                }
+                operand.push(left);
+                if (oprtr.top().first != '(')
+                {
+                    syntax_error = "Subexpressions are not properly parenthesized";
+                    return 0;
+                }
+                oprtr.pop();
+            }
+        }
+    }
+    syntax_error = "No syntax error";
+    return 1;
+}
 void WriteExpression::startGame()
 {
     cout << "Write expression at node 0 : ";
     string s;
-    getline(cin,s);
-    getline(cin,s);
-
+    getline(cin, s);
+    getline(cin, s);
+    if (!syntax_check(s))
+    {
+        cout << syntax_error << "\n";
+        return;
+    }
+    cout << syntax_error << "\n";
     if (check(s))
         cout << "CORRECT\n";
     else
