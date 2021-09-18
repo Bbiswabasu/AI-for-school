@@ -25,6 +25,10 @@ void MatchExpression::init()
 {
 	done.resize(DAGGenerator::adj.size(), 0);
 }
+void MatchExpression::restore_exp(string s)
+{
+	exp_to_display.push_back(s);
+}
 string MatchExpression::compute_expressions(int node)
 {
 	if (done[node])

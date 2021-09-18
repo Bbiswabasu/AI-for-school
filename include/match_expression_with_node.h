@@ -19,6 +19,7 @@ public:
 
 	MatchExpression();
 	void init();
+	void restore_exp(string);
 	string compute_expressions(int);
 	void preprocessing();
 	void add_response(int);
