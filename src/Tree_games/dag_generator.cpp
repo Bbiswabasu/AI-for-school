@@ -33,6 +33,21 @@ vector<int> DAGGenerator::get_x_coor() const { return x_coor; }
 vector<int> DAGGenerator::get_y_coor() const { return y_coor; }
 vector<vector<int>> DAGGenerator::get_edge_carvature() const { return edge_carvature; }
 
+void DAGGenerator::restore_dag(char name, int node, int val, string sval)
+{
+	if (name == 'a')
+		adj[node].push_back(val);
+	else if (name == 'c')
+		content[node] = sval;
+	else if (name == 'v')
+		values[node] = val;
+	else if (name == 'x')
+		x_coor[node] = val;
+	else if (name == 'y')
+		y_coor[node] = val;
+	else if (name == 'e')
+		edge_carvature[node].push_back(val);
+}
 void DAGGenerator::init()
 {
 	id = 0;
@@ -44,6 +59,13 @@ void DAGGenerator::init()
 	indeg.clear();
 	expressions.clear();
 	srand((unsigned)time(NULL));
+	adj.resize(num_nodes, vector<int>());
+	content.resize(adj.size());
+	expressions.resize(adj.size());
+	values.resize(adj.size());
+	x_coor.resize(num_nodes);
+	y_coor.resize(num_nodes);
+	edge_carvature.resize(num_nodes, vector<int>());
 }
 int DAGGenerator::random(int a, int b)
 {
@@ -51,8 +73,7 @@ int DAGGenerator::random(int a, int b)
 }
 void DAGGenerator::generate_dag()
 {
-	int num_not = random(0, num_vars); //numbers of NOT nodes to be inserted
-
+	num_not = random(0, (num_vars + 1) / 2); //numbers of NOT nodes to be inserted
 	num_nodes += num_not;
 	adj.resize(num_nodes, vector<int>());
 	indeg.resize(num_nodes, 0);
@@ -122,8 +143,7 @@ void DAGGenerator::generate_dag()
 
 void DAGGenerator::assign_content()
 {
-	content.resize(adj.size());
-	expressions.resize(adj.size());
+
 	for (int i = 0; i < adj.size(); i++)
 	{
 		if (adj[i].size() == 0)
@@ -137,7 +157,6 @@ void DAGGenerator::assign_content()
 
 void DAGGenerator::assign_values()
 {
-	values.resize(adj.size());
 	for (int i = 0; i < adj.size(); i++)
 	{
 		if (!isalpha(content[i][0]))
@@ -162,7 +181,6 @@ void DAGGenerator::display_dag()
 void DAGGenerator::compute_graph_layout()
 {
 	//compute y coordinates
-	y_coor.resize(num_nodes);
 	queue<int> q;
 	q.push(0);
 	y_coor[0] = 0;
@@ -178,7 +196,6 @@ void DAGGenerator::compute_graph_layout()
 	}
 
 	//compute x coordinates
-	x_coor.resize(num_nodes);
 	vector<int> count(num_nodes, 0);
 	for (int i = 0; i < num_nodes; i++)
 	{
@@ -187,7 +204,6 @@ void DAGGenerator::compute_graph_layout()
 	}
 
 	//compute carvature for each edge
-	edge_carvature.resize(num_nodes, vector<int>(2, 0));
 	for (int i = 0; i < num_nodes; i++)
 	{
 		int j = 0;

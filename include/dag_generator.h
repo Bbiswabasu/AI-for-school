@@ -8,7 +8,7 @@ public:
     static int num_vars;
     static int num_nodes;
     int id; //id of current node to be added
-    int var_name;
+    int var_name, num_not;
 
     static vector<vector<int>> adj;
     static vector<string> content;
@@ -35,6 +35,7 @@ public:
     vector<vector<int>> get_edge_carvature() const;
 
     DAGGenerator();
+    void restore_dag(char, int, int, string);
     void init();
     int random(int, int);
     void generate_dag();
