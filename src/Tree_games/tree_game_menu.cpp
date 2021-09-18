@@ -18,6 +18,13 @@ void TreeGameMenu::showMenu()
 	cout << "No of nodes : ";
 	cin >> DAGGenerator::num_nodes;
 	dag_gen.do_all_tasks();
+	// dag_gen.init();
+	// dag_gen.restore_dag(97,0,1,"");
+	// dag_gen.restore_dag(97,0,2,"");
+	// dag_gen.restore_dag(99,0,0,"&");
+	// dag_gen.restore_dag(99,0,1,"a");
+	// dag_gen.restore_dag(99,0,2,"b");
+	// dag_gen.display_dag();
 	cout << "1. Expression Evaluation\n";
 	cout << "2. Match Expression With Node\n";
 	cout << "3. Fill missing operators\n";
