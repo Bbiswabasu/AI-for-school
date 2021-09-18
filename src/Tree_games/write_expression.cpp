@@ -10,6 +10,8 @@ extern void bddToDot(bddMgr &mgr, BDD f, int num_vars, FILE *fp_dot, int debug =
 
 WriteExpression::WriteExpression() {}
 
+string WriteExpression::get_syntax_error() const { return syntax_error; }
+
 BDD WriteExpression::buildBDDFromAdj(int node, bddMgr &mgr, vector<BDD> &vars)
 {
     if (DAGGenerator::adj[node].size() == 0)
@@ -132,7 +134,7 @@ bool WriteExpression::check(string s)
     return (ch1 == EOF && ch2 == EOF);
 }
 
-bool WriteExpression::syntax_check(string &s)
+bool WriteExpression::syntax_check(string s)
 {
     bool bracketed = 0;
     if (s[0] != '(')

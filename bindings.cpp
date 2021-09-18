@@ -70,7 +70,9 @@ EMSCRIPTEN_BINDINGS(tree_games)
 
     class_<WriteExpression>("WriteExpression")
         .constructor<>()
-        .function("check", &WriteExpression::check);
+        .function("syntax_check", &WriteExpression::syntax_check)
+        .function("check", &WriteExpression::check)
+        .property("syntax_error", &WriteExpression::get_syntax_error);
 };
 
 EMSCRIPTEN_BINDINGS(crossword_games)
