@@ -38,6 +38,10 @@ BDD WriteExpression::buildBDDFromAdj(int node, bddMgr &mgr, vector<BDD> &vars)
 
 BDD WriteExpression::buildBDDFromStr(string &s, bddMgr &mgr, vector<BDD> &vars)
 {
+    if (s[0] != '(')
+    {
+        s = "(" + s + ")";
+    }
     stack<char> oprtr;
     stack<BDD> operand;
     for (int i = 0; i < s.size(); i++)
