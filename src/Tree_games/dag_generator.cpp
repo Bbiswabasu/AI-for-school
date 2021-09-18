@@ -143,7 +143,8 @@ void DAGGenerator::generate_dag()
 
 void DAGGenerator::assign_content()
 {
-
+	content.resize(adj.size());
+	expressions.resize(adj.size());
 	for (int i = 0; i < adj.size(); i++)
 	{
 		if (adj[i].size() == 0)
@@ -157,6 +158,7 @@ void DAGGenerator::assign_content()
 
 void DAGGenerator::assign_values()
 {
+	values.resize(adj.size());
 	for (int i = 0; i < adj.size(); i++)
 	{
 		if (!isalpha(content[i][0]))
@@ -181,6 +183,7 @@ void DAGGenerator::display_dag()
 void DAGGenerator::compute_graph_layout()
 {
 	//compute y coordinates
+	y_coor.resize(adj.size());
 	queue<int> q;
 	q.push(0);
 	y_coor[0] = 0;
@@ -196,6 +199,7 @@ void DAGGenerator::compute_graph_layout()
 	}
 
 	//compute x coordinates
+	x_coor.resize(adj.size());
 	vector<int> count(num_nodes, 0);
 	for (int i = 0; i < num_nodes; i++)
 	{
@@ -204,6 +208,7 @@ void DAGGenerator::compute_graph_layout()
 	}
 
 	//compute carvature for each edge
+	edge_carvature.resize(adj.size(),vector<int>(2,0));
 	for (int i = 0; i < num_nodes; i++)
 	{
 		int j = 0;
