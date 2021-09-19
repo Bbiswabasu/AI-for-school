@@ -208,6 +208,7 @@ void DAGGenerator::compute_graph_layout()
 	}
 
 	//compute carvature for each edge
+	edge_carvature.clear();
 	edge_carvature.resize(adj.size(),vector<int>(2,0));
 	for (int i = 0; i < num_nodes; i++)
 	{

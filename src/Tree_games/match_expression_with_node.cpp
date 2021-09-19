@@ -24,10 +24,15 @@ vector<int> MatchExpression::get_correct_answers() const { return correct_answer
 void MatchExpression::init()
 {
 	done.resize(DAGGenerator::adj.size(), 0);
+	indices.resize(DAGGenerator::num_nodes);
 }
-void MatchExpression::restore_exp(string s)
+void MatchExpression::restore_exp(int i,int val)
 {
-	exp_to_display.push_back(s);
+	indices[i]=val;
+	if (DAGGenerator::adj[indices[i]].size() != 0)
+	{
+		exp_to_display.push_back(DAGGenerator::expressions[indices[i]]);
+	}
 }
 string MatchExpression::compute_expressions(int node)
 {
@@ -57,7 +62,6 @@ string MatchExpression::compute_expressions(int node)
 void MatchExpression::preprocessing()
 {
 	compute_expressions(0);
-	indices.resize(DAGGenerator::num_nodes);
 	for (int i = 0; i < DAGGenerator::num_nodes; i++)
 		indices[i] = i;
 	unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -95,6 +99,7 @@ void MatchExpression::check()
 }
 void MatchExpression::startGame()
 {
+	init();
 	preprocessing();
 	cout << "Match each expression with corresponding node number : \n";
 	bool correct = 1;
