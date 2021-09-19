@@ -67,7 +67,10 @@ BDD WriteExpression::buildBDDFromStr(string &s, bddMgr &mgr, vector<BDD> &vars)
             BDD right = operand.top();
             operand.pop();
             if (oprtr.top() == '(')
+            {
                 operand.push(right);
+                oprtr.pop();
+            }
             else if (oprtr.top() == '~')
             {
                 operand.push(~right);
@@ -168,7 +171,7 @@ bool WriteExpression::syntax_check(string s)
             syntax_error = "Expression is not properly parenthesized";
             return 0;
         }
-        if (st == 0)
+        if (st == 0 && i != s.size() - 1)
             bracketed = 0;
     }
     if (st != 0)

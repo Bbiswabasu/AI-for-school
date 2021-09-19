@@ -2,9 +2,9 @@ digraph massive_output {
 One  [shape=box,style=solid,color=green]
 Zero [shape=box,style=solid,color=red]
 v0i0 
-v0i0 -> One
-v0i0 -> v1i0 [style=dashed]
+v0i0 -> v1i0
 v1i0 
-v1i0 -> One
-v1i0 -> Zero [style=dashed]
+v1i0 -> Zero
+v1i0 -> One [style=dashed]
+v0i0 -> Zero [style=dashed]
 }
