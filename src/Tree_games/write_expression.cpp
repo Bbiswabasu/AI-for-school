@@ -38,7 +38,7 @@ BDD WriteExpression::buildBDDFromAdj(int node, bddMgr &mgr, vector<BDD> &vars)
 
 BDD WriteExpression::buildBDDFromStr(string &s, bddMgr &mgr, vector<BDD> &vars)
 {
-    if (s[0] != '(')
+    if (!bracketed)
     {
         s = "(" + s + ")";
     }
@@ -140,12 +140,7 @@ bool WriteExpression::check(string s)
 
 bool WriteExpression::syntax_check(string s)
 {
-    bool bracketed = 0;
-    if (s[0] != '(')
-    {
-        bracketed = 1;
-        s = "(" + s + ")";
-    }
+    bracketed = 1;
     //check proper paranthesis and valid characters
     int st = 0;
     for (int i = 0; i < s.size(); i++)
@@ -161,7 +156,7 @@ bool WriteExpression::syntax_check(string s)
                    (i < s.size() - 2 && s[i] == '<' && s[i + 1] == '=' && s[i + 2] == '>') ||
                    (s[i] >= 'a' && s[i] <= 'a' + DAGGenerator::num_vars - 1)))
         {
-            syntax_error = "Invalid character at position : " + to_string(i + 1 - bracketed);
+            syntax_error = "Invalid character at position : " + to_string(i + 1);
             return 0;
         }
         if (s[i] == '=')
@@ -173,13 +168,16 @@ bool WriteExpression::syntax_check(string s)
             syntax_error = "Expression is not properly parenthesized";
             return 0;
         }
+        if (st == 0)
+            bracketed = 0;
     }
     if (st != 0)
     {
         syntax_error = "Expression is not properly parenthesized";
         return 0;
     }
-
+    if (!bracketed)
+        s = "(" + s + ")";
     //check proper operator and operand
     stack<pair<char, int>> oprtr;
     stack<pair<char, int>> operand;

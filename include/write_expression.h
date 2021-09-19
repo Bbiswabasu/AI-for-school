@@ -7,6 +7,7 @@ class WriteExpression
 public:
     vector<int> matching; //Stores index of matching ')' for each '('
     string syntax_error;
+    bool bracketed;
 
     string get_syntax_error() const;
 
