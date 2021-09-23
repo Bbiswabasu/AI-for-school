@@ -16,6 +16,7 @@ public:
     vector<vector<char>> get_grid() const;
 
     CrosswordGenerator();
+    void restore_grid(int, int, char);
     void init();
     int random(int, int);
     void form_grid();

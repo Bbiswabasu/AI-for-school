@@ -104,6 +104,8 @@ EMSCRIPTEN_BINDINGS(crossword_games)
 
     class_<CrosswordGenerator>("CrosswordGenerator")
         .constructor<>()
+        .function("restore_grid", &CrosswordGenerator::restore_grid)
+        .function("init", &CrosswordGenerator::init)
         .function("do_all_tasks", &CrosswordGenerator::do_all_tasks)
         .property("grid_size", &CrosswordGenerator::get_grid_size, &CrosswordGenerator::set_grid_size)
         .property("grid", &CrosswordGenerator::get_grid);
