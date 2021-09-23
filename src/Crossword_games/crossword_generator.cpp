@@ -22,11 +22,8 @@ void CrosswordGenerator::restore_grid(int i, int j, char a)
 {
 	grid[i][j] = a;
 }
-
-void CrosswordGenerator::init()
+void CrosswordGenerator::build_bag()
 {
-	moves = vector<pair<int, int>>({{0, 1}, {1, 0}, {0, -1}, {-1, 0}});
-	grid.resize(M, vector<char>(M, '#'));
 	bag = vector<vector<string>>({{},
 								  {},
 								  {},
@@ -39,6 +36,11 @@ void CrosswordGenerator::init()
 								  {"agreement", "attention", "authority", "available", "beautiful", "candidate", "certainly", "challenge", "character", "community", "condition", "determine", "different", "difficult", "direction", "education", "establish", "everybody", "executive", "financial", "important", "interview", "knowledge", "necessary", "newspaper", "operation", "political", "president", "professor", "recognize", "religious", "represent", "scientist", "situation", "something", "sometimes", "statement", "structure", "treatment"},
 								  {"adaptation", "collection", "commercial", "conference", "democratic", "difference", "discussion", "especially", "everything", "experience", "flamboyant", "generation", "government", "horizontal", "hypothesis", "individual", "investment", "management", "particular", "passionate", "population", "production", "skateboard", "successful", "technology", "television", "themselves", "throughout", "understand"},
 								  {"environment", "information", "institution", "interesting", "opportunity", "participant", "performance", "significant", "traditional"}});
+}
+void CrosswordGenerator::init()
+{
+	moves = vector<pair<int, int>>({{0, 1}, {1, 0}, {0, -1}, {-1, 0}});
+	grid.resize(M, vector<char>(M, '#'));
 	uplen = min(max(5, grid_size - 2), 10); //maximum length of words along one axis
 	srand(time(NULL));
 }
@@ -242,6 +244,7 @@ void CrosswordGenerator::remove1()
 void CrosswordGenerator::do_all_tasks()
 {
 	init();
+	build_bag();
 	form_grid();
 	// remove2();
 	remove1();

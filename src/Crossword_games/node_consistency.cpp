@@ -8,12 +8,24 @@
 
 using namespace std;
 
+NodeConsistency::NodeConsistency() {}
+vector<pair<int, int>> NodeConsistency::get_shuffled_bag_ind() const { return shuffled_bag_ind; }
+vector<string> NodeConsistency::get_shuffled_bag() const { return shuffled_bag; }
+vector<int> NodeConsistency::get_result() const { return result; }
+
 void NodeConsistency::init()
 {
     rebag.clear();
     rebag.resize(CrosswordGenerator::grid_size + 5, vector<int>());
+    shuffled_bag_ind.clear();
     shuffled_bag.clear();
     student_answers.resize(CSPify::nodes.size());
+}
+void NodeConsistency::restore_bag(int len, int ind)
+{
+    shuffled_bag_ind.push_back({len, ind});
+    rebag[len].push_back(ind);
+    // shuffled_bag.push_back(CrosswordGenerator::bag[len][ind]);
 }
 void NodeConsistency::choose()
 {
@@ -32,10 +44,12 @@ void NodeConsistency::choose()
         for (int j = 0; j < szbag; j++)
         {
             rebag[i].push_back(tp[j]);
-            shuffled_bag.push_back({i, tp[j]});
+            shuffled_bag_ind.push_back({i, tp[j]});
         }
     }
-    shuffle(shuffled_bag.begin(), shuffled_bag.end(), default_random_engine(seed));
+    shuffle(shuffled_bag_ind.begin(), shuffled_bag_ind.end(), default_random_engine(seed));
+    for (auto it : shuffled_bag_ind)
+        shuffled_bag.push_back(CrosswordGenerator::bag[it.first][it.second]);
 }
 
 void NodeConsistency::print_bag()
@@ -49,7 +63,7 @@ void NodeConsistency::print_bag()
     }
     cout << "\nAll shuffled :\n";
     for (auto it : shuffled_bag)
-        cout << CrosswordGenerator::bag[it.first][it.second] << " ";
+        cout << it << " ";
     cout << "\n";
 }
 
@@ -71,7 +85,7 @@ void NodeConsistency::check()
         {
             for (auto it : student_answers[i])
             {
-                if (len != shuffled_bag[it].first)
+                if (len != shuffled_bag_ind[it].first)
                 {
                     ok = 0;
                     break;

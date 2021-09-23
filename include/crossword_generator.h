@@ -17,6 +17,7 @@ public:
 
     CrosswordGenerator();
     void restore_grid(int, int, char);
+    void build_bag();
     void init();
     int random(int, int);
     void form_grid();

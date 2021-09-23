@@ -6,6 +6,7 @@
 #include "crossword_generator.h"
 #include "CSPify.h"
 #include "find_crossword_nodes.h"
+#include "node_consistency.h"
 #include "find_missing_arc.h"
 #include "draw_crossword_graph.h"
 #include <emscripten/bind.h>
@@ -80,6 +81,8 @@ EMSCRIPTEN_BINDINGS(tree_games)
 EMSCRIPTEN_BINDINGS(crossword_games)
 {
     register_vector<char>("vector<char>");
+    register_vector<string>("vector<string>");
+    register_vector<int>("vector<int>");
     register_vector<vector<char>>("vector<vector<char>>");
     register_vector<pair<int, int>>("vector<pair<int, int>>");
     register_vector<pair<pair<int, int>, int>>("vector<pair<pair<int, int>, int>>");
@@ -124,6 +127,17 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .property("missed_nodes", &FindCrosswordNodes::get_missed_nodes)
         .property("wrong_nodes", &FindCrosswordNodes::get_wrong_nodes)
         .property("correct_nodes", &FindCrosswordNodes::get_correct_nodes);
+
+    class_<NodeConsistency>("NodeConsistency")
+        .constructor<>()
+        .function("init", &NodeConsistency::init)
+        .function("restore_bag", &NodeConsistency::restore_bag)
+        .function("choose", &NodeConsistency::choose)
+        .function("add_response", &NodeConsistency::add_response)
+        .function("check", &NodeConsistency::check)
+        .property("shuffled_bag_ind", &NodeConsistency::get_shuffled_bag_ind)
+        .property("shuffled_bag", &NodeConsistency::get_shuffled_bag)
+        .property("result", &NodeConsistency::get_result);
 
     class_<FindMissingArc>("FindMissingArc")
         .constructor<>()
