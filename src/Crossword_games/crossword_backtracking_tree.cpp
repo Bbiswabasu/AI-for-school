@@ -108,6 +108,7 @@ void CrosswordBacktrackingTree::startGame()
     cin >> repetion_allowed;
     arc_con.init();
     arc_con.choose();
+    arc_con.add_all_nodes();
     backtrack(0);
     cout << "Adjacency list of recursion tree :\n";
     for (int i = 0; i < adj.size(); i++)
@@ -117,7 +118,7 @@ void CrosswordBacktrackingTree::startGame()
             cout << it << " ";
         cout << "\n";
     }
-    cout<<"\nFound "<<solution_indices.size()<<" solutions\n";
+    cout << "\nFound " << solution_indices.size() << " solutions\n";
     while (1)
     {
         int n;
@@ -137,6 +138,6 @@ void CrosswordBacktrackingTree::startGame()
         cout << "\nDomain state :\n";
         arc_con.domain = domain_state[n];
         arc_con.print_bag();
-        cout<<"\n";
+        cout << "\n";
     }
 }

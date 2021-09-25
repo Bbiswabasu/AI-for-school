@@ -15,6 +15,7 @@ void ArcConsistency::init()
 	rebag.assign(CrosswordGenerator::grid_size + 2, vector<int>(szbag));
 	domain.assign(M, vector<vector<vector<int>>>(M, vector<vector<int>>(2, vector<int>(szbag, 1))));
 	student_domain.assign(M, vector<int>(szbag, 1));
+	nodes.clear();
 	srand((unsigned)time(NULL));
 }
 

@@ -81,8 +81,6 @@ EMSCRIPTEN_BINDINGS(tree_games)
 EMSCRIPTEN_BINDINGS(crossword_games)
 {
     register_vector<char>("vector<char>");
-    register_vector<string>("vector<string>");
-    register_vector<int>("vector<int>");
     register_vector<vector<char>>("vector<vector<char>>");
     register_vector<pair<int, int>>("vector<pair<int, int>>");
     register_vector<pair<pair<int, int>, int>>("vector<pair<pair<int, int>, int>>");
