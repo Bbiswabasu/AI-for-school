@@ -34,7 +34,7 @@ void CrosswordBacktrackingTree::backtrack(int node)
             empty_spots.push_back(i);
     }
 
-    for (int i = 0; i < arc_con.szbag; i++)
+    for (int i = 0; i < arc_con.bag_size; i++)
     {
         if (arc_con.domain[x][y][dir][i])
         {
@@ -67,7 +67,7 @@ void CrosswordBacktrackingTree::backtrack(int node)
             }
 
             //remove all words from domain of node
-            for (int j = 0; j < arc_con.szbag; j++)
+            for (int j = 0; j < arc_con.bag_size; j++)
             {
                 if (i != j && arc_con.domain[x][y][dir][j])
                 {
@@ -103,7 +103,7 @@ void CrosswordBacktrackingTree::startGame()
 {
     node_id = -1;
     cout << "Enter bag size : ";
-    cin >> arc_con.szbag;
+    cin >> arc_con.bag_size;
     cout << "Allow repetion of words : ";
     cin >> repetion_allowed;
     arc_con.init();

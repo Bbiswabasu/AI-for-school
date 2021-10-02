@@ -7,8 +7,8 @@
 #include "CSPify.h"
 #include "find_crossword_nodes.h"
 #include "node_consistency.h"
-#include "find_missing_arc.h"
 #include "draw_crossword_graph.h"
+#include "arc_consistency.h"
 #include <emscripten/bind.h>
 
 #include <string>
@@ -82,6 +82,7 @@ EMSCRIPTEN_BINDINGS(crossword_games)
 {
     register_vector<char>("vector<char>");
     register_vector<vector<char>>("vector<vector<char>>");
+    register_vector<vector<string>>("vector<vector<string>>");
     register_vector<pair<int, int>>("vector<pair<int, int>>");
     register_vector<pair<pair<int, int>, int>>("vector<pair<pair<int, int>, int>>");
     register_vector<pair<pair<int, int>, char>>("vector<pair<pair<int, int>, char>>");
@@ -137,13 +138,6 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .property("shuffled_bag", &NodeConsistency::get_shuffled_bag)
         .property("result", &NodeConsistency::get_result);
 
-    class_<FindMissingArc>("FindMissingArc")
-        .constructor<>()
-        .function("choose_arc", &FindMissingArc::choose_arc)
-        .function("check", &FindMissingArc::check)
-        .property("arcs_to_display", &FindMissingArc::get_arcs_to_display)
-        .property("answer", &FindMissingArc::get_answer);
-
     class_<DrawCrosswordGraph>("DrawCrosswordGraph")
         .constructor<>()
         .function("init", &DrawCrosswordGraph::init)
@@ -152,4 +146,21 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .property("missed_edges", &DrawCrosswordGraph::get_missed_edges)
         .property("wrong_edges", &DrawCrosswordGraph::get_wrong_edges)
         .property("correct_edges", &DrawCrosswordGraph::get_correct_edges);
+
+    class_<ArcConsistency>("ArcConsistency")
+        .constructor<>()
+        .function("init", &ArcConsistency::init)
+        .function("restore_bag", &ArcConsistency::restore_bag)
+        .function("restore_nodes", &ArcConsistency::restore_nodes)
+        .function("choose", &ArcConsistency::choose)
+        .function("choose_x_nodes", &ArcConsistency::choose_x_nodes)
+        .function("add_response", &ArcConsistency::add_response)
+        .function("ac3", &ArcConsistency::ac3)
+        .function("check", &ArcConsistency::check)
+        .property("bag_size", &ArcConsistency::get_bag_size,&ArcConsistency::set_bag_size)
+        .property("num_nodes", &ArcConsistency::get_num_nodes,&ArcConsistency::set_num_nodes)
+        .property("nodes", &ArcConsistency::get_nodes)
+        .property("rebag", &ArcConsistency::get_rebag)
+        .property("word_bag", &ArcConsistency::get_word_bag)
+        .property("result", &ArcConsistency::get_result);
 };

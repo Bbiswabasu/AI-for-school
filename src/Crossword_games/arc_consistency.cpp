@@ -10,13 +10,32 @@ using namespace std;
 
 const int M = 35;
 
+ArcConsistency::ArcConsistency() {}
+int ArcConsistency::get_bag_size() const { return bag_size; }
+void ArcConsistency::set_bag_size(int x) { bag_size = x; }
+int ArcConsistency::get_num_nodes() const { return num_nodes; }
+void ArcConsistency::set_num_nodes(int x) { num_nodes = x; }
+vector<pair<pair<int, int>, int>> ArcConsistency::get_nodes() const { return nodes; }
+vector<vector<int>> ArcConsistency::get_rebag() const { return rebag; }
+vector<vector<string>> ArcConsistency::get_word_bag() const { return word_bag; }
+vector<int> ArcConsistency::get_result() const { return result; }
+
 void ArcConsistency::init()
 {
-	rebag.assign(CrosswordGenerator::grid_size + 2, vector<int>(szbag));
-	domain.assign(M, vector<vector<vector<int>>>(M, vector<vector<int>>(2, vector<int>(szbag, 1))));
-	student_domain.assign(M, vector<int>(szbag, 1));
+	rebag.assign(CrosswordGenerator::grid_size + 2, vector<int>(bag_size));
+	domain.assign(M, vector<vector<vector<int>>>(M, vector<vector<int>>(2, vector<int>(bag_size, 1))));
+	student_domain.assign(M, vector<int>(bag_size, 1));
 	nodes.clear();
 	srand((unsigned)time(NULL));
+}
+
+void ArcConsistency::restore_bag(int i, int j, int val)
+{
+	rebag[i][j] = val;
+}
+void ArcConsistency::restore_nodes(int x, int y, int dir)
+{
+	nodes.push_back({{x, y}, dir});
 }
 
 void ArcConsistency::choose()
@@ -30,15 +49,20 @@ void ArcConsistency::choose()
 			tp.push_back(j);
 		}
 		shuffle(tp.begin(), tp.end(), default_random_engine(seed));
-		for (int j = 0; j < szbag; j++)
+		for (int j = 0; j < bag_size; j++)
 		{
 			rebag[i][j] = tp[j];
-			cout << (CrosswordGenerator::bag[i][tp[j]]);
-			cout << " ";
 		}
-		cout << "\n";
 	}
-	cout << "\n";
+	word_bag.resize(nodes.size());
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		int len = CSPify::len[nodes[i].first.first][nodes[i].first.second][nodes[i].second];
+		for (auto jt : rebag[len])
+		{
+			word_bag[i].push_back(CrosswordGenerator::bag[len][jt]);
+		}
+	}
 }
 
 void ArcConsistency::print_bag()
@@ -58,7 +82,7 @@ void ArcConsistency::print_bag()
 		cout << "\n";
 		int length = CSPify::len[i][j][k];
 
-		for (int cur = 0; cur < szbag; cur++)
+		for (int cur = 0; cur < bag_size; cur++)
 		{
 			if (domain[i][j][k][cur])
 				cout << CrosswordGenerator::bag[length][rebag[length][cur]] << " ";
@@ -95,7 +119,7 @@ bool ArcConsistency::revise(pair<pair<int, int>, int> fp, pair<pair<int, int>, i
 	}
 
 	int gf = 0;
-	for (int i = 0; i < szbag; i++)
+	for (int i = 0; i < bag_size; i++)
 	{
 		int fpos = rebag[flength][i];
 		string fcur = CrosswordGenerator::bag[flength][fpos];
@@ -106,7 +130,7 @@ bool ArcConsistency::revise(pair<pair<int, int>, int> fp, pair<pair<int, int>, i
 		int flag = 0;
 		if (fbin == 0)
 		{
-			for (int j = 0; j < szbag; j++)
+			for (int j = 0; j < bag_size; j++)
 			{
 				if (!domain[sx][sy][sbin][j])
 					continue;
@@ -121,7 +145,7 @@ bool ArcConsistency::revise(pair<pair<int, int>, int> fp, pair<pair<int, int>, i
 		}
 		else
 		{
-			for (int j = 0; j < szbag; j++)
+			for (int j = 0; j < bag_size; j++)
 			{
 				if (!domain[sx][sy][sbin][j])
 					continue;
@@ -236,7 +260,7 @@ void ArcConsistency::check()
 	for (int i = 0; i < nodes.size(); i++)
 	{
 		bool ok = 1;
-		for (int j = 0; j < szbag; j++)
+		for (int j = 0; j < bag_size; j++)
 		{
 			if (domain[nodes[i].first.first][nodes[i].first.second][nodes[i].second][j] != student_domain[i][j])
 			{
@@ -251,17 +275,16 @@ void ArcConsistency::check()
 void ArcConsistency::startGame()
 {
 	cout << "Enter bag size : ";
-	cin >> szbag;
-	init();
-	choose();
-	int x;
+	cin >> bag_size;
 	cout << "Enter number of nodes for AC : ";
-	cin >> x;
-	choose_x_nodes(x);
+	cin >> num_nodes;
+	init();
+	choose_x_nodes(num_nodes);
+	choose();
 	ac3();
+
 	cout << "Answer :\n";
 	print_bag();
-
 	cout << "\n"
 		 << "Mark each word as whether they are AC :\n";
 	for (int i = 0; i < nodes.size(); i++)
@@ -271,7 +294,7 @@ void ArcConsistency::startGame()
 		for (auto it : rebag[len])
 			cout << CrosswordGenerator::bag[len][it] << " ";
 		cout << "\n";
-		for (int j = 0; j < szbag; j++)
+		for (int j = 0; j < bag_size; j++)
 		{
 			int d;
 			cin >> d;
