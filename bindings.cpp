@@ -137,7 +137,8 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .function("check", &NodeConsistency::check)
         .property("shuffled_bag_ind", &NodeConsistency::get_shuffled_bag_ind)
         .property("shuffled_bag", &NodeConsistency::get_shuffled_bag)
-        .property("result", &NodeConsistency::get_result);
+        .property("result", &NodeConsistency::get_result)
+        .property("tick_cross", &NodeConsistency::get_tick_cross);
 
     class_<DrawCrosswordGraph>("DrawCrosswordGraph")
         .constructor<>()
@@ -164,5 +165,6 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .property("nodes", &ArcConsistency::get_nodes)
         .property("rebag", &ArcConsistency::get_rebag)
         .property("word_bag", &ArcConsistency::get_word_bag)
-        .property("result", &ArcConsistency::get_result);
+        .property("result", &ArcConsistency::get_result)
+        .property("tick_cross", &ArcConsistency::get_tick_cross);
 };

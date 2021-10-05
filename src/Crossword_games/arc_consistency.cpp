@@ -19,6 +19,7 @@ vector<pair<pair<int, int>, int>> ArcConsistency::get_nodes() const { return nod
 vector<vector<int>> ArcConsistency::get_rebag() const { return rebag; }
 vector<vector<string>> ArcConsistency::get_word_bag() const { return word_bag; }
 vector<int> ArcConsistency::get_result() const { return result; }
+vector<vector<int>> ArcConsistency::get_tick_cross() const { return tick_cross; }
 
 void ArcConsistency::init()
 {
@@ -257,6 +258,10 @@ void ArcConsistency::add_response(int node, int ind, int resp)
 
 void ArcConsistency::check()
 {
+	result.clear();
+	tick_cross.clear();
+	result.resize(nodes.size());
+	tick_cross.resize(nodes.size(), vector<int>(bag_size));
 	for (int i = 0; i < nodes.size(); i++)
 	{
 		bool ok = 1;
@@ -265,10 +270,12 @@ void ArcConsistency::check()
 			if (domain[nodes[i].first.first][nodes[i].first.second][nodes[i].second][j] != student_domain[i][j])
 			{
 				ok = 0;
-				break;
+				tick_cross[i][j] = 0;
 			}
+			else
+				tick_cross[i][j] = 1;
 		}
-		result.push_back(ok);
+		result[i] = ok;
 	}
 }
 
@@ -302,6 +309,10 @@ void ArcConsistency::startGame()
 		}
 	}
 	check();
-	for (auto it : result)
-		cout << it << "\n";
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		for (int j = 0; j < bag_size; j++)
+			cout << tick_cross[i][j] << " ";
+		cout << "-> " << result[i] << "\n";
+	}
 }

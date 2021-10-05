@@ -14,15 +14,17 @@ public:
     vector<vector<string>> word_bag;
     queue<pair<pair<pair<int, int>, int>, pair<pair<int, int>, int>>> q;
     vector<int> result;
+    vector<vector<int>> tick_cross;
 
     int get_bag_size() const;
     void set_bag_size(int);
     int get_num_nodes() const;
     void set_num_nodes(int);
-    vector<pair<pair<int,int>,int>> get_nodes() const;
+    vector<pair<pair<int, int>, int>> get_nodes() const;
     vector<vector<int>> get_rebag() const;
     vector<vector<string>> get_word_bag() const;
     vector<int> get_result() const;
+    vector<vector<int>> get_tick_cross() const;
 
     ArcConsistency();
     void init();
