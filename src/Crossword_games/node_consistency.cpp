@@ -77,7 +77,7 @@ void NodeConsistency::check()
     result.clear();
     tick_cross.clear();
     result.resize(CSPify::nodes.size());
-    tick_cross.resize(CSPify::nodes.size(), vector<int>(shuffled_bag.size()));
+    tick_cross.resize(CSPify::nodes.size(), vector<int>(shuffled_bag_ind.size()));
     for (int i = 0; i < CSPify::nodes.size(); i++)
     {
         bool ok = 1;
