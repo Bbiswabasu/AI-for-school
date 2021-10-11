@@ -84,6 +84,8 @@ EMSCRIPTEN_BINDINGS(crossword_games)
     register_vector<vector<char>>("vector<vector<char>>");
     register_vector<vector<string>>("vector<vector<string>>");
     register_vector<pair<int, int>>("vector<pair<int, int>>");
+    register_vector<vector<pair<int, int>>>("vector<vector<pair<int, int>>>");
+    register_vector<vector<vector<pair<int, int>>>>("vector<vector<vector<pair<int, int>>>>");
     register_vector<pair<pair<int, int>, int>>("vector<pair<pair<int, int>, int>>");
     register_vector<pair<pair<int, int>, char>>("vector<pair<pair<int, int>, char>>");
     register_vector<pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>>>("vector<pair<pair<pair<int, int>, char>, pair<pair<int, int>, char>>>");
@@ -159,12 +161,14 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .function("add_response", &ArcConsistency::add_response)
         .function("ac3", &ArcConsistency::ac3)
         .function("check", &ArcConsistency::check)
+        .function("build_consistency_graph", &ArcConsistency::build_consistency_graph)
         .function("print_bag", &ArcConsistency::print_bag)
-        .property("bag_size", &ArcConsistency::get_bag_size,&ArcConsistency::set_bag_size)
-        .property("num_nodes", &ArcConsistency::get_num_nodes,&ArcConsistency::set_num_nodes)
+        .property("bag_size", &ArcConsistency::get_bag_size, &ArcConsistency::set_bag_size)
+        .property("num_nodes", &ArcConsistency::get_num_nodes, &ArcConsistency::set_num_nodes)
         .property("nodes", &ArcConsistency::get_nodes)
         .property("rebag", &ArcConsistency::get_rebag)
         .property("word_bag", &ArcConsistency::get_word_bag)
         .property("result", &ArcConsistency::get_result)
-        .property("tick_cross", &ArcConsistency::get_tick_cross);
+        .property("tick_cross", &ArcConsistency::get_tick_cross)
+        .property("consistency_graph", &ArcConsistency::get_consistency_graph);
 };

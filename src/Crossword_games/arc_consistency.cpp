@@ -20,6 +20,7 @@ vector<vector<int>> ArcConsistency::get_rebag() const { return rebag; }
 vector<vector<string>> ArcConsistency::get_word_bag() const { return word_bag; }
 vector<int> ArcConsistency::get_result() const { return result; }
 vector<vector<int>> ArcConsistency::get_tick_cross() const { return tick_cross; }
+vector<vector<vector<pair<int, int>>>> ArcConsistency::get_consistency_graph() const { return consistency_graph; }
 
 void ArcConsistency::init()
 {
@@ -92,7 +93,7 @@ void ArcConsistency::print_bag()
 	}
 }
 
-bool ArcConsistency::revise(pair<pair<int, int>, int> fp, pair<pair<int, int>, int> sp)
+bool ArcConsistency::revise(pair<pair<int, int>, int> fp, pair<pair<int, int>, int> sp, bool graph_mode)
 {
 	int fx = fp.first.first;
 	int fy = fp.first.second;
@@ -119,6 +120,20 @@ bool ArcConsistency::revise(pair<pair<int, int>, int> fp, pair<pair<int, int>, i
 		inty = fy;
 	}
 
+	int ind1 = -1, ind2 = -1;
+	if (graph_mode)
+	{
+		for (int i = 0; i < nodes.size(); i++)
+		{
+			if (nodes[i] == fp)
+				ind1 = i;
+			if (nodes[i] == sp)
+				ind2 = i;
+		}
+		if (ind1 > ind2)
+			return 0;
+	}
+
 	int gf = 0;
 	for (int i = 0; i < bag_size; i++)
 	{
@@ -140,7 +155,9 @@ bool ArcConsistency::revise(pair<pair<int, int>, int> fp, pair<pair<int, int>, i
 				if (fcur[inty - fy] == scur[intx - sx])
 				{
 					flag = 1;
-					break;
+					if (!graph_mode)
+						break;
+					consistency_graph[ind1][i].push_back({ind2, j});
 				}
 			}
 		}
@@ -155,7 +172,9 @@ bool ArcConsistency::revise(pair<pair<int, int>, int> fp, pair<pair<int, int>, i
 				if (fcur[intx - fx] == scur[inty - sy])
 				{
 					flag = 1;
-					break;
+					if (!graph_mode)
+						break;
+					consistency_graph[ind1][i].push_back({ind2, j});
 				}
 			}
 		}
@@ -179,10 +198,12 @@ void ArcConsistency::add_all_nodes()
 		nodes.push_back(node);
 }
 
-void ArcConsistency::ac3()
+void ArcConsistency::build_queue()
 {
+	while (!q.empty())
+		q.pop();
+	nodes_set.clear();
 	//insert all edges
-	set<pair<pair<int, int>, int>> nodes_set;
 	for (auto node : nodes)
 		nodes_set.insert(node);
 	for (auto node : nodes)
@@ -193,6 +214,11 @@ void ArcConsistency::ac3()
 				q.push({node, {it, 1 - node.second}});
 		}
 	}
+}
+
+void ArcConsistency::ac3()
+{
+	build_queue();
 
 	while (!q.empty())
 	{
@@ -200,7 +226,7 @@ void ArcConsistency::ac3()
 		q.pop();
 		auto fp = tp.first;
 		auto sp = tp.second;
-		if (revise(fp, sp))
+		if (revise(fp, sp, 0))
 		{
 			int x = fp.first.first;
 			int y = fp.first.second;
@@ -221,6 +247,34 @@ void ArcConsistency::ac3()
 	}
 }
 
+void ArcConsistency::build_consistency_graph()
+{
+	build_queue();
+	consistency_graph.resize(nodes.size(), vector<vector<pair<int, int>>>(bag_size, vector<pair<int, int>>()));
+	while (!q.empty())
+	{
+		auto tp = q.front();
+		q.pop();
+		auto fp = tp.first;
+		auto sp = tp.second;
+		revise(fp, sp, 1);
+	}
+}
+void ArcConsistency::print_consistency_graph()
+{
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		for (int j = 0; j < bag_size; j++)
+		{
+			cout << nodes[i].first.first << "-" << nodes[i].first.second << "-" << nodes[i].second << " ";
+			for (auto it : consistency_graph[i][j])
+			{
+				cout << it.first << "-" << it.second << " ";
+			}
+			cout << "\n";
+		}
+	}
+}
 void ArcConsistency::choose_x_nodes(int x)
 {
 	vector<vector<vector<bool>>> vis(CrosswordGenerator::grid_size + 1, vector<vector<bool>>(CrosswordGenerator::grid_size + 1, vector<bool>(2, 0)));
@@ -315,4 +369,6 @@ void ArcConsistency::startGame()
 			cout << tick_cross[i][j] << " ";
 		cout << "-> " << result[i] << "\n";
 	}
+	build_consistency_graph();
+	print_consistency_graph();
 }
