@@ -161,13 +161,13 @@ void CrosswordGenerator::form_grid()
 	}
 
 	//add extra vertical words
-	for (int i = starting_col; i <= grid_size; i+=2)
+	for (int i = starting_col; i <= grid_size; i += 2)
 	{
 		bool ok = 0;
 		int pos = -1;
 		for (int j = 1; j < grid_size; j++)
 		{
-			if (grid[j][i] == '.' && grid[j+1][i] == '.')
+			if (grid[j][i] == '.' && grid[j + 1][i] == '.')
 			{
 				ok = 1;
 				break;
@@ -182,7 +182,15 @@ void CrosswordGenerator::form_grid()
 		}
 		if (ok)
 			continue;
-		int len = distribution(generator);
+		int len;
+		while (1)
+		{
+			len = distribution(generator);
+			if (len > 2 and len <= uplen)
+			{
+				break;
+			}
+		}
 		int start = pos - random(0, pos);
 		if (start + len - 1 > grid_size)
 			start = grid_size - len + 1;
