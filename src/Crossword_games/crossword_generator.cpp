@@ -73,18 +73,12 @@ void CrosswordGenerator::form_grid()
 		if (count == 1)
 		{
 			len = max(len, grid_size / 2 + 2);
-			// if (len == grid_size)
 			start[count] = 1;
-			// else
-			// start[count] = random(1, 2);
 		}
 		else if (count == 2)
 		{
 			len = max(len, grid_size / 2 + 1);
-			// if (len == grid_size)
-			// start[count] = 1;
-			// else
-			start[count] = (grid_size - len + 1); // - random(0, 1);
+			start[count] = (grid_size - len + 1);
 		}
 		else
 		{
@@ -164,6 +158,36 @@ void CrosswordGenerator::form_grid()
 			}
 			break;
 		}
+	}
+
+	//add extra vertical words
+	for (int i = starting_col; i <= grid_size; i+=2)
+	{
+		bool ok = 0;
+		int pos = -1;
+		for (int j = 1; j < grid_size; j++)
+		{
+			if (grid[j][i] == '.' && grid[j+1][i] == '.')
+			{
+				ok = 1;
+				break;
+			}
+			else if (grid[j][i] == '.' && !ok)
+			{
+				if (pos == -1)
+					pos = j;
+				else if (random(0, 1))
+					pos = j;
+			}
+		}
+		if (ok)
+			continue;
+		int len = distribution(generator);
+		int start = pos - random(0, pos);
+		if (start + len - 1 > grid_size)
+			start = grid_size - len + 1;
+		for (int j = start; j < start + len; j++)
+			grid[j][i] = '.';
 	}
 }
 
