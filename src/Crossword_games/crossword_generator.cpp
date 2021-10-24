@@ -191,7 +191,7 @@ void CrosswordGenerator::form_grid()
 				break;
 			}
 		}
-		int start = pos - random(0, pos);
+		int start = pos - random(0, pos - 1);
 		if (start + len - 1 > grid_size)
 			start = grid_size - len + 1;
 		for (int j = start; j < start + len; j++)
