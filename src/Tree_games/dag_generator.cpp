@@ -1,6 +1,8 @@
 #include <iostream>
 #include <ctime>
 #include <queue>
+#include <random>
+#include <chrono>
 #include "dag_generator.h"
 using namespace std;
 
@@ -67,13 +69,16 @@ void DAGGenerator::init()
 	y_coor.resize(num_nodes);
 	edge_carvature.resize(num_nodes, vector<int>());
 }
-int DAGGenerator::random(int a, int b)
+int DAGGenerator::random(int a, int b, int x)
 {
-	return a + rand() % (b - a + 1);
+	return a + x % (b - a + 1);
 }
 void DAGGenerator::generate_dag()
 {
-	num_not = random(0, (num_vars + 1) / 2); //numbers of NOT nodes to be inserted
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	default_random_engine generator(seed);
+	uniform_int_distribution<int> uniform(0, 100);
+	num_not = random(0, (num_vars + 1) / 2, uniform(generator)); //numbers of NOT nodes to be inserted
 	num_nodes += num_not;
 	adj.resize(num_nodes, vector<int>());
 	indeg.resize(num_nodes, 0);
@@ -86,12 +91,12 @@ void DAGGenerator::generate_dag()
 		if (indeg[i + 1] == 0) // to ensure non-sink nodes have indegree>=1
 			succ1 = i + 1;
 		else
-			succ1 = random(i + 1, num_nodes - 1);
+			succ1 = random(i + 1, num_nodes - 1, uniform(generator));
 		int succ2;
 		if (succ1 != i + 1)
-			succ2 = random(i + 1, succ1 - 1);
+			succ2 = random(i + 1, succ1 - 1, uniform(generator));
 		else
-			succ2 = random(succ1 + 1, num_nodes - 1);
+			succ2 = random(succ1 + 1, num_nodes - 1, uniform(generator));
 		adj[i].push_back(succ1);
 		adj[i].push_back(succ2);
 		indeg[succ1]++;
@@ -134,7 +139,7 @@ void DAGGenerator::generate_dag()
 	num_nodes += num_not;
 	for (int i = num_nodes - 1; i >= num_nodes - num_not; i--)
 	{
-		int index = random(0, num_nodes - num_not - num_vars - 1);
+		int index = random(0, num_nodes - num_not - num_vars - 1, uniform(generator));
 		adj[i].push_back(adj[index][1]);
 		adj[index].pop_back();
 		adj[index].push_back(i);
@@ -143,6 +148,9 @@ void DAGGenerator::generate_dag()
 
 void DAGGenerator::assign_content()
 {
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	default_random_engine generator(seed);
+	uniform_int_distribution<int> uniform(0, 100);
 	content.resize(adj.size());
 	expressions.resize(adj.size());
 	for (int i = 0; i < adj.size(); i++)
@@ -152,18 +160,21 @@ void DAGGenerator::assign_content()
 		else if (adj[i].size() == 1)
 			content[i] = "~";
 		else
-			content[i] = operators[rand() % 4];
+			content[i] = operators[uniform(generator) % 4];
 	}
 }
 
 void DAGGenerator::assign_values()
 {
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	default_random_engine generator(seed);
+	uniform_int_distribution<int> uniform(0, 100);
 	values.resize(adj.size());
 	for (int i = 0; i < adj.size(); i++)
 	{
 		if (!isalpha(content[i][0]))
 			continue;
-		values[i] = rand() % 2;
+		values[i] = uniform(generator) % 2;
 	}
 }
 
@@ -209,7 +220,7 @@ void DAGGenerator::compute_graph_layout()
 
 	//compute carvature for each edge
 	edge_carvature.clear();
-	edge_carvature.resize(adj.size(),vector<int>(2,0));
+	edge_carvature.resize(adj.size(), vector<int>(2, 0));
 	for (int i = 0; i < num_nodes; i++)
 	{
 		int j = 0;

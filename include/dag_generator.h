@@ -37,7 +37,7 @@ public:
     DAGGenerator();
     void restore_dag(char, int, int, string);
     void init();
-    int random(int, int);
+    int random(int, int, int);
     void generate_dag();
     void assign_content();
     void assign_values();

@@ -44,9 +44,9 @@ void CrosswordGenerator::init()
 	uplen = min(max(5, grid_size - 2), 10); //maximum length of words along one axis
 	srand(time(NULL));
 }
-int CrosswordGenerator::random(int a, int b)
+int CrosswordGenerator::random(int a, int b, int x)
 {
-	return a + rand() % (b - a + 1);
+	return a + x % (b - a + 1);
 }
 void CrosswordGenerator::form_grid()
 {
@@ -58,6 +58,7 @@ void CrosswordGenerator::form_grid()
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	default_random_engine generator(seed);
 	binomial_distribution<int> distribution(uplen, 0.7);
+	uniform_int_distribution<int> uniform(0, 100);
 	for (int i = 1; i <= grid_size; count++)
 	{
 		int len, val;
@@ -86,12 +87,12 @@ void CrosswordGenerator::form_grid()
 			if (start[count - 2] <= grid_size / 3)
 			{
 				//it is left aligned
-				start[count] = min(grid_size - len + 1, random(start[count - 2], end[count - 2] - 2));
+				start[count] = min(grid_size - len + 1, random(start[count - 2], end[count - 2] - 2, uniform(generator)));
 			}
 			else
 			{
 				//it is right aligned
-				end[count] = max(len, random(start[count - 2] + 2, end[count - 2]));
+				end[count] = max(len, random(start[count - 2] + 2, end[count - 2], uniform(generator)));
 				start[count] = end[count] - len + 1;
 			}
 		}
@@ -101,7 +102,7 @@ void CrosswordGenerator::form_grid()
 
 		if (!done_step && grid_size > 5)
 		{
-			step = random(1, 3);
+			step = random(1, 3, uniform(generator));
 			if (step == 1)
 				done_step = 1;
 			else
@@ -114,7 +115,7 @@ void CrosswordGenerator::form_grid()
 		end[count] = start[count] + len - 1;
 	}
 
-	int starting_col = random(1, 2);
+	int starting_col = random(1, 2, uniform(generator));
 	//connect 1st and 2nd rows
 	for (int i = starting_col; i <= grid_size; i += 2)
 	{
@@ -176,7 +177,7 @@ void CrosswordGenerator::form_grid()
 			{
 				if (pos == -1)
 					pos = j;
-				else if (random(0, 1))
+				else if (random(0, 1, uniform(generator)))
 					pos = j;
 			}
 		}
@@ -191,7 +192,7 @@ void CrosswordGenerator::form_grid()
 				break;
 			}
 		}
-		int start = pos - random(0, pos - 1);
+		int start = pos - random(0, pos - 1, uniform(generator));
 		if (start + len - 1 > grid_size)
 			start = grid_size - len + 1;
 		for (int j = start; j < start + len; j++)

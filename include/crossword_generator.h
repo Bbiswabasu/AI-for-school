@@ -19,7 +19,7 @@ public:
     void restore_grid(int, int, char);
     void build_bag();
     void init();
-    int random(int, int);
+    int random(int, int, int);
     void form_grid();
     void print_grid();
     void transpose();
