@@ -40,7 +40,7 @@ void CrosswordGenerator::build_bag()
 void CrosswordGenerator::init()
 {
 	moves = vector<pair<int, int>>({{0, 1}, {1, 0}, {0, -1}, {-1, 0}});
-	grid.resize(M, vector<char>(M, '#'));
+	grid.assign(M, vector<char>(M, '#'));
 	uplen = min(max(5, grid_size - 2), 10); //maximum length of words along one axis
 	srand(time(NULL));
 }

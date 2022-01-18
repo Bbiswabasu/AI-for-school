@@ -16,10 +16,16 @@ vector<pair<pair<int, int>, int>> CSPify::get_nodes() const { return nodes; }
 
 void CSPify::init()
 {
-	len.resize(M, vector<vector<int>>(M, vector<int>(2)));
-	vis.resize(M, vector<int>(M, 0));
-	edges.resize(M, vector<vector<pair<int, int>>>(M, vector<pair<int, int>>(2)));
-	graph.resize(M, vector<vector<vector<pair<int, int>>>>(M, vector<vector<pair<int, int>>>(2)));
+	nodes.clear();
+	len.clear();
+	edges.clear();
+	graph.clear();
+	vis.clear();
+	q.clear();
+	len.assign(M, vector<vector<int>>(M, vector<int>(2)));
+	vis.assign(M, vector<int>(M, 0));
+	edges.assign(M, vector<vector<pair<int, int>>>(M, vector<pair<int, int>>(2)));
+	graph.assign(M, vector<vector<vector<pair<int, int>>>>(M, vector<vector<pair<int, int>>>(2)));
 }
 
 void CSPify::cspify()

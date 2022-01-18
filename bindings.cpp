@@ -117,6 +117,7 @@ EMSCRIPTEN_BINDINGS(crossword_games)
 
     class_<CSPify>("CSPify")
         .constructor<>()
+        .function("init", &CSPify::init)
         .function("do_all_tasks", &CSPify::do_all_tasks)
         .property("nodes", &CSPify::get_nodes);
 
