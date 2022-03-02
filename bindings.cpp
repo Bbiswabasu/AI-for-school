@@ -83,6 +83,7 @@ EMSCRIPTEN_BINDINGS(crossword_games)
 {
     register_vector<char>("vector<char>");
     register_vector<vector<char>>("vector<vector<char>>");
+    register_vector<vector<vector<char>>>("vector<vector<vector<char>>>");
     register_vector<vector<string>>("vector<vector<string>>");
     register_vector<pair<int, int>>("vector<pair<int, int>>");
     register_vector<vector<pair<int, int>>>("vector<vector<pair<int, int>>>");
