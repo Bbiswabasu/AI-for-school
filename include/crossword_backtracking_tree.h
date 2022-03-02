@@ -5,11 +5,33 @@ class CrosswordBacktrackingTree
 {
 public:
     int node_id;
-    int repetion_allowed;                                     //stores if we will allow repetion
-    vector<vector<int>> adj;                                  //stores adjacency list of tree
-    vector<vector<vector<char>>> grid_state;                  //stores grid state at each node
-    vector<vector<vector<vector<vector<int>>>>> domain_state; //stores domain of all nodes at each node of recursion tree
-    vector<int> solution_indices;                             //stores index of nodes which are solution
-    void backtrack(int);
+    int max_depth;
+    int max_nodes;
+    int bag_size;
+    int repetition_allowed;                                   // stores if we will allow repetion
+    vector<vector<int>> adj;                                  // stores adjacency list of tree
+    vector<vector<vector<char>>> grid_state;                  // stores grid state at each node
+    vector<vector<vector<vector<vector<int>>>>> domain_state; // stores domain of all nodes at each node of recursion tree
+    vector<int> solution_indices;                             // stores index of nodes which are solution
+    vector<int> reordered_nodes;
+    vector<int> student_response;
+    vector<int> result;
+
+    int get_max_depth() const;
+    void set_max_depth(int);
+    int get_max_nodes() const;
+    void set_max_nodes(int);
+    int get_bag_size() const;
+    void set_bag_size(int);
+    vector<vector<int>> get_adj() const;
+    vector<vector<vector<char>>> get_grid_state() const;
+
+    CrosswordBacktrackingTree();
+    void backtrack(int, int);
+    void random_order_nodes();
+    void random_order_states();
+    void preprocess();
+    void add_response(int);
+    void check();
     void startGame();
 };

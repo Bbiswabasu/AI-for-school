@@ -9,6 +9,7 @@
 #include "node_consistency.h"
 #include "draw_crossword_graph.h"
 #include "arc_consistency.h"
+#include "crossword_backtracking_tree.h"
 #include <emscripten/bind.h>
 
 #include <string>
@@ -172,4 +173,16 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .property("result", &ArcConsistency::get_result)
         .property("tick_cross", &ArcConsistency::get_tick_cross)
         .property("consistency_graph", &ArcConsistency::get_consistency_graph);
+
+    class_<CrosswordBacktrackingTree>("CrosswordBacktrackingTree")
+        .constructor<>()
+        .function("backtrack", &CrosswordBacktrackingTree::backtrack)
+        .function("random_order_nodes", &CrosswordBacktrackingTree::random_order_nodes)
+        .function("random_order_states", &CrosswordBacktrackingTree::random_order_states)
+        .function("preprocess", &CrosswordBacktrackingTree::preprocess)
+        .function("add_response", &CrosswordBacktrackingTree::add_response)
+        .property("max_depth", &CrosswordBacktrackingTree::get_max_depth, &CrosswordBacktrackingTree::set_max_depth)
+        .property("max_nodes", &CrosswordBacktrackingTree::get_max_nodes, &CrosswordBacktrackingTree::set_max_nodes)
+        .property("adj", &CrosswordBacktrackingTree::get_adj)
+        .property("grid_state", &CrosswordBacktrackingTree::get_grid_state);
 };
