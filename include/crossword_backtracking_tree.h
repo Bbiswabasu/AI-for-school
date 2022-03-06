@@ -25,6 +25,7 @@ public:
     void set_bag_size(int);
     vector<vector<int>> get_adj() const;
     vector<vector<vector<char>>> get_grid_state() const;
+    vector<int> get_result() const;
 
     CrosswordBacktrackingTree();
     void backtrack(int, int);
@@ -32,6 +33,8 @@ public:
     void random_order_states();
     void preprocess();
     void add_response(int);
+    void compute_filled_nodes(vector<vector<int>> &);
+    bool is_valid_child(int, int,vector<vector<int>> &);
     void check();
     void startGame();
 };

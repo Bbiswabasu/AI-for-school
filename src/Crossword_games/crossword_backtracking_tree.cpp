@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
+#include <map>
+#include <queue>
 #include "crossword_backtracking_tree.h"
 #include "crossword_generator.h"
 #include "CSPify.h"
@@ -20,6 +22,7 @@ int CrosswordBacktrackingTree::get_bag_size() const { return bag_size; }
 void CrosswordBacktrackingTree::set_bag_size(int x) { bag_size = x; }
 vector<vector<int>> CrosswordBacktrackingTree::get_adj() const { return adj; }
 vector<vector<vector<char>>> CrosswordBacktrackingTree::get_grid_state() const { return grid_state; }
+vector<int> CrosswordBacktrackingTree::get_result() const { return result; }
 
 void CrosswordBacktrackingTree::backtrack(int node, int depth)
 {
@@ -168,23 +171,117 @@ void CrosswordBacktrackingTree::add_response(int x)
 {
     student_response.push_back(x);
 }
+void CrosswordBacktrackingTree::compute_filled_nodes(vector<vector<int>> &nodes_filled)
+{
+    for (int n = 0; n < adj.size(); n++)
+    {
+        for (int node = 0; node < CSPify::nodes.size(); node++)
+        {
+            int x = CSPify::nodes[node].first.first, y = CSPify::nodes[node].first.second, dir = CSPify::nodes[node].second;
+            int tx = x, ty = y;
+            bool ok = 1;
+            while (tx - x + 1 <= CSPify::len[x][y][dir] && ty - y + 1 <= CSPify::len[x][y][dir])
+            {
+                if (grid_state[n][tx][ty] == '.')
+                {
+                    ok = 0;
+                    break;
+                }
+                if (dir)
+                    tx++;
+                else
+                    ty++;
+            }
+            if (ok)
+                nodes_filled[n].push_back(node);
+        }
+    }
+}
+bool CrosswordBacktrackingTree::is_valid_child(int parent, int child, vector<vector<int>> &nodes_filled)
+{
+    if (nodes_filled[parent].size() != nodes_filled[child].size() - 1)
+        return 0;
+    for (auto &node : nodes_filled[parent])
+    {
+        int x = CSPify::nodes[node].first.first, y = CSPify::nodes[node].first.second, dir = CSPify::nodes[node].second;
+        int tx = x, ty = y;
+        while (tx - x + 1 <= CSPify::len[x][y][dir] && ty - y + 1 <= CSPify::len[x][y][dir])
+        {
+            if (grid_state[parent][tx][ty] != grid_state[child][tx][ty])
+            {
+                return 0;
+            }
+            if (dir)
+                tx++;
+            else
+                ty++;
+        }
+    }
+    return 1;
+}
 void CrosswordBacktrackingTree::check()
 {
     result.assign(adj.size(), -1);
-    // map<int, vector<int>> indices;
-    // for (int i = 0; i < adj.size(); i++)
-    //     indices[student_response[i]].push_back(i);
-    // for (int i = 1; i <= CrosswordGenerator::grid_size; i++)
-    // {
-    //     for (int j = 1; j <= CrosswordGenerator::grid_size; j++)
-    //     {
-    //         if (grid_state[indices[0]][i][j] == '.' && grid_state[indices[0]][i][j] == '#')
-    //         {
-    //             result[indices[i]] = 0;
-    //             return;
-    //         }
-    //     }
-    // }
+    map<int, vector<int>> indices;
+    for (int i = 0; i < adj.size(); i++)
+        indices[student_response[i]].push_back(i);
+
+    auto cur = indices[0];
+    vector<vector<int>> nodes_filled(adj.size());
+    compute_filled_nodes(nodes_filled);
+    queue<pair<int, int>> q;
+    bool got_one = 0;
+    for (auto &it : cur)
+    {
+        if (nodes_filled[it].size() == 0)
+        {
+            result[it] = 1;
+            got_one = 1;
+            q.push({0, it});
+            for (auto &jt : cur)
+            {
+                if (result[jt] != 1)
+                    result[jt] = -2;
+            }
+            break;
+        }
+    }
+    if (!got_one)
+    {
+        for (auto &it : cur)
+            result[it] = 0;
+    }
+
+    while (!q.empty())
+    {
+        auto f = q.front();
+        q.pop();
+        for (auto child : adj[f.first])
+        {
+            cur = indices[child];
+            got_one = 0;
+            for (auto &it : cur)
+            {
+                if (is_valid_child(f.second, it, nodes_filled))
+                {
+                    result[it] = 1;
+                    got_one = 1;
+                    q.push({child, it});
+                    for (auto &jt : cur)
+                    {
+                        if (result[jt] != 1)
+                            result[jt] = -2;
+                    }
+                    break;
+                }
+            }
+            if (!got_one)
+            {
+                for (auto &it : cur)
+                    result[it] = 0;
+            }
+        }
+    }
 }
 void CrosswordBacktrackingTree::startGame()
 {
