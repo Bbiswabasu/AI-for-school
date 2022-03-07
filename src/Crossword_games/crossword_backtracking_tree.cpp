@@ -7,11 +7,9 @@
 #include "crossword_backtracking_tree.h"
 #include "crossword_generator.h"
 #include "CSPify.h"
-#include "arc_consistency.h"
 using namespace std;
 
 const int M = 35;
-ArcConsistency arc_con;
 
 CrosswordBacktrackingTree::CrosswordBacktrackingTree() {}
 int CrosswordBacktrackingTree::get_max_depth() const { return max_depth; }
@@ -283,6 +281,13 @@ void CrosswordBacktrackingTree::check()
         }
     }
 }
+void CrosswordBacktrackingTree::do_all_tasks()
+{
+    preprocess();
+    random_order_nodes();
+    backtrack(0, 0);
+    random_order_states();
+}
 void CrosswordBacktrackingTree::startGame()
 {
     cout << "Enter bag size : ";
@@ -294,9 +299,7 @@ void CrosswordBacktrackingTree::startGame()
     cout << "Maximum no of nodes: ";
     cin >> max_nodes;
 
-    preprocess();
-    random_order_nodes();
-    backtrack(0, 0);
+    do_all_tasks();
 
     cout << "Adjacency list of recursion tree :\n";
     for (int i = 0; i < adj.size(); i++)
@@ -307,7 +310,6 @@ void CrosswordBacktrackingTree::startGame()
         cout << "\n";
     }
 
-    random_order_states();
     for (int n = 0; n < adj.size(); n++)
     {
         for (int i = 1; i <= CrosswordGenerator::grid_size; i++)

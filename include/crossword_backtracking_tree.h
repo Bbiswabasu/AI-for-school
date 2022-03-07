@@ -1,4 +1,5 @@
 #include <vector>
+#include "arc_consistency.h"
 using namespace std;
 
 class CrosswordBacktrackingTree
@@ -16,6 +17,7 @@ public:
     vector<int> reordered_nodes;
     vector<int> student_response;
     vector<int> result;
+    ArcConsistency arc_con;
 
     int get_max_depth() const;
     void set_max_depth(int);
@@ -36,5 +38,6 @@ public:
     void compute_filled_nodes(vector<vector<int>> &);
     bool is_valid_child(int, int,vector<vector<int>> &);
     void check();
+    void do_all_tasks();
     void startGame();
 };

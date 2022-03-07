@@ -8,7 +8,6 @@
 #include "find_crossword_nodes.h"
 #include "node_consistency.h"
 #include "draw_crossword_graph.h"
-#include "arc_consistency.h"
 #include "crossword_backtracking_tree.h"
 #include <emscripten/bind.h>
 
@@ -177,10 +176,7 @@ EMSCRIPTEN_BINDINGS(crossword_games)
 
     class_<CrosswordBacktrackingTree>("CrosswordBacktrackingTree")
         .constructor<>()
-        .function("backtrack", &CrosswordBacktrackingTree::backtrack)
-        .function("random_order_nodes", &CrosswordBacktrackingTree::random_order_nodes)
-        .function("random_order_states", &CrosswordBacktrackingTree::random_order_states)
-        .function("preprocess", &CrosswordBacktrackingTree::preprocess)
+        .function("do_all_tasks", &CrosswordBacktrackingTree::do_all_tasks)
         .function("add_response", &CrosswordBacktrackingTree::add_response)
         .function("check", &CrosswordBacktrackingTree::check)
         .property("max_depth", &CrosswordBacktrackingTree::get_max_depth, &CrosswordBacktrackingTree::set_max_depth)

@@ -1,5 +1,4 @@
-CXX       := g++
-CXX_FLAGS := -std=c++17 -ggdb
+CXX       := emcc
 
 BIN     := bin
 SRC     := src
@@ -10,13 +9,13 @@ EXECUTABLE  := main
 
 
 all: $(BIN)/$(EXECUTABLE)
-
+	
 run: clean all
 	clear
 	./$(BIN)/$(EXECUTABLE)
 
-$(BIN)/$(EXECUTABLE): $(SRC)/*/*.cpp $(SRC)/main.cpp
-	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) $^ -o $@ $(LIBRARIES)
+$(BIN)/$(EXECUTABLE): $(SRC)/*/*.cpp  bindings.cpp
+					  $(CXX) $(CXX_FLAGS) --bind -I$(INCLUDE) $^ $(LIBRARIES) -O3 -s WASM=1 -s MODULARIZE=1 -s ALLOW_MEMORY_GROWTH=1 -o wasm/output.js
 
 clean:
 	-rm $(BIN)/*

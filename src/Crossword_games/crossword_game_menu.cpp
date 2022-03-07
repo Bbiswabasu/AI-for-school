@@ -3,7 +3,6 @@
 #include "CSPify.h"
 #include "find_missing_arc.h"
 #include "more_constraint_node.h"
-#include "arc_consistency.h"
 #include "crossword_game_menu.h"
 #include "find_crossword_nodes.h"
 #include "draw_crossword_graph.h"
