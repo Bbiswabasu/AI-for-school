@@ -22,6 +22,14 @@ vector<vector<int>> CrosswordBacktrackingTree::get_adj() const { return adj; }
 vector<vector<vector<char>>> CrosswordBacktrackingTree::get_grid_state() const { return grid_state; }
 vector<int> CrosswordBacktrackingTree::get_result() const { return result; }
 
+void CrosswordBacktrackingTree::restore_grid_state(int i, int j, int k, char ch)
+{
+    if (grid_state.size() <= i)
+        grid_state.push_back(vector<vector<char>>());
+    if (grid_state[i].size() <= j)
+        grid_state[i].push_back(vector<char>());
+    grid_state[i][j].push_back(ch);
+}
 void CrosswordBacktrackingTree::backtrack(int node, int depth)
 {
     if (depth == max_depth + 1 || node_id == max_nodes + 1)
@@ -32,9 +40,10 @@ void CrosswordBacktrackingTree::backtrack(int node, int depth)
     // domain_state.push_back(arc_con.domain);
 
     int my_id = node_id;
+
     if (node == CSPify::nodes.size())
     {
-        solution_indices.push_back(node_id);
+        // solution_indices.push_back(node_id);
         return;
     }
     int x = CSPify::nodes[reordered_nodes[node]].first.first, y = CSPify::nodes[reordered_nodes[node]].first.second, dir = CSPify::nodes[reordered_nodes[node]].second;
@@ -162,6 +171,7 @@ void CrosswordBacktrackingTree::preprocess()
     arc_con.init();
     arc_con.choose();
     arc_con.add_all_nodes();
+    arc_con.ac3();
     adj.push_back(vector<int>());
     grid_state.push_back(CrosswordGenerator::grid);
 }
@@ -219,6 +229,7 @@ bool CrosswordBacktrackingTree::is_valid_child(int parent, int child, vector<vec
 }
 void CrosswordBacktrackingTree::check()
 {
+    adj.resize(grid_state.size());
     result.assign(adj.size(), -1);
     map<int, vector<int>> indices;
     for (int i = 0; i < adj.size(); i++)

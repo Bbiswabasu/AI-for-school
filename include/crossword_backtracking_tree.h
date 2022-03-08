@@ -30,13 +30,14 @@ public:
     vector<int> get_result() const;
 
     CrosswordBacktrackingTree();
+    void restore_grid_state(int, int, int, char);
     void backtrack(int, int);
     void random_order_nodes();
     void random_order_states();
     void preprocess();
     void add_response(int);
     void compute_filled_nodes(vector<vector<int>> &);
-    bool is_valid_child(int, int,vector<vector<int>> &);
+    bool is_valid_child(int, int, vector<vector<int>> &);
     void check();
     void do_all_tasks();
     void startGame();
