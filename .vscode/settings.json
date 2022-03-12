@@ -68,6 +68,12 @@
         "memory_resource": "cpp",
         "random": "cpp",
         "map": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "any": "cpp",
+        "bit": "cpp",
+        "charconv": "cpp",
+        "optional": "cpp",
+        "string_view": "cpp",
+        "variant": "cpp"
     }
 }

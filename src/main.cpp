@@ -1,6 +1,7 @@
-#include <bits/stdc++.h>
+#include <iostream>
 #include "tree_game_menu.h"
 #include "crossword_game_menu.h"
+#include "concept_graph.h"
 using namespace std;
 
 int main()
@@ -20,7 +21,12 @@ int main()
             TreeGameMenu obj;
             obj.showMenu();
         }
-        else
+        else if(s=="concept")
+        {
+            ConceptGraph obj;
+            obj.showMenu();
+        }
+        else if(s=="exit")
             break;
     }   
 }

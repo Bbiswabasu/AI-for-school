@@ -1,128 +1,102 @@
-//Demonstrate how to take students through the concepts modelled as Hyper-graph
+// Demonstrate how to take students through the concepts modelled as Hyper-graph
 #include <vector>
 #include <string>
 #include <iostream>
 #include <set>
 #include <fstream>
+#include "concept_graph.h"
 using namespace std;
 
-int v,e;
-vector<string> concepts_name;
-vector<vector<int>> inc_mat;
-vector<int> concept_state;
+ConceptGraph::ConceptGraph() {}
+vector<int> ConceptGraph::get_status() const { return status; }
+vector<int> ConceptGraph::get_completed() const { return completed; }
 
-//finds whether a certain concept can be attempted by student depending on status of pre-requisites
-int findAvailableConcepts(int c,set<int> &concept_list)
+void ConceptGraph::init()
 {
-	int AND=1;
-
-	for(int i=0;i<e;i++)
-	{
-		if(inc_mat[c][i]==-1)
-		{ 
-			int OR=0;
-			for(int j=0;j<v;j++)
-			{
-				if(inc_mat[j][i]==1){
-					if(concept_state[j]==1)
-					{
-						OR=1;
-						break;
-					}
-					if(concept_state[j]==-1)
-						OR=-1;
-				}
-			}
-			if(OR==0)
-			{
-				for(int j=0;j<v;j++)
-				{
-					if(inc_mat[j][i]==1 && concept_state[j]==0){
-						concept_list.insert(j);
-					}
-				}
-			}
-			if(OR==0)
-				AND=0;
-			else if(OR==-1 && AND!=0)
-				AND=-1;
-		}
-	}
-	return AND;
+	graph = vector<vector<vector<int>>>({{},
+										 {{0}},
+										 {},
+										 {},
+										 {},
+										 {{4}},
+										 {{5}},
+										 {{6}},
+										 {{7}}});
+	int v = graph.size();
+	completed.assign(v, 0); // set all as not completed
+	status.assign(v, -1);
 }
-void conceptHandler()
+
+// finds whether a certain concept can be attempted by student depending on status of pre-requisites
+void ConceptGraph::compute_individual_status(int c)
 {
-	string s;
-	cin>>s;
-	if(s=="list")
-	{
-		for(int i=0;i<v;i++){
-			cout<<concepts_name[i]<<" -> ";
-			if(concept_state[i]==-1)
-				cout<<"unknown\n";
-			else if(concept_state[i]==0)
-				cout<<"failed\n";
-			else
-				cout<<"passed\n";
-		}
+	if (status[c] != -1)
 		return;
-	}
-	int c;
-	cin>>c;
-	if(s=="pass")
-		concept_state[c]=1;
-	else if(s=="fail")
-		concept_state[c]=0;
-	else if(s=="attempt"){
-		set<int> concept_list;
-		int result=findAvailableConcepts(c,concept_list);
-		if(result==-1)
-			cout<<"Some concept states are unknown\n";
-		else if(result==1)
-			cout<<"You can attempt "<<concepts_name[c]<<"\n";
-		else
+
+	for (auto &it : graph[c])
+	{
+		bool OR = 0;
+		for (auto &jt : it)
 		{
-			cout<<"You need to pass some of these concepts:\n";
-			for(auto it:concept_list)
-				cout<<concepts_name[it]<<"\n";
+			if (completed[jt] == 1)
+			{
+				compute_individual_status(jt);
+				if (status[jt] == 1)
+				{
+					OR = 1;
+					break;
+				}
+			}
+		}
+		if (OR == 0)
+		{
+			status[c] = 0;
+			return;
 		}
 	}
-	else
-		cout<<"Invalid command\n";
+	status[c] = 1;
 }
-void show()
-{	
-	ifstream file;
-	file.open("input.txt");
-
-	file>>v>>e;
-	concepts_name.resize(v);
-	inc_mat.resize(v,vector<int>(e));
-	concept_state.resize(v,-1); //set all as unknown
-		
-	//Reading name of all concepts
-	getline(file,concepts_name[0]);
-	for(int i=0;i<v;i++)
-		getline(file,concepts_name[i]);
-	
-	//Reading incidence matrix
-	for(int i=0;i<v;i++)
+void ConceptGraph::compute_status()
+{
+	for (int i = 0; i < graph.size(); i++)
 	{
-		for(int j=0;j<e;j++)
-			file>>inc_mat[i][j];
+		compute_individual_status(i);
 	}
-	file.close();
+}
+
+void ConceptGraph::mark_complete(int c)
+{
+	completed[c] = 1;
+}
+
+void ConceptGraph::showMenu()
+{
+	init();
 
 	string s;
-	while(1)
+	while (1)
 	{
-		cin>>s;
-		if(s=="exit")
+		cin >> s;
+		if (s == "exit")
 			break;
-		if(s=="concept")
+		if (s == "comp")
 		{
-			conceptHandler();
+			int n;
+			cin >> n;
+			completed[n] = 1;
 		}
-		cout<<"\n";
+		if (s == "incomp")
+		{
+			int n;
+			cin >> n;
+			completed[n] = 0;
+		}
+		if (s == "status")
+		{
+			compute_status();
+			for (auto it : status)
+				cout << it << " ";
+		}
+		cout << "\n";
 	}
 }

@@ -9,6 +9,7 @@
 #include "node_consistency.h"
 #include "draw_crossword_graph.h"
 #include "crossword_backtracking_tree.h"
+#include "concept_graph.h"
 #include <emscripten/bind.h>
 
 #include <string>
@@ -186,4 +187,16 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .property("adj", &CrosswordBacktrackingTree::get_adj)
         .property("result", &CrosswordBacktrackingTree::get_result)
         .property("grid_state", &CrosswordBacktrackingTree::get_grid_state);
+};
+
+EMSCRIPTEN_BINDINGS(conept_graph)
+{
+    class_<ConceptGraph>("ConceptGraph")
+        .constructor<>()
+        .function("init", &ConceptGraph::init)
+        .function("compute_individual_status", &ConceptGraph::compute_individual_status)
+        .function("compute_status", &ConceptGraph::compute_status)
+        .function("mark_complete", &ConceptGraph::mark_complete)
+        .property("status", &ConceptGraph::get_status)
+        .property("completed", &ConceptGraph::get_completed);
 };
