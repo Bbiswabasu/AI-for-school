@@ -21,6 +21,7 @@ void CrosswordBacktrackingTree::set_bag_size(int x) { bag_size = x; }
 vector<vector<int>> CrosswordBacktrackingTree::get_adj() const { return adj; }
 vector<vector<vector<char>>> CrosswordBacktrackingTree::get_grid_state() const { return grid_state; }
 vector<int> CrosswordBacktrackingTree::get_result() const { return result; }
+vector<int> CrosswordBacktrackingTree::get_order() const { return order; }
 
 void CrosswordBacktrackingTree::restore_grid_state(int i, int j, int k, char ch)
 {
@@ -29,6 +30,12 @@ void CrosswordBacktrackingTree::restore_grid_state(int i, int j, int k, char ch)
     if (grid_state[i].size() <= j)
         grid_state[i].push_back(vector<char>());
     grid_state[i][j].push_back(ch);
+}
+void CrosswordBacktrackingTree::restore_adj(int a, int b)
+{
+    if (adj.size() <= a)
+        adj.push_back(vector<int>());
+    adj[a].push_back(b);
 }
 void CrosswordBacktrackingTree::backtrack(int node, int depth)
 {
@@ -152,7 +159,7 @@ void CrosswordBacktrackingTree::random_order_nodes()
 }
 void CrosswordBacktrackingTree::random_order_states()
 {
-    vector<int> order(adj.size());
+    order.resize(adj.size());
     for (int i = 0; i < adj.size(); i++)
         order[i] = i;
 

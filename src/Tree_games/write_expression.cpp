@@ -99,7 +99,7 @@ BDD WriteExpression::buildBDDFromStr(string &s, bddMgr &mgr, vector<BDD> &vars)
 
 bool WriteExpression::check(string s)
 {
-    //Build the actual BDD
+    // Build the actual BDD
     bddMgr mgr_actual(0, 0);
     vector<BDD> vars_actual;
     for (int i = 0; i < DAGGenerator::num_vars; i++)
@@ -112,7 +112,7 @@ bool WriteExpression::check(string s)
     bddToDot(mgr_actual, exp_actual, DAGGenerator::num_vars, fp_dot);
     fclose(fp_dot);
 
-    //Build BDD of student's expression
+    // Build BDD of student's expression
     bddMgr mgr_student(0, 0);
     vector<BDD> vars_student;
     for (int i = 0; i < DAGGenerator::num_vars; i++)
@@ -125,7 +125,7 @@ bool WriteExpression::check(string s)
     bddToDot(mgr_student, exp_student, DAGGenerator::num_vars, fp_dot);
     fclose(fp_dot);
 
-    //Check if BDDs are same
+    // Check if BDDs are same
     FILE *f1 = fopen("bdd_actual.txt", "r");
     FILE *f2 = fopen("bdd_student.txt", "r");
     char ch1, ch2;
@@ -134,7 +134,11 @@ bool WriteExpression::check(string s)
         ch1 = fgetc(f1);
         ch2 = fgetc(f2);
         if (ch1 != ch2)
+        {
+            fclose(f1);
+            fclose(f2);
             return 0;
+        }
     } while (ch1 != EOF && ch2 != EOF);
     fclose(f1);
     fclose(f2);
@@ -144,7 +148,7 @@ bool WriteExpression::check(string s)
 bool WriteExpression::syntax_check(string s)
 {
     bracketed = 1;
-    //check proper paranthesis and valid characters
+    // check proper paranthesis and valid characters
     int st = 0;
     for (int i = 0; i < s.size(); i++)
     {
@@ -181,7 +185,7 @@ bool WriteExpression::syntax_check(string s)
     }
     if (!bracketed)
         s = "(" + s + ")";
-    //check proper operator and operand
+    // check proper operator and operand
     stack<pair<char, int>> oprtr;
     stack<pair<char, int>> operand;
     for (int i = 0; i < s.size(); i++)

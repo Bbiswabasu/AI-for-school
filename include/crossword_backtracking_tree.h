@@ -13,6 +13,7 @@ public:
     vector<vector<int>> adj;                                  // stores adjacency list of tree
     vector<vector<vector<char>>> grid_state;                  // stores grid state at each node
     vector<vector<vector<vector<vector<int>>>>> domain_state; // stores domain of all nodes at each node of recursion tree
+    vector<int> order;
     vector<int> solution_indices;                             // stores index of nodes which are solution
     vector<int> reordered_nodes;
     vector<int> student_response;
@@ -28,9 +29,11 @@ public:
     vector<vector<int>> get_adj() const;
     vector<vector<vector<char>>> get_grid_state() const;
     vector<int> get_result() const;
+    vector<int> get_order() const;
 
     CrosswordBacktrackingTree();
     void restore_grid_state(int, int, int, char);
+    void restore_adj(int, int);
     void backtrack(int, int);
     void random_order_nodes();
     void random_order_states();

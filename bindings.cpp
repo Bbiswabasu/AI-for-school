@@ -178,6 +178,7 @@ EMSCRIPTEN_BINDINGS(crossword_games)
     class_<CrosswordBacktrackingTree>("CrosswordBacktrackingTree")
         .constructor<>()
         .function("restore_grid_state", &CrosswordBacktrackingTree::restore_grid_state)
+        .function("restore_adj", &CrosswordBacktrackingTree::restore_adj)
         .function("do_all_tasks", &CrosswordBacktrackingTree::do_all_tasks)
         .function("add_response", &CrosswordBacktrackingTree::add_response)
         .function("check", &CrosswordBacktrackingTree::check)
@@ -186,6 +187,7 @@ EMSCRIPTEN_BINDINGS(crossword_games)
         .property("bag_size", &CrosswordBacktrackingTree::get_bag_size, &CrosswordBacktrackingTree::set_bag_size)
         .property("adj", &CrosswordBacktrackingTree::get_adj)
         .property("result", &CrosswordBacktrackingTree::get_result)
+        .property("order", &CrosswordBacktrackingTree::get_order)
         .property("grid_state", &CrosswordBacktrackingTree::get_grid_state);
 };
 

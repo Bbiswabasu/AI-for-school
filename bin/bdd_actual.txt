@@ -4,7 +4,22 @@ Zero [shape=box,style=solid,color=red]
 v0i0 
 v0i0 -> v1i0
 v1i0 
-v1i0 -> Zero
-v1i0 -> One [style=dashed]
-v0i0 -> Zero [style=dashed]
+v1i0 -> v2i0
+v2i0 
+v2i0 -> One
+v2i0 -> v3i0 [style=dashed]
+v3i0 
+v3i0 -> Zero
+v3i0 -> One [style=dashed]
+v1i0 -> v2i1 [style=dashed]
+v2i1 
+v2i1 -> Zero
+v2i1 -> v3i1 [style=dashed]
+v3i1 
+v3i1 -> One
+v3i1 -> Zero [style=dashed]
+v0i0 -> v1i1 [style=dashed]
+v1i1 
+v1i1 -> One
+v1i1 -> Zero [style=dashed]
 }
