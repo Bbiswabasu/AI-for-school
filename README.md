@@ -1,2 +1,2 @@
 # AI-for-school
-Summer project on building automated system for school students to learn fundamentals of AI
+C++ codebase of AI4Schools having implementation of all fundamental building blocks of the platform
